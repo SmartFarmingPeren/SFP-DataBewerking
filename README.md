@@ -19,7 +19,7 @@ In order to make the software TI approved we are going te remove the GUI to make
 ## Running the program
 1. Make sure you are in the folder: 
 
-`SFP-Simulatie/SpaceColonizationSim3D`
+`SFP-DataBewerking`
 
 2. Then run the program with:
 
