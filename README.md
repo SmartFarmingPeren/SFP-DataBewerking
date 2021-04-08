@@ -26,4 +26,4 @@ In order to make the software TI approved we are going te remove the GUI to make
 `python3 Main.py`
 
 ## Kattenplaatje :)
-![alt text](https://www.google.com/url?sa=i&url=https%3A%2F%2Fcat-care.nl%2F&psig=AOvVaw3TDh4Ey5U_OEFT5O9CYned&ust=1617969359111000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCPCI0tnL7u8CFQAAAAAdAAAAABAD)
+![alt text](https://www.consumentenbond.nl/binaries/content/gallery/cbhippowebsite/tests/themapaginas/voeding-gezondheid/afbeeldingen-oud/dikke-kat.jpg/dikke-kat.jpg/cbhippowebsite%3Aplscs)
