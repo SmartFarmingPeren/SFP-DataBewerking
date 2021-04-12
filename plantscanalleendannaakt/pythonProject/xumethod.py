@@ -1,4 +1,4 @@
-from openalea.plantgl.all import *
+from plantgl.src.plantgl.all import *
 from .mtgmanip import pgltree2mtg
 
 def xu_method(mtg, startfrom, pointList, binlength, k = 20, filter_short_branch = False, angle_between_trunk_and_lateral = 60):

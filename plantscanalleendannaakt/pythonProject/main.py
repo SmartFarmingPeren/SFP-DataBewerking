@@ -1,9 +1,6 @@
 from PyQt5.Qt import *
 from OpenGL.GL import *
 
-
-
-
 def importPoints(self):
     fname = QFileDialog.getOpenFileName(self, "Open Points file",
                                         initialname,
