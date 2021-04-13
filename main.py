@@ -25,11 +25,12 @@ def skeleton(points, binratio = 50, k = 20):
 
 def main():
     print("started code")
-    scene = Scene('D:/TeringTyfus/gen_2_23_03_expanded.ply')
+    scene = Scene('D:/PearTreeDataProcessing/Skeletonization/gen_2_23_03_expanded.ply')
     points = scene[0].geometry.pointList
 
     mtg = skeleton(points)
     serial.writefile("hallo.bmtg", mtg)
+
 
 if __name__ == '__main__':
     main()
