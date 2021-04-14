@@ -1,4 +1,4 @@
-# skeletonization
+# Skeletonization
 
 ## Introduction
 The Skeletonization folder holds the main code used to skeletonize point clouds.

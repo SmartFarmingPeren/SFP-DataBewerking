@@ -1,4 +1,4 @@
-# outputs
+# Outputs
 
 ## Introduction
 The outputs folder consists of three different folders. 

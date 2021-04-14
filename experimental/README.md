@@ -1,7 +1,8 @@
-# experimental
+# Experimental
 
 ## Introduction
 The experimental folder holds experimental code. This code should be ignored.
+If you want to write experimental code just make a python file called `testing_[your name].py`.
 
 ## Running the code
 `python main.py`

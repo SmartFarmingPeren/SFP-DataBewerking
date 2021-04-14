@@ -7,7 +7,7 @@ import openalea.plantscan3d.mtgmanip as mm
 from openalea.plantscan3d.xumethod import xu_method
 
 from Graphs.visual import plot
-
+from utilities.configuration_file import *
 
 def skeleton(points, binratio = 50, k = 20):
     mini,maxi = points.getZMinAndMaxIndex()
@@ -53,7 +53,7 @@ def writefile(fn, obj):
 
 def main():
     print("started code")
-    scene = Scene('D:/PearTreeDataProcessing/Skeletonization/gen_2_23_03_expanded.ply')
+    scene = Scene(INPUT_POINT_CLOUDS_DIR + 'gen_2_23_03_expanded.ply')
     points = scene[0].geometry.pointList
     mtg = skeleton(points)
 

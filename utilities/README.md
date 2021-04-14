@@ -1,4 +1,4 @@
-# utilities
+# Utilities
 
 ## Introduction
 The `configuration_file.py` is used for the static values within the code.

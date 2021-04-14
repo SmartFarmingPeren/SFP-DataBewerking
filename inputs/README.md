@@ -1,4 +1,4 @@
-# inputs
+# Inputs
 
 ## Introduction
 The inputs folder might include more folders later. 
