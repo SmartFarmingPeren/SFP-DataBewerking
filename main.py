@@ -23,13 +23,21 @@ def skeleton(points, binratio = 50, k = 20):
 
     return mtg
 
+
+
 def main():
     print("started code")
-    scene = Scene('D:/PearTreeDataProcessing/Skeletonization/gen_2_23_03_expanded.ply')
+    scene = Scene('D:/PearTreeDataProcessing/Skeletonization/Simpele_boom.ply')
     points = scene[0].geometry.pointList
 
     mtg = skeleton(points)
-    serial.writefile("hallo.bmtg", mtg)
+
+
+    # serial.writefile("teringAidsTest.bmtg", mtg)
+    #
+    # mtg_test = MTG()
+    # mtg_test = MTG("D:/PearTreeDataProcessing/Skeletonization/test.mtg")
+    # print(mtg_test)
 
 
 if __name__ == '__main__':
