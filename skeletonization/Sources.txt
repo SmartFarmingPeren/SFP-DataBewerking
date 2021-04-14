@@ -1,0 +1,29 @@
+Useful links
+
+[1.] https://plantscan3d.readthedocs.io/en/latest/userguide/clean_process.html#point-cloud-segmentation
+
+[2.] https://github.com/fredboudon/plantscan3d/blob/master/example/pipeline.py
+
+[3.] https://plantscan3d.readthedocs.io/en/latest/userguide/reconstruction.html#save-and-export
+
+[4. HEEL NICE] https://plantscan3d.readthedocs.io/en/latest/userguide/clean_process.html
+
+[5.] https://github.com/openalea
+
+[6. Gebruik voor readme] https://docs.anaconda.com/anaconda/user-guide/tasks/pycharm/
+
+[7.] https://github.com/openalea/mtg/blob/master/src/openalea/mtg/mtg.py
+
+[8.] https://stackoverflow.com/questions/31384639/what-is-pythons-site-packages-directory
+
+[9.] https://anaconda.org/fredboudon
+
+[10.] https://github.com/openalea/openalea
+
+[11.] https://github.com/openalea/plantgl
+
+[12.] https://github.com/fredboudon/plantscan3d/tree/master/example
+
+[13. MTG OPENEN EN SHIT] http://virtualplants.github.io/latest/user/index.html#getting-start
+
+[14. ] https://github.com/fredboudon/plantscan3d
