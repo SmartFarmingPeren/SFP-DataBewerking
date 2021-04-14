@@ -1,16 +1,12 @@
 import pickle
 from openalea.mtg import PlantFrame
-from openalea.mtg.io import write_mtg
-from openalea.plantgl import *
 #from openalea.mtg import *
 from openalea.plantgl.math._pglmath import Vector3
 from openalea.plantgl.scenegraph._pglsg import Scene
-from openalea.plantscan3d import *
 import openalea.plantscan3d.mtgmanip as mm
 from openalea.plantscan3d.xumethod import xu_method
-import openalea.plantscan3d.serial as serial
 
-from Skeletonization.visual import plot
+from Graphs.visual import plot
 
 
 def skeleton(points, binratio = 50, k = 20):

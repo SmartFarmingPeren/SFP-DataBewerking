@@ -2,13 +2,6 @@ from pyvis.network import Network
 import networkx as nx
 
 from openalea.plantgl.all import *
-from openalea.mtg import *
-from openalea.plantscan3d import *
-
-import openalea.plantscan3d.mtgmanip as mm
-from openalea.plantscan3d.xumethod import xu_method
-import openalea.plantscan3d.serial as serial
-from openalea.mtg.io import *
 
 from Skeletonization.main import skeleton
 
