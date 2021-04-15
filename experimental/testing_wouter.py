@@ -48,6 +48,15 @@ def filterpoints(mtg):
             vid_x = mtg.index(x)
             vid_y = mtg.Root(vid_x)
             padje = mtg.Path(vid_x, vid_y)
+            #flip padje
+            #For i in len(padje)
+                 #if parent van padje(i) heeft meer dan 1 zoon
+                       If parent label = n dan 2ejaar else 1 dan 2, else if 2 dan 3 
+                        Id leider????
+       
+                       #Parent van padje(i) = 2e jaar
+      
+            If label from parent padje
             print(padje)
 
 def setup():
