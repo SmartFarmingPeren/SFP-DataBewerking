@@ -13,7 +13,7 @@ def convert_xyz_to_ply_and_filter_points(mesh_set):
             mesh_set.load_new_mesh(INPUT_MESHES_DIR + thick_mesh)
             mesh_set.set_current_mesh(index)
             # Filter points
-            mesh_set.simplification_clustering_decimation(0.5)
+            mesh_set.simplification_clustering_decimation(threshold=0.5)
             # Save mesh as ply
             thick_mesh = thick_mesh.split(".")[0]
             mesh_set.save_current_mesh(OUTPUT_MESHES_DIR + thick_mesh + ".ply")
