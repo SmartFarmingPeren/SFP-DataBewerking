@@ -2,7 +2,7 @@ import openalea.plantscan3d.mtgmanip as mm
 from openalea.plantgl.all import *
 from openalea.plantscan3d.xumethod import xu_method
 
-from utilities.debug_print_functions import *
+from utilities.debug_log_functions import *
 
 
 def skeleton(points, binratio=50, k=20):

@@ -23,3 +23,6 @@ OUTPUT_LOG_DIR = OUTPUT_DIR + "log_files/"
 SKELETONIZATION_DIR = CURRENT_WORKING_DIR + "skeletonization/"
 # Utilities dir
 UTILITIES_DIR = CURRENT_WORKING_DIR + "utilities/"
+
+# [Static file names]
+LOG_FILE_NAME = 'code_logging.log'
