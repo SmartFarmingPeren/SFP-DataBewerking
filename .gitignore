@@ -12,7 +12,6 @@ sysinfo.txt
 ###
 # VS/MD solution and project files
 ###
-[Ee]xportedObj/
 venv/
 __pycache__/
 .idea/
