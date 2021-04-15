@@ -2,7 +2,7 @@ import openalea.plantscan3d.mtgmanip as mm
 from openalea.plantgl.all import *
 from openalea.plantscan3d.xumethod import xu_method
 from utilities.configuration_file import *
-
+from utilities.debug_print_functions import *
 
 def skeleton(points, binratio=50, k=20):
     """
@@ -47,9 +47,10 @@ def main():
     """
     input_point_cloud_name = "Simpele_boom.ply"
     mtg = create_scene_and_skeletonize(input_point_cloud_name)
-    print(mtg.nb_vertices())
-
-
+    debug_message("Hallo dit is een debug")
+    error_message("Hallo dit is een debug")
+    info_message("Hallo dit is een debug")
+    warning_message("Hallo dit is een debug")
 
 
 
