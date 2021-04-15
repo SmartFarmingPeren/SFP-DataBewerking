@@ -2,13 +2,16 @@ import os
 
 # [Directory static values]
 # CWD
-CURRENT_WORKING_DIR = os.getcwd().replace("\\", "/").split("utilities")[0]
+PATH_CWD_PARENT = os.path.dirname(os.getcwd())
+os.chdir(PATH_CWD_PARENT)
+CURRENT_WORKING_DIR = os.getcwd().replace("\\", "/") + "/"
+print(CURRENT_WORKING_DIR)
 # Experimental dir
 EXPERIMENTAL_DIR = CURRENT_WORKING_DIR + "experimental/"
 # Graphs dir
 GRAPHS_DIR = CURRENT_WORKING_DIR + "graphs/"
 # Input dirs
-INPUT_DIR = CURRENT_WORKING_DIR + "input/"
+INPUT_DIR = CURRENT_WORKING_DIR + "inputs/"
 INPUT_POINT_CLOUDS_DIR = INPUT_DIR + "point_clouds/"
 # Output dirs
 OUTPUT_DIR = CURRENT_WORKING_DIR + "outputs/"
