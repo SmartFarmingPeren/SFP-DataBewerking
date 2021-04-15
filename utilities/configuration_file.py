@@ -13,12 +13,14 @@ GRAPHS_DIR = CURRENT_WORKING_DIR + "graphs/"
 # Input dirs
 INPUT_DIR = CURRENT_WORKING_DIR + "inputs/"
 INPUT_POINT_CLOUDS_DIR = INPUT_DIR + "point_clouds/"
+INPUT_MESHES_DIR = INPUT_DIR + "meshes/"
 # Output dirs
 OUTPUT_DIR = CURRENT_WORKING_DIR + "outputs/"
 OUTPUT_BMTG_DIR = OUTPUT_DIR + "bmtg_files/"
 OUTPUT_GRAPHS_DIR = OUTPUT_DIR + "graphs/"
 OUTPUT_MTG_DIR = OUTPUT_DIR + "mtg_files/"
 OUTPUT_LOG_DIR = OUTPUT_DIR + "log_files/"
+OUTPUT_MESHES_DIR = OUTPUT_DIR + "meshes/"
 # Skeletonization dir
 SKELETONIZATION_DIR = CURRENT_WORKING_DIR + "skeletonization/"
 # Utilities dir
