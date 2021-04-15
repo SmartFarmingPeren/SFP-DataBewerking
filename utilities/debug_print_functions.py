@@ -1,6 +1,8 @@
-from utilities.configuration_file import *
 import logging
+
 from termcolor import colored
+
+from utilities.configuration_file import *
 
 # Create a log file to save errors.
 logging.basicConfig(filename=OUTPUT_LOG_DIR + 'code_logging.log', level=logging.DEBUG, filemode='w+',

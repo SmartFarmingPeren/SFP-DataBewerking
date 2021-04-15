@@ -23,5 +23,3 @@ OUTPUT_LOG_DIR = OUTPUT_DIR + "log_files/"
 SKELETONIZATION_DIR = CURRENT_WORKING_DIR + "skeletonization/"
 # Utilities dir
 UTILITIES_DIR = CURRENT_WORKING_DIR + "utilities/"
-
-
