@@ -9,6 +9,8 @@ from openalea.mtg import PlantFrame, MTG
 from openalea.mtg.io import write_mtg, read_mtg_file
 from openalea.plantgl import *
 # from openalea.mtg import *
+from openalea.mtg.plantframe import *
+import PyQt5
 from openalea.mtg.aml import *
 from openalea.mtg import *
 from openalea.plantgl.math._pglmath import Vector3
@@ -17,7 +19,6 @@ from openalea.plantscan3d import *
 import openalea.plantscan3d.mtgmanip as mm
 from openalea.plantscan3d.xumethod import xu_method
 import openalea.plantscan3d.serial as serial
-
 
 def skeleton(mtg, points, binratio=50, k=30):
     mini, maxi = points.getZMinAndMaxIndex()
@@ -37,15 +38,17 @@ def writefile(fn, obj):
     f.close()
     test = PlantFrame()
 
+
 def setup():
     root = Vector3(0, 0, 0)
     mtg = mm.initialize_mtg(root)
     return mtg
 
+
 def main():
     print("program started")
     stack_split = []
-    scene = Scene('C:/Minor1/1_branch.ply')
+    scene = Scene('C:/Minor1/klein_Boom.ply')
     points = scene[0].geometry.pointList
     points.swapCoordinates(1, 2)
     mtg = setup()
@@ -64,7 +67,8 @@ def main():
     d = DressingData()
     print("IkBenHier2")
     print("Max scale = ", g1.max_scale())
-    #pf = PlantFrame(1, Scale=2, DressingData=d)  # doctest: +SKIP
+    pf = PlantFrame(g1, 1, Scale=2, DressingData=d, TopDiameter=1)  # doctest: +SKIP
+    pf.plot()
     print("dit zijn mijn items ", items)
     for _ in range(3):
         v_succesor = mtg.Sons(v, RestrictedTo='NoRestriction', EdgeType='*')
@@ -84,6 +88,8 @@ def main():
             print("node {0} Heeft succesor {1}".format(v, v_succesor))
             v = v_succesor[0]
         print("Dit is de succesor ", v_succesor)
+
+
 if __name__ == '__main__':
     print("Ben ik begonnen")
     main()
