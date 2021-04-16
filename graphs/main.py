@@ -60,7 +60,7 @@ def writefile(fn, obj):
 
 
 def main():
-    scene = Scene(INPUT_POINT_CLOUDS_DIR + 'gen_2_23_03_expanded.ply')
+    scene = Scene(INPUT_POINT_CLOUDS_DIR + 'Simpele_boom.ply')
     points = scene[0].geometry.pointList
     mtg = skeleton(points)
 
