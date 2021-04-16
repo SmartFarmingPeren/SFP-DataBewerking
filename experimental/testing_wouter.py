@@ -4,7 +4,7 @@ import openalea
 from openalea.mtg.algo import ancestors, sons
 from openalea.mtg.aml import Sons
 
-from visual import *
+from graphs.visual import *
 
 from openalea.mtg import PlantFrame, MTG
 
@@ -51,13 +51,13 @@ def filterpoints(mtg):
             #flip padje
             #For i in len(padje)
                  #if parent van padje(i) heeft meer dan 1 zoon
-                       If parent label = n dan 2ejaar else 1 dan 2, else if 2 dan 3 
-                        Id leider????
-       
-                       #Parent van padje(i) = 2e jaar
-      
-            If label from parent padje
-            print(padje)
+            #            If parent label = n dan 2ejaar else 1 dan 2, else if 2 dan 3
+            #             Id leider????
+            #
+            #            #Parent van padje(i) = 2e jaar
+            #
+            # If label from parent padje
+            # print(padje)
 
 def setup():
     root = Vector3(0, 0, 0)
