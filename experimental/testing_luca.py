@@ -50,7 +50,7 @@ def create_scene_and_skeletonize(input_point_cloud_name):
     scene = Scene(INPUT_POINT_CLOUDS_DIR + input_point_cloud_name)
     points = scene[0].geometry.pointList
     points.swapCoordinates(1, 2)
-    mtg = skeleton(points, binratio=4)
+    mtg = skeleton(points, binratio=10)
     return mtg
 
 
@@ -91,7 +91,7 @@ def main():
     """
     The Skeletonization code creates a skeleton from a input point cloud.
     """
-    input_point_cloud_name = "s_s_boom.ply"
+    input_point_cloud_name = "simpele_simpele_boom.ply"
     output_mtg_name = "simpele_simpele_boom.mtg"
 
     info_message("Creating skeleton")
@@ -109,9 +109,9 @@ def main():
     mylist = list(dict.fromkeys(mylist))
 
     for x in mylist:
-        print(x.start)
-        print(x.end)
-        print(x.a, "\n")
+        debug_message("start {0}".format(x.start))
+        debug_message("end {0}".format(x.end))
+        debug_message("age {0}\n".format(x.a))
 
     mytrunk = trunk(mtg)
     debug_message("start {0}".format(mytrunk.start))
