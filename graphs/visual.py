@@ -122,4 +122,4 @@ def plot(g, properties=None, selection=None, hlayout=True, scale=None, labels=No
         label_edge = g.edge_type(edge[1])
         G.add_edge(edge[0], edge[1], label=label_edge, width=edge[2])
 
-    return G.show('mtg.html')
+    return G.show('mtg123.html')

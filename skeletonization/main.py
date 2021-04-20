@@ -57,20 +57,20 @@ def writeMTGfile(fn, g, properties=[('XX','REAL'), ('YY','REAL'), ('ZZ','REAL'),
 
 def main():
     """
-    The Skeletonization code creates a skeleton from a input point cloud.
-    """
-    input_point_cloud_name = "Simpele_boom.ply"
+        The Skeletonization code creates a skeleton from a input point cloud.
+        """
+    input_point_cloud_name = "simpele_simpele_boom.ply"
 
     mtg = create_scene_and_skeletonize(input_point_cloud_name)
-    # writeMTGfile("hoi.mtg", mtg)
+    writeMTGfile("hoi.mtg", mtg)
 
-    mtg_lines = write_mtg(mtg, properties=[('XX','REAL'), ('YY','REAL'), ('ZZ','REAL'), ('radius','REAL')])
-
-    # Write the result into a file example.mtg
-    filename = 'example.mtg'
-    f = open(filename, 'w+')
-    f.write(mtg_lines)
-    f.close()
+    # mtg_lines = write_mtg(mtg, properties=[('XX','REAL'), ('YY','REAL'), ('ZZ','REAL'), ('radius','REAL')])
+    #
+    # # Write the result into a file example.mtg
+    # filename = 'example.mtg'
+    # f = open(filename, 'w+')
+    # f.write(mtg_lines)
+    # f.close()
 
 if __name__ == '__main__':
     main()

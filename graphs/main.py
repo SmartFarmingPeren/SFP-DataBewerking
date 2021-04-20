@@ -66,11 +66,11 @@ def main():
 
     # root_points(mtg)
     # root_points2(mtg)
-    root_id = 271
-    children = mtg.Descendants(root_id)
-    plot(mtg, selection=children)
+    # root_id = 271
+    # children = mtg.Descendants(root_id)
+    plot(mtg)
     # plot(mtg)
-    # writefile("hallo.bmtg", mtg)
+    # writefile("hallo.mtg", mtg)
 
 
 if __name__ == '__main__':
