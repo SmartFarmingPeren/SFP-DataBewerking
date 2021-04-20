@@ -88,7 +88,7 @@ def branches(mtg):
                 startpoint = padje[0]
                 for i in padje:
                     #(any(x.start == startpoint for x in mylist) == False):                                             #voor elke splitsing
-                    #if mtg.Father(i, '+') != None:                                                                      #voor elke aftakking
+                    #if mtg.Father(i, '+') != None:                                                                     #voor elke aftakking
                     if len(mtg.Sons(i)) > 1:
                         mylist.append(ForkPoint(startpoint, mtg.Father(i), count))
                         index = padje.index(mtg.index(i))
@@ -108,7 +108,10 @@ def trunk(mtg):
 
 
 def leaders(mtg, mytrunk):
-    startpoint = mytrunk.end
+
+    #startpoint = mytrunk.end
+    startpoint = 28 #11 bij de door luca gemaakte boom
+    zonen = mtg.Sons(startpoint)
     leaders = []
     dist_1 = 0
     dist_2 = 0
@@ -122,40 +125,32 @@ def leaders(mtg, mytrunk):
     for x in mtg:
         comp = len(mtg.Sons(x))
         d = mtg.get_vertex_property(x)
-        #if (comp == 0) and (d['edge_type'] != '+'):
         if (comp == 0) and (d.get('edge_type') != '+'):
-            count = 0
+            count_plus = 0
             padje = mtg.Path(startpoint, x)
-            padje.reverse()
-            zoek = '+'
             for i in padje:
                 k = mtg.get_vertex_property(i)
-                
-            for key, value in mtg.keys():
-                if key == zoek:
-                    del mtg[key]
-
-
-            #for i in padje:
-            #    print(i)
-            #
-            #    if k['edge_type'] == '+':
-                #    if count > dist_1:
-                #        dist_1 = count
-                #        point_1 = mtg.index(i)
-                ##    elif count > dist_2:
-                 #       dist_2 = count
-                 ##       point_2 = mtg.index(i)
-                  #  elif count > dist_3:
-                  #      dist_3 = count
-                  #      point_3 = mtg.index(i)
-                  #      #print("test")
-                  #  elif count > dist_4:
-                  #      dist_4 = count
-                  #      point_4 = mtg.index(i)
-                #count = count + 1
-
-
+                if k['edge_type'] == '+':
+                    count_plus = count_plus + 1
+            if count_plus == 1:
+                if len(padje) > dist_1:
+                    dist_1 = len(padje)
+                    point_4 = point_3
+                    point_3 = point_2
+                    point_2 = point_1
+                    point_1 = x
+                elif len(padje) > dist_2:
+                    dist_2 = len(padje)
+                    point_4 = point_3
+                    point_3 = point_2
+                    point_2 = x
+                elif len(padje) > dist_3:
+                    dist_3 = len(padje)
+                    point_4 = point_3
+                    point_3 = x
+                elif len(padje) > dist_4:
+                    dist_4 = len(padje)
+                    point_4 = x
 
     leaders.append(ForkPoint(startpoint, point_1, 0))
     leaders.append(ForkPoint(startpoint, point_2, 0))
@@ -172,12 +167,11 @@ def setup():
     mtg = mm.initialize_mtg(root)
     return mtg
 
-
 def main():
     #scene = Scene('C:/Users/woute/Documents/jammer/gen_2_23_03_expanded.ply')
     #scene = Scene('C:/Users/woute/Documents/jammer/2021_03_19__10_55_07.ply')
-    scene = Scene('C:/Users/woute/Documents/jammer/gen_1.ply')
-    #scene = Scene('C:/Users/woute/Documents/jammer/simpel.ply')
+    #scene = Scene('C:/Users/woute/Documents/jammer/gen_1.ply')
+    scene = Scene('C:/Users/woute/Documents/jammer/simpel.ply')
 
     #correcte manier voor skeleton
     points = scene[0].geometry.pointList
@@ -194,7 +188,9 @@ def main():
 
     mytrunk = trunk(mtg)
     myleaders = leaders(mtg, mytrunk)
-    items = mtg.__getitem__(600)
+    #items = mtg.__getitem__(687)
+    plot(mtg)
+    #print(items)
     #rops = mtg.property()
 
 
