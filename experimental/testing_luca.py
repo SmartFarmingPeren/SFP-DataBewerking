@@ -7,6 +7,15 @@ from utilities.debug_log_functions import *
 import openalea.plantscan3d.serial as serial
 from graphs.visual import *
 
+
+class Branch:
+    def __init__(self, vtx_start, vtx_end, age):
+        self.start = vtx_start
+        self.end = vtx_end
+        self.a = age
+
+ROOTBRANCHAGE = 4
+
 def skeleton(points, binratio=50, k=20):
     """
     The skeleton function creates a skeleton(using xu_method) from a pear tree point_cloud.
@@ -45,6 +54,39 @@ def create_scene_and_skeletonize(input_point_cloud_name):
     return mtg
 
 
+def trunk(mtg):
+    mytrunk = 0
+    vid_r = mtg.vertices()
+    startpoint = vid_r[2]
+    d = mtg.get_vertex_property(startpoint)
+    for x in mtg:
+        if len(mtg.Sons(x)) > 1:
+            mytrunk = Branch(startpoint, mtg.Father(x+1), ROOTBRANCHAGE)
+            break
+    return mytrunk
+
+def branches(mtg):
+    mylist = []
+    for x in mtg:
+        comp = len(mtg.Sons(x))
+        if comp == 0:
+            vid_x = mtg.index(x)
+            vid_y = mtg.Root(vid_x)
+            padje = mtg.Path(vid_x, vid_y)
+            padje.reverse()
+            count = 1
+            if (len(padje) > 3):
+                startpoint = padje[0]
+                for i in padje:
+                    #(any(x.start == startpoint for x in mylist) == False):                                             #voor elke splitsing
+                    #if mtg.Father(i, '+') != None:                                                                      #voor elke aftakking
+                    if len(mtg.Sons(i)) > 1:
+                        mylist.append(Branch(startpoint, mtg.Father(i), count))
+                        index = padje.index(mtg.index(i))
+                        startpoint = mtg.Father(i)
+                        count = count + 1
+    return mylist
+
 def main():
     """
     The Skeletonization code creates a skeleton from a input point cloud.
@@ -62,6 +104,19 @@ def main():
     info_message("Plotting mtg as a graph")
     debug_message(std)
     plot(std)
+
+    mylist = branches(mtg)
+    mylist = list(dict.fromkeys(mylist))
+
+    for x in mylist:
+        print(x.start)
+        print(x.end)
+        print(x.a, "\n")
+
+    mytrunk = trunk(mtg)
+    debug_message("start {0}".format(mytrunk.start))
+    debug_message("end {0}".format(mytrunk.end))
+    debug_message("age {0}".format(mytrunk.a))
 
 if __name__ == '__main__':
     main()
