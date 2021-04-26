@@ -2,7 +2,7 @@ import pickle
 import openalea
 from openalea.mtg.algo import ancestors, sons
 from openalea.mtg.aml import Sons, EdgeType
-from visual import *
+from graphs.visual import *
 from openalea.mtg import PlantFrame, MTG, display_mtg
 from openalea.mtg.io import write_mtg, read_mtg_file
 from openalea.plantgl import *
@@ -17,6 +17,8 @@ from copy import deepcopy
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+from utilities.configuration_file import *
+from graphs.visual import plot
 
 
 class Branch:
@@ -171,7 +173,7 @@ def main():
     #scene = Scene('C:/Users/woute/Documents/jammer/gen_2_23_03_expanded.ply')
     #scene = Scene('C:/Users/woute/Documents/jammer/2021_03_19__10_55_07.ply')
     #scene = Scene('C:/Users/woute/Documents/jammer/gen_1.ply')
-    scene = Scene('C:/Users/woute/Documents/jammer/simpel.ply')
+    scene = Scene(INPUT_POINT_CLOUDS_DIR + "Simpele_boom.ply")
 
     #correcte manier voor skeleton
     points = scene[0].geometry.pointList
