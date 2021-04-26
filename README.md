@@ -51,7 +51,7 @@ The openalea requirements are installed at a later time.
 3. Select Conda as the new interpreter.
 4. Select python version 3.7(higher might work, we didn't try tho).
 5. Create the project.
-6. Download the following environment from sharepoint(link: ).
+6. Download the following environment from sharepoint(link: https://inholland.sharepoint.com/:u:/r/teams/MinorTIenLR20202021/Gedeelde%20documenten/2021-2021/projectgroepen%20minor%20software%20engineering/groep%202%20data%20bewerking/week%2017%20tm%2020/Conda/PearTreeDataProcessing.zip?csf=1&web=1&e=rwOoNa).
 7. Go to the folder where the conda interpreter is located.
 8. copy the files from the download into the environment folder.
 9. Clone the git and you should be all set.
