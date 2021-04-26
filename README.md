@@ -22,8 +22,38 @@ The openalea requirements are installed at a later time.
 4. openalea.plantscan3d[https://github.com/openalea/plantscan3d]
 
 ## Installation
+### Hard installation
+1. Download and install pycharm and anaconda
+2. Open a new project
+3. Select Conda as the new interperter
+4. Select python version 3.7(higher might work, we didn't try tho)
+5. Create the project
+6. go to: File>
+    settings>
+   project:{name}>
+   Python interperter>
+   +>
+   manage repositories>
+   conda-forge>
+   OK
+7. Click on the following packages and install(would recommend to install 1 package,
+   then wait for it to install, repeat this untill every package is installed):
+    1. openalea.plantgl
+    2. openalea.plantscan3d
+    3. openalea.mtg
+8. click apply then click OK.
+9. After everything is installed a gitclone can be done inside the project in order to clone the most recent software.
+10. Any questions or help needed with the installing process please contact me: Luca van Elsas(email: 582178@student.inholland.nl)
 
-1. Don't
+### Easy installation
+1. Download and install pycharm and anaconda
+2. Open a new project
+3. Select Conda as the new interperter
+4. Select python version 3.7(higher might work, we didn't try tho)
+5. Create the project
+6. Download the following envrioment from sharepoint(link: )
+7. Go to the folder where the conda interperter is located. 
+8. 
 
 ## Cat picture
 
