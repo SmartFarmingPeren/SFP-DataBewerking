@@ -140,6 +140,58 @@ class Tree:
                 print("Does not exist")
                 return True
 
+def KnipTak(mtg, v1, v2, knipType):
+    pathv1_v2 = mtg.path(v1, v2)
+    print("mtg.path = ", pathv1_v2)
+    if knipType == 1:
+        VanafV = v1
+        NaarV = v2
+        knipAfstand = 5
+    elif knipType == 2:
+        VanafV = v2
+        NaarV = v1
+        knipAfstand = 5
+    else:
+        VanafV = v1
+        NaarV = v2
+        knipAfstand = 5
+    if afstandTussenV1_V2(VanafV, NaarV) > knipAfstand:
+        knipLocatie = knipTussenVertex()
+    return 0
+    #Validate
+    return knipLocatie
+
+def afstandTussenV1_V2(mtg, v1, v2):
+    path_v1_v2 = mtg.Path(v1, v2)
+    for i in path_v1_v2:
+        print("Loop door vertex".format(i))
+    #Locatie v1
+    #Locatie v2
+    #bereken afstand
+    return (v1)
+
+def getVertexPosition(mtg, v1):
+    items = mtg.__getitem__(v1)
+    print("keys: ", items.keys())
+    print("position = ", items.get('position'))
+    stringVector3 = str(items.get('position'))
+    print("string vector 3 = ", stringVector3)
+    # positions = [int(s) for s in stringVector3.split() if s.isdigit()]
+    positions = re.findall(r"[-+]?\d*\.\d+|\d+", stringVector3)
+    positions.pop(0)
+    print("string positions zijn ", positions)
+    # items.get()
+    v_coordinate = numpy.asfarray(positions)
+    print("numpy array = ", v_coordinate)
+    return v_coordinate
+
+def afstandTussenAanliggendeV1_V2(mtg, v1, v2):
+    v1_coord = getVertexPosition(mtg, v1)
+    v2_coord = getVertexPosition(mtg, v2)
+    afstand = numpy.linalg.norm(v1_coord-v2_coord)
+    print("afstand v1 tot v2 ", afstand)
+    #return afstands
+
 class OneYearBranch:
     def __init__(self,v_array, mtg):
         self.v_array = v_array
