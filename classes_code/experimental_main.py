@@ -3,7 +3,6 @@ from openalea.mtg import MTG
 from openalea.plantgl.all import *
 from openalea.plantscan3d.xumethod import xu_method
 from openalea.mtg.aml import *
-#from utilities.debug_log_functions import *
 import openalea.plantscan3d.serial as serial
 from graphs.visual import *
 import numpy
@@ -99,7 +98,7 @@ class Tree:
             try:
                 radius = self.mtg.property('radius')[point]
             except Exception as e:
-                #error_message(e)
+                print(e)
                 radius = 1
 
             if len(self.mtg.Sons(point)) == 1:
@@ -285,7 +284,7 @@ def main():
     input_point_cloud_name = "Simpele_boom.ply"
     output_mtg_name = "Simpele_boom.mtg"
 
-    #info_message("Creating tree object")
+    print("Creating tree object")
     object_tree = Tree(input_point_cloud_name)
 
 
