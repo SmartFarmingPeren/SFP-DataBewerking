@@ -2,7 +2,7 @@
 
 ## Introduction
 
-PlantScan3D is software with a GUI. As TI students we hate this kind of software. In order to make the software TI
+PlantScan3D is software with a GUI, as TI students we hate this kind of software. In order to make the software TI
 approved we are going te remove the GUI to make the software easier to work with. Make sure to read the full read-me the
 pay-off is huge.
 
@@ -21,6 +21,10 @@ The openalea requirements are installed at a later time.
 2. openalea.mtg[https://github.com/openalea/mtg]
 3. openalea.plantgl[https://github.com/openalea/plantgl]
 4. openalea.plantscan3d[https://github.com/openalea/plantscan3d]
+
+Pip packages.
+1. `pip install pyvis`
+2. `pip install termcolor`
 
 ## Installation
 ### Hard installation

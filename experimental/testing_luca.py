@@ -178,8 +178,8 @@ def main():
     """
     The Skeletonization code creates a skeleton from a input point cloud.
     """
-    input_point_cloud_name = "gen_9_15_04_expanded.ply"
-    output_mtg_name = "simpele_simpele_boom.mtg"
+    input_point_cloud_name = "Simpele_boom.ply"
+    output_mtg_name = "xander_test.mtg"
 
     info_message("Creating skeleton")
     mtg = create_scene_and_skeletonize(input_point_cloud_name)
@@ -192,9 +192,7 @@ def main():
     debug_message(std)
     plot(std)
 
-    vector1 = Vector3(900, 200, 100)
-    vector2 = Vector3(600, 36, 50)
-    print(vector1 - vector2)
+
     # tree = Tree()
     #
     #
@@ -234,7 +232,7 @@ def main():
     #
     # info_message(mtg.property('label'))
     # info_message(mtg.property('edge_type'))
-
+    #
     # mylist = branches(mtg)
     # mylist = list(dict.fromkeys(mylist))
     #
