@@ -23,7 +23,7 @@ def dict2html(args, properties=None):
     return '<br>'.join(['%s %s' % (k, args[k]) for k in properties])
 
 
-def plot(g, properties=None, selection=None, hlayout=True, scale=None, labels=None, height='800px', width='900px',
+def plot(g, file_name, properties=None, selection=None, hlayout=True, scale=None, labels=None, height='800px', width='900px',
          **kwds):
     """Plot a MTG in the Jupyter Notebook"""
     G = Network(notebook=True, directed=True,
@@ -122,4 +122,4 @@ def plot(g, properties=None, selection=None, hlayout=True, scale=None, labels=No
         label_edge = g.edge_type(edge[1])
         G.add_edge(edge[0], edge[1], label=label_edge, width=edge[2])
 
-    return G.show('mtg123.html')
+    return G.show(file_name)

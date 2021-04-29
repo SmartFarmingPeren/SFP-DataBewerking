@@ -10,6 +10,8 @@ from graphs.visual import *
 import numpy
 import re
 
+from utilities.debug_log_functions import debug_message, error_message
+
 
 class Tree:
     """
@@ -20,11 +22,20 @@ class Tree:
         # During the skeletonize a mtg file is created from a point cloud, both are saved for later use
         self.point_cloud, self.mtg = self.create_scene_and_skeletonize(input_point_cloud_name)
 
+        # Determine the root branch
         self.root_branch = self.determine_root(self.mtg)
-
         # A tree consists of branches and leaders
-        self.branches = []
-        self.leaders = []
+        self.branches = []  # TODO implement
+        self.leaders = []  # TODO implement
+
+        self.end_points = self.get_branch_ends(self.mtg)
+        self.get_point_by_id(8)
+        # Export the generated skeleton as a mtg file and save it under the input file name
+        serial.writeMTGfile(OUTPUT_MTG_DIR + input_point_cloud_name.split()[0] + '.mtg',
+                            serial.convertToStdMTG(self.mtg))
+
+        # Export a graph as a .html file
+        plot(self.mtg, OUTPUT_GRAPHS_DIR + input_point_cloud_name.split()[0] + '.html')
 
     @staticmethod
     def create_scene_and_skeletonize(input_point_cloud_name):
@@ -92,7 +103,7 @@ class Tree:
             try:
                 radius = mtg.property('radius')[point]
             except Exception as e:
-                print(e)
+                # error_message(e)
                 radius = 0
             # If a point has more than 1 son only append the last point then break out of the loop.
             if len(mtg.Sons(point)) == 1:
@@ -102,5 +113,17 @@ class Tree:
                 break
         return root_branch
 
-def get_branch_ends():
-    pass
+    @staticmethod
+    def get_branch_ends(mtg):
+        lowest_vertex, highest_vertex = Tree.determine_vertexes(mtg)
+        end_points = []
+        for index in range(lowest_vertex, highest_vertex):
+            if len(mtg.Sons(index)) == 0:
+                debug_message("End point found at {0}".format(index))
+                # end_points.append(get_point_by_id(index))
+        return end_points
+
+    def get_point_by_id(self, vid):
+        # TODO fix this shit
+        point_object = self.mtg.__getitem__(vid)
+        return Point(point_object.get('_vid'), point_object.get('position'), point_object.get('radius'))
