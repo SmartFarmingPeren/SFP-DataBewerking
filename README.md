@@ -13,6 +13,7 @@ from PlantScan3D. A new approach made it possible for our own code to work. The 
 
 1. Pycharm(students can get professional for free)[https://www.jetbrains.com/pycharm/]
 2. Anaconda[https://www.anaconda.com/products/individual#Downloads]
+3. A lot of patience.
 
 The openalea requirements are installed at a later time.
 
@@ -34,13 +35,18 @@ The openalea requirements are installed at a later time.
    Python interpreter>
    +>
    manage repositories>
+   +>
+   https://conda.anaconda.org/fredboudon
+   OK>
+   manage repositories>
+   +>
    conda-forge>
-   OK
+   OK>
 7. Click on the following packages and install(would recommend installing 1 package,
    then wait for it to install, repeat this until every package is installed):
-    1. openalea.plantgl
-    2. openalea.plantscan3d
-    3. openalea.mtg
+    1. openalea.plantscan3d
+    2. openalea.mtg
+    3. openalea.plantgl
 8. click apply then click OK.
 9. After everything is installed a git-clone can be done inside the project in order to clone the most recent software.
 10. Any questions or help needed with the installing process please contact me: Luca van Elsas(email: 582178@student.inholland.nl)

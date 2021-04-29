@@ -11,7 +11,7 @@ from graphs.visual import plot
 from utilities.configuration_file import *
 
 
-def skeleton(points, binratio=50, k=20):
+def skeleton(points, binratio=10, k=20):
     mini, maxi = points.getZMinAndMaxIndex()
     root = Vector3(points[mini])
     mtg = mm.initialize_mtg(root)
