@@ -22,6 +22,9 @@ class Tree:
         self.input_point_cloud_name = input_point_cloud_name
         self.create_scene_and_skeletonize()
 
+
+
+        # HERE
         self.lowest_vertex = None
         self.highest_vertex = None
         self.determine_vertexes()

@@ -1,5 +1,10 @@
 import os
 
+# [Static skeletonization values]
+XU_SKELETON_BIN_RATIO = 50  # Default value = 50
+XU_SKELETON_K = 20  # Default value = 20
+
+
 # [Directory static values]
 # CWD
 PATH_CWD_PARENT = os.path.dirname(os.getcwd())
@@ -28,3 +33,5 @@ UTILITIES_DIR = CURRENT_WORKING_DIR + "utilities/"
 
 # [Static file names]
 LOG_FILE_NAME = 'code_logging.log'
+
+
