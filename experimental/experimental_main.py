@@ -8,6 +8,9 @@ from graphs.visual import *
 import numpy
 import re
 
+from utilities.configuration_file import *
+
+
 class Tree:
     """
     A tree class
@@ -78,8 +81,7 @@ class Tree:
         :param input_point_cloud_name: name of the point cloud stored in the input point clouds dir
         :return: mtg
         """
-        scene = Scene('C:/Minor1/' + self.input_point_cloud_name)
-        #scene = Scene(INPUT_POINT_CLOUDS_DIR + self.input_point_cloud_name)
+        scene = Scene(INPUT_POINT_CLOUDS_DIR + self.input_point_cloud_name)
         self.points = scene[0].geometry.pointList
         self.points.swapCoordinates(1, 2)
         self.skeleton()
