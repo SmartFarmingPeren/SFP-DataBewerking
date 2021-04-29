@@ -1,3 +1,4 @@
+from classes_code.Point import Point
 from utilities.configuration_file import *
 import openalea.plantscan3d.mtgmanip as mm
 from openalea.mtg import MTG
@@ -14,12 +15,12 @@ class Tree:
     """
     TODO The tree class is poop
     """
+
     def __init__(self, input_point_cloud_name):
         # During the skeletonize a mtg file is created from a point cloud, both are saved for later use
         self.point_cloud, self.mtg = self.create_scene_and_skeletonize(input_point_cloud_name)
 
-        self.root_branch = determine_root(mtg)
-
+        self.root_branch = self.determine_root(self.mtg)
 
         # A tree consists of branches and leaders
         self.branches = []
@@ -52,16 +53,21 @@ class Tree:
         root = Vector3(point_cloud[mini])
 
         mtg = mm.initialize_mtg(root)
-        zdist = point_cloud[maxi].z - point_cloud[mini].z
-        binlength = zdist / XU_SKELETON_BIN_RATIO
+        z_dist = point_cloud[maxi].z - point_cloud[mini].z
+        bin_length = z_dist / XU_SKELETON_BIN_RATIO
 
         vtx = list(mtg.vertices(mtg.max_scale()))
-        startfrom = vtx[0]
-        mtg = xu_method(mtg, startfrom, point_cloud, binlength, XU_SKELETON_K)
+        start_from = vtx[0]
+        mtg = xu_method(mtg, start_from, point_cloud, bin_length, XU_SKELETON_K)
         return mtg
 
     @staticmethod
     def determine_vertexes(mtg):
+        """
+        This function determines the lowest and highest vertex point.
+        :param mtg:
+        :return:
+        """
         highest_vertex = 0
         lowest_vertex = 99999999999
         for point in mtg.property('position'):
@@ -73,18 +79,25 @@ class Tree:
 
     @staticmethod
     def determine_root(mtg):
+        """
+        This function determines the root of a tree
+        TODO This function only works if there are no other branches on the root than the 4 leaders.
+        If there is a small branch on the root this code wont work, in future we need to improve this method.
+        :param mtg:
+        """
         lowest_vertex, highest_vertex = Tree.determine_vertexes(mtg)
+        root_branch = []
         for point in range(lowest_vertex, highest_vertex):
-
             # Check if mtg has radius otherwise just say radius is 1
             try:
                 radius = mtg.property('radius')[point]
             except Exception as e:
                 print(e)
-                radius = 1
-
+                radius = 0
+            # If a point has more than 1 son only append the last point then break out of the loop.
             if len(mtg.Sons(point)) == 1:
                 root_branch.append(Point(point, Vector3(mtg.property('position')[point]), radius))
             else:
                 root_branch.append(Point(point, Vector3(mtg.property('position')[point]), radius))
                 break
+        return root_branch
