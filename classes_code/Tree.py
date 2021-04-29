@@ -101,3 +101,6 @@ class Tree:
                 root_branch.append(Point(point, Vector3(mtg.property('position')[point]), radius))
                 break
         return root_branch
+
+def get_branch_ends():
+    pass
