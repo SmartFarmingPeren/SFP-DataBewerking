@@ -1,21 +1,17 @@
-from classes_code.Point import Point
-from utilities.configuration_file import *
 import openalea.plantscan3d.mtgmanip as mm
-from openalea.mtg import MTG
+import openalea.plantscan3d.serial as serial
 from openalea.plantgl.all import *
 from openalea.plantscan3d.xumethod import xu_method
-from openalea.mtg.aml import *
-import openalea.plantscan3d.serial as serial
+from classes_code.Point import Point
 from graphs.visual import *
-import numpy
-import re
-
-from utilities.debug_log_functions import debug_message, error_message
+from utilities.configuration_file import *
 
 
 class Tree:
     """
-    TODO The tree class is poop
+    The tree class is used to load a point cloud, then skeletonize the point cloud.
+    After that the created MTG file will be split into: root, leaders, branches and points.
+    The tree class is a collection for these items.
     """
 
     def __init__(self, input_point_cloud_name):
@@ -28,8 +24,10 @@ class Tree:
         self.branches = []  # TODO implement
         self.leaders = []  # TODO implement
 
-        self.end_points = self.get_branch_ends(self.mtg)
-        self.get_point_by_id(8)
+        self.end_points = self.get_branch_ends()
+        for end_point in self.end_points:
+            print(end_point)
+
         # Export the generated skeleton as a mtg file and save it under the input file name
         serial.writeMTGfile(OUTPUT_MTG_DIR + input_point_cloud_name.split()[0] + '.mtg',
                             serial.convertToStdMTG(self.mtg))
@@ -105,25 +103,50 @@ class Tree:
             except Exception as e:
                 # error_message(e)
                 radius = 0
+            try:
+                parent = mtg.property('parent')[point]
+            except Exception as e:
+                # error_message(e)
+                parent = -1
             # If a point has more than 1 son only append the last point then break out of the loop.
             if len(mtg.Sons(point)) == 1:
-                root_branch.append(Point(point, Vector3(mtg.property('position')[point]), radius))
+                root_branch.append(Point(point, Vector3(mtg.property('position')[point]), parent, radius))
             else:
-                root_branch.append(Point(point, Vector3(mtg.property('position')[point]), radius))
+                root_branch.append(Point(point, Vector3(mtg.property('position')[point]), parent, radius))
                 break
         return root_branch
 
-    @staticmethod
-    def get_branch_ends(mtg):
-        lowest_vertex, highest_vertex = Tree.determine_vertexes(mtg)
+    def get_branch_ends(self):
+        """
+        This function gets the end vertexes of the tree.
+        These endpoints will be used to determine branch age later.
+        :return: end_points = [Point]
+        """
+        lowest_vertex, highest_vertex = Tree.determine_vertexes(self.mtg)
         end_points = []
-        for index in range(lowest_vertex, highest_vertex):
-            if len(mtg.Sons(index)) == 0:
-                debug_message("End point found at {0}".format(index))
-                # end_points.append(get_point_by_id(index))
+        for vertex_id in range(lowest_vertex, highest_vertex):
+            if len(self.mtg.Sons(vertex_id)) == 0:
+                # debug_message("End point found at {0}".format(vertex_id))
+                end_points.append(self.get_point_by_id(vertex_id))
         return end_points
 
-    def get_point_by_id(self, vid):
-        # TODO fix this shit
-        point_object = self.mtg.__getitem__(vid)
-        return Point(point_object.get('_vid'), point_object.get('position'), point_object.get('radius'))
+    # def get_point_by_id(self, vid):
+    #     # TODO fix this shit
+    #     point_object = self.mtg.__getitem__(vid)
+    #     return Point(point_object.get('_vid'), point_object.get('position'), point_object.get('radius'))
+
+    def get_point_by_id(self, vertex_id):
+        """
+        TODO ASK STEVEN IF THIS APPROACH IS OKAY WITH HIM - [LUCA]
+        :param vertex_id: A vertex_id from the mtg.
+        :return: a Point object created from the vertex data.
+        """
+        point_object = self.mtg.__getitem__(vertex_id)
+
+        # Check if mtg has radius otherwise just say radius is 1
+        if point_object.get('radius') is None:
+            radius = 0
+        else:
+            radius = point_object.get('radius')
+
+        return Point(point_object.get('vid'), point_object.get('position'), point_object.get('parent'), radius)

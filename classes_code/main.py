@@ -1,5 +1,3 @@
-from classes_code.Branch import Branch
-from classes_code.Point import Point
 from classes_code.Tree import Tree
 
 
