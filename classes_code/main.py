@@ -2,9 +2,9 @@ from classes_code.Tree import Tree
 
 
 def main():
-    tree = Tree("Simpele_boom.ply")
-    # Branch(child=Branch())
-    # pass
+    input_point_cloud_name = "Simpele_boom.ply"
+
+    tree = Tree(input_point_cloud_name)
 
 
 if __name__ == '__main__':

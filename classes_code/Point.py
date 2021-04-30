@@ -17,7 +17,11 @@ class Point:
         self.parent = parent
 
     def __str__(self):
-        return "Point {0}, [x = {1}, y = {2}, z = {3}], parent {4},  radius {5}".format(self.vertex_id,
-                                                                                        self.x, self.y, self.z,
-                                                                                        self.parent, self.radius)
+        return "Point(Vertex id = {0}, [x = {1}, y = {2}," \
+               " z = {3}], parent = {4},  radius = {5})".format(self.vertex_id,
+                                                                self.x,
+                                                                self.y,
+                                                                self.z,
+                                                                self.parent,
+                                                                self.radius)
         # return "Point %d, [%.2f, %.2f, %.2f], radius %.2f" % (self.vertex_id, self.z, self.y, self.z, self.radius)

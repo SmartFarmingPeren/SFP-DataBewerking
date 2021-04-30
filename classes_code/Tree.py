@@ -20,20 +20,27 @@ class Tree:
 
         # Determine the root branch
         self.root_branch = self.determine_root(self.mtg)
+
         # A tree consists of branches and leaders
         self.branches = []  # TODO implement
         self.leaders = []  # TODO implement
 
         self.end_points = self.get_branch_ends()
-        for end_point in self.end_points:
-            print(end_point)
-
+        """
+        Point(Vertex id = 136, [x = 24.314960479736328, y = 30.856678676605224, z = 49.268998527526854], parent = 130,  radius = 0)
+        Point(Vertex id = 145, [x = 74.78162956237793, y = 39.00424265861511, z = 75.002188205719], parent = 140,  radius = 0)
+        Point(Vertex id = 147, [x = 30.688523716396755, y = 46.71216286553277, z = 74.20707617865668], parent = 142,  radius = 0)
+        Point(Vertex id = 149, [x = 79.41132493452592, y = 56.58939743041992, z = 63.9347749189897], parent = 144,  radius = 0)
+        Point(Vertex id = 151, [x = 30.80686378479004, y = 21.700605912642047, z = 69.77657526189631], parent = 146,  radius = 0)
+        Point(Vertex id = 153, [x = 27.471083450317384, y = 22.999549102783202, z = 73.24696884155273], parent = 150,  radius = 0)
+        Point(Vertex id = 161, [x = 88.14643046061198, y = 11.989286104838053, z = 47.03911819458008], parent = 160,  radius = 0)
+        """
         # Export the generated skeleton as a mtg file and save it under the input file name
-        serial.writeMTGfile(OUTPUT_MTG_DIR + input_point_cloud_name.split()[0] + '.mtg',
+        serial.writeMTGfile(OUTPUT_MTG_DIR + input_point_cloud_name.split(".")[0] + '.mtg',
                             serial.convertToStdMTG(self.mtg))
 
         # Export a graph as a .html file
-        plot(self.mtg, OUTPUT_GRAPHS_DIR + input_point_cloud_name.split()[0] + '.html')
+        plot(self.mtg, OUTPUT_GRAPHS_DIR + input_point_cloud_name.split(".")[0] + '.html')
 
     @staticmethod
     def create_scene_and_skeletonize(input_point_cloud_name):
@@ -46,6 +53,7 @@ class Tree:
         point_cloud = scene[0].geometry.pointList
         point_cloud.swapCoordinates(1, 2)
         mtg = Tree.skeleton(point_cloud)
+
         return point_cloud, mtg
 
     @staticmethod
@@ -68,6 +76,7 @@ class Tree:
         vtx = list(mtg.vertices(mtg.max_scale()))
         start_from = vtx[0]
         mtg = xu_method(mtg, start_from, point_cloud, bin_length, XU_SKELETON_K)
+
         return mtg
 
     @staticmethod
@@ -96,7 +105,7 @@ class Tree:
         """
         lowest_vertex, highest_vertex = Tree.determine_vertexes(mtg)
         root_branch = []
-        for point in range(lowest_vertex, highest_vertex):
+        for point in range(lowest_vertex, highest_vertex + 1):
             # Check if mtg has radius otherwise just say radius is 1
             try:
                 radius = mtg.property('radius')[point]
@@ -124,16 +133,11 @@ class Tree:
         """
         lowest_vertex, highest_vertex = Tree.determine_vertexes(self.mtg)
         end_points = []
-        for vertex_id in range(lowest_vertex, highest_vertex):
+        for vertex_id in range(lowest_vertex, highest_vertex + 1):
             if len(self.mtg.Sons(vertex_id)) == 0:
                 # debug_message("End point found at {0}".format(vertex_id))
                 end_points.append(self.get_point_by_id(vertex_id))
         return end_points
-
-    # def get_point_by_id(self, vid):
-    #     # TODO fix this shit
-    #     point_object = self.mtg.__getitem__(vid)
-    #     return Point(point_object.get('_vid'), point_object.get('position'), point_object.get('radius'))
 
     def get_point_by_id(self, vertex_id):
         """
@@ -150,3 +154,10 @@ class Tree:
             radius = point_object.get('radius')
 
         return Point(point_object.get('vid'), point_object.get('position'), point_object.get('parent'), radius)
+
+# TODO THIS IS REMOVED CODE THAT MIGHT BE USEFUL \(0_0)/
+
+    # def get_point_by_id(self, vid):
+    #     # TODO fix this shit
+    #     point_object = self.mtg.__getitem__(vid)
+    #     return Point(point_object.get('_vid'), point_object.get('position'), point_object.get('radius'))
