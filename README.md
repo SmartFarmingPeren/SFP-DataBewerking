@@ -46,6 +46,8 @@ Pip packages.
    +>
    conda-forge>
    OK>
+   refresh>
+   OK>
 7. Click on the following packages and install(would recommend installing 1 package,
    then wait for it to install, repeat this until every package is installed):
     1. openalea.plantscan3d
