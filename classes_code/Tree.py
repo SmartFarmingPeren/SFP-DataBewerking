@@ -21,10 +21,7 @@ class Tree:
         # Determine the root branch
         self.root_branch = self.determine_root(self.mtg)
 
-        # A tree consists of branches and leaders
-        self.branches = []  # TODO implement
-        self.leaders = []  # TODO implement
-
+        # Determine the branch end points
         self.end_points = self.get_branch_ends()
         """
         Point(Vertex id = 136, [x = 24.314960479736328, y = 30.856678676605224, z = 49.268998527526854], parent = 130,  radius = 0)
@@ -35,6 +32,12 @@ class Tree:
         Point(Vertex id = 153, [x = 27.471083450317384, y = 22.999549102783202, z = 73.24696884155273], parent = 150,  radius = 0)
         Point(Vertex id = 161, [x = 88.14643046061198, y = 11.989286104838053, z = 47.03911819458008], parent = 160,  radius = 0)
         """
+
+        # A tree consists of branches and leaders
+        self.branches = self.determine_branches()  # TODO implement
+        self.leaders = []  # TODO implement
+
+
         # Export the generated skeleton as a mtg file and save it under the input file name
         serial.writeMTGfile(OUTPUT_MTG_DIR + input_point_cloud_name.split(".")[0] + '.mtg',
                             serial.convertToStdMTG(self.mtg))
@@ -155,7 +158,23 @@ class Tree:
 
         return Point(point_object.get('vid'), point_object.get('position'), point_object.get('parent'), radius)
 
-# TODO THIS IS REMOVED CODE THAT MIGHT BE USEFUL \(0_0)/
+    def determine_branches(self):
+        # TODO fix this shit
+        # Loop trough the tree from end points to the root
+        points_in_branch = []
+        for end_point in self.end_points:
+            points_in_branch.append(end_point)
+            father = self.mtg.Father(end_point.vertex_id)
+            print(father)
+            if len(self.mtg.Sons(father)) > 1:
+                # If a split is found then break
+                break
+            else:
+                points_in_branch.append(self.get_point_by_id(father))
+        print(points_in_branch[0])
+
+
+            # TODO THIS IS REMOVED CODE THAT MIGHT BE USEFUL \(0_0)/
 
     # def get_point_by_id(self, vid):
     #     # TODO fix this shit
