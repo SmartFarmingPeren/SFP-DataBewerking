@@ -17,7 +17,7 @@ from PlantScan3D. A new approach made it possible for our own code to work. The 
 
 The openalea requirements are installed at a later time.
 
-1. openalea[https://github.com/openalea]
+1. openalea[https://github.com/openalea/openalea]
 2. openalea.mtg[https://github.com/openalea/mtg]
 3. openalea.plantgl[https://github.com/openalea/plantgl]
 4. openalea.plantscan3d[https://github.com/openalea/plantscan3d]
