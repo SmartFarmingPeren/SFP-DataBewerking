@@ -6,7 +6,7 @@ from classes_code.Point import Point
 from classes_code.Skeletonization import create_scene_and_skeletonize
 from graphs.visual import *
 from utilities.configuration_file import *
-from utilities.debug_log_functions import debug_message, warning_message
+from utilities.debug_log_functions import debug_message, warning_message, error_message
 
 
 class Tree:
@@ -35,12 +35,13 @@ class Tree:
         Point(Vertex id = 161, [x = 88.14643046061198, y = 11.989286104838053, z = 47.03911819458008], parent = 160,  radius = 0)
         """
 
-        # A tree consists of branches and leaders
-        self.branches = branches if branches is not None else self.determine_branch(self.end_points[6].vertex_id)  # TODO implement
-
-        # self.branches = self.determine_branches()  # TODO implement
-
-        self.leaders = []  # TODO implement
+        # # A tree consists of branches and leaders
+        # self.branches = branches if branches is not None else self.determine_branch(self.end_points[6].vertex_id)  # TODO implement
+        #
+        # # self.branches = self.determine_branches()  # TODO implement
+        #
+        # self.leaders = []  # TODO implement
+        self.determine_branch(2)
 
         # Export the generated skeleton as a mtg file and save it under the input file name
         serial.writeMTGfile(OUTPUT_MTG_DIR + input_point_cloud_name.split(".")[0] + '.mtg',
@@ -124,7 +125,7 @@ class Tree:
 
         return Point(point_object.get('vid'), point_object.get('position'), point_object.get('parent'), radius)
 
-    def determine_branch(self, branch_end_point):
+    def determine_branch_OLD(self, branch_end_point):
         """
         TODO the while true will get stuck if the root is reached.
         TODO A point from the root branch needs to be added in order to check if the root is reached.
@@ -160,7 +161,7 @@ class Tree:
         # TODO create a branch class which consists of a array of points
         return points_in_branch
 
-    def determine_branches(self):
+    def determine_branches_OLD(self):
         # TODO fix this shit
         # Loop trough the tree from end points to the root
         points_in_branch = []
@@ -184,3 +185,43 @@ class Tree:
     #     # TODO fix this shit
     #     point_object = self.mtg.__getitem__(vid)
     #     return Point(point_object.get('_vid'), point_object.get('position'), point_object.get('radius'))
+
+    def determine_branch(self, start_point):
+        """
+        Start from root
+        Branch start = root point
+        for each point with 1 child, save point
+        if point > 1 child end root branch
+        save +N branches
+
+        for n+ branch in n+ branches:
+            save each point with 1 child
+            save n+ points
+
+        This needs to be done recursively until the end points are reached
+            for n+ branch in n+ branches:
+                save each point with 1 child
+                save n+ points
+
+        """
+        branch = [self.get_point_by_id(start_point)]
+        plus_N = []
+
+        # Check if the point has sons
+        if len(self.mtg.Sons(start_point)) > 0:
+            next_point = start_point
+            while True:
+                if self.mtg.Sons(next_point) > 1:
+                    for son in self.mtg.Sons(next_point):
+                        property = self.mtg.get_vertex_property(son)
+                        if property.get("edge_type") == "+":
+                            # branch.append(self.get_point_by_id(son))
+                            # self.determine_branch(son)
+                            plus_N.append(son)
+                        else:
+                            branch.append(son)
+                            next_point = son
+
+
+        else:
+            error_message("Point has no sons motherfucker")

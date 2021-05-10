@@ -14,14 +14,7 @@ class Branch:
         self.age = age
 
     def next(self, point: Point):
-        """
-        Creates a new branch with age 1 and gives it the first section
-        :rtype: Returns the newly generated branch
-        """
-        new_branch = Branch(age=1, parent=self)
-        new_branch.sections.append(point)
-        self.children.append(new_branch)
-        return new_branch
+        pass
 
     def add_section(self):
         """
@@ -54,20 +47,7 @@ class Section:
         self.parent = parent
 
     def next(self):
-        """
-        This function is used to determine the next position of a section of the tree.
-        :rtype: It returns a section with a position and a direction
-        """
-        # new_dir = self.direction + next_direction
-        next_dir = self.direction * SECTION_LENGTH
-        for count in range(0, 3):
-            if next_dir[count] > THRESHOLD:
-                next_dir[count] = THRESHOLD
-            if next_dir[count] < -THRESHOLD:
-                next_dir[count] = -THRESHOLD
-        next_pos = self.pos + next_dir
-        self.add_thickness()
-        return Section(pos=next_pos, direction=self.direction, parent=self)
+        pass
 
     def reset(self):
         """
