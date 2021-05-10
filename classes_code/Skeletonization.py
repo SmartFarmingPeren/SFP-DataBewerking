@@ -40,7 +40,7 @@ def create_scene_and_skeletonize(input_point_cloud_name):
     scene = Scene(INPUT_POINT_CLOUDS_DIR + input_point_cloud_name)
     point_cloud = scene[0].geometry.pointList
     point_cloud.swapCoordinates(1, 2)
-    mtg = skeleton(point_cloud)
+    mtg = get_skeleton(point_cloud)
     return point_cloud, mtg
 
 
