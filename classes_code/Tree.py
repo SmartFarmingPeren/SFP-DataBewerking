@@ -1,7 +1,7 @@
-import openalea.plantscan3d.mtgmanip as mm
 import openalea.plantscan3d.serial as serial
 from openalea.plantgl.all import *
-from openalea.plantscan3d.xumethod import xu_method
+
+from classes_code.Branch import Branch
 from classes_code.Point import Point
 from classes_code.Skeletonization import create_scene_and_skeletonize
 from graphs.visual import *
@@ -107,23 +107,8 @@ class Tree:
         for vertex_id in range(lowest_vertex, highest_vertex + 1):
             if len(self.mtg.Sons(vertex_id)) == 0:
                 # debug_message("End point found at {0}".format(vertex_id))
-                end_points.append(self.get_point_by_id(vertex_id))
+                end_points.append(Point.from_mtg(self.mtg.__getitem__(vertex_id)))
         return end_points
-
-    def get_point_by_id(self, vertex_id):
-        """
-        :param vertex_id: A vertex_id from the mtg.
-        :return: a Point object created from the vertex data.
-        """
-        point_object = self.mtg.__getitem__(vertex_id)
-
-        # Check if mtg has radius otherwise just say radius is 1
-        if point_object.get('radius') is None:
-            radius = 0
-        else:
-            radius = point_object.get('radius')
-
-        return Point(point_object.get('vid'), point_object.get('position'), point_object.get('parent'), radius)
 
     def determine_branch_OLD(self, branch_end_point):
         """
@@ -133,7 +118,7 @@ class Tree:
         :return:
         """
         # Init a point array, this represents a branch
-        points_in_branch = [self.get_point_by_id(branch_end_point)]
+        points_in_branch = [Point.from_mtg(self.mtg.__getitem__(branch_end_point))]
 
         # Add the end point to the branch
         next_point = branch_end_point
@@ -149,7 +134,7 @@ class Tree:
                 # If a split is found then break
                 break
             else:
-                points_in_branch.append(self.get_point_by_id(father))
+                points_in_branch.append(Point.from_mtg(self.mtg.__getitem__(father)))
                 next_point = father
 
         # Print the current branch from end to start
@@ -173,7 +158,7 @@ class Tree:
                 # If a split is found then break
                 break
             else:
-                points_in_branch.append(self.get_point_by_id(father))
+                points_in_branch.append(Point.from_mtg(self.mtg.__getitem__(father)))
 
         debug_message("Printing every point from this branch")
         for point in range(0, len(points_in_branch)):
@@ -186,7 +171,9 @@ class Tree:
     #     point_object = self.mtg.__getitem__(vid)
     #     return Point(point_object.get('_vid'), point_object.get('position'), point_object.get('radius'))
 
+    # start_point is always a +N point of the branch
     def determine_branch(self, start_point):
+        print(start_point)
         """
         Start from root
         Branch start = root point
@@ -202,26 +189,54 @@ class Tree:
             for n+ branch in n+ branches:
                 save each point with 1 child
                 save n+ points
-
         """
-        branch = [self.get_point_by_id(start_point)]
-        plus_N = []
 
-        # Check if the point has sons
-        if len(self.mtg.Sons(start_point)) > 0:
-            next_point = start_point
-            while True:
-                if self.mtg.Sons(next_point) > 1:
-                    for son in self.mtg.Sons(next_point):
-                        property = self.mtg.get_vertex_property(son)
-                        if property.get("edge_type") == "+":
-                            # branch.append(self.get_point_by_id(son))
-                            # self.determine_branch(son)
-                            plus_N.append(son)
-                        else:
-                            branch.append(son)
-                            next_point = son
+        # Create branch points, first one being the start_point
+        branch_points = [Point.from_mtg(self.mtg.__getitem__(start_point))]
+        next_point = start_point
+
+        # glorious while True by Luca
+        while True:
+            # get all children of start_point
+            children = [self.mtg.__getitem__(child) for child in self.mtg.Sons(next_point)]
+            print(children)
+            # if point is the last
+            if len(children) <= 0:
+                break
+            # if point has 1 child
+            elif len(children) == 1:
+                # create point from child, move up
+                child = children[0]
+                branch_points.append(Point.from_mtg(child))
+                next_point = child.get('vid')
+            # if point has more than 1 child
+            elif len(children) >= 1:
+                for child in children:
+                    if child.get('edge_type') == '+':
+                        print("HEY")
+                        self.determine_branch(child.get('vid'))
+                    else:
+                        # create point from child, move up
+                        branch_points.append(Point.from_mtg(child))
+                        next_point = child.get('vid')
+            if start_point == next_point:
+                break
 
 
-        else:
-            error_message("Point has no sons motherfucker")
+        branch = Branch(branch_id="branch_" + str(start_point) * 10, age=1, sections=branch_points[0], parent=branch_points[0].parent)
+        #
+        # if len(self.mtg.Sons(start_point)) > 0:
+        #     next_point = start_point
+        #     while True:
+        #         if self.mtg.Sons(next_point) > 1:
+        #             for son in self.mtg.Sons(next_point):
+        #                 property = self.mtg.get_vertex_property(son)
+        #                 # if son is new branch
+        #                 if property.get("edge_type") == "+":
+        #                     # branch.append(self.get_point_by_id(son))
+        #                     self.determine_branch(son)
+        #                 else:
+        #                     branch.append(son)
+        #                     next_point = son
+        #         elif self.mtg.Sons(next_point) == 1:
+        #             point = Point.from_mtg()

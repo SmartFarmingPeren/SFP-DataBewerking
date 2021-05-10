@@ -25,3 +25,18 @@ class Point:
                                                                 self.parent,
                                                                 self.radius)
         # return "Point %d, [%.2f, %.2f, %.2f], radius %.2f" % (self.vertex_id, self.z, self.y, self.z, self.radius)
+
+    @staticmethod
+    def from_mtg(vertex):
+        """
+        :param vertex: A vertex from the mtg.
+        :return: a Point object created from the vertex data.
+        """
+
+        # Check if mtg has radius otherwise just say radius is 1
+        if vertex.get('radius') is None:
+            radius = 0
+        else:
+            radius = vertex.get('radius')
+
+        return Point(vertex.get('vid'), vertex.get('position'), vertex.get('parent'), radius)
