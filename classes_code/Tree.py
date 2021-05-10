@@ -6,6 +6,7 @@ from classes_code.Point import Point
 from classes_code.Skeletonization import create_scene_and_skeletonize
 from graphs.visual import *
 from utilities.configuration_file import *
+from utilities.debug_log_functions import debug_message, warning_message
 
 
 class Tree:
@@ -35,9 +36,11 @@ class Tree:
         """
 
         # A tree consists of branches and leaders
-        self.branches = branches if branches is not None else self.determine_branches()  # TODO implement
-        self.leaders = []  # TODO implement
+        self.branches = branches if branches is not None else self.determine_branches(self.end_points[6].vertex_id)  # TODO implement
 
+        # self.branches = self.determine_branches()  # TODO implement
+
+        self.leaders = []  # TODO implement
 
         # Export the generated skeleton as a mtg file and save it under the input file name
         serial.writeMTGfile(OUTPUT_MTG_DIR + input_point_cloud_name.split(".")[0] + '.mtg',
@@ -121,6 +124,42 @@ class Tree:
 
         return Point(point_object.get('vid'), point_object.get('position'), point_object.get('parent'), radius)
 
+    def determine_branch(self, branch_end_point):
+        """
+        TODO the while true will get stuck if the root is reached.
+        TODO A point from the root branch needs to be added in order to check if the root is reached.
+        :param branch_end_point:
+        :return:
+        """
+        # Init a point array, this represents a branch
+        points_in_branch = [self.get_point_by_id(branch_end_point)]
+
+        # Add the end point to the branch
+        next_point = branch_end_point
+
+        # While a point only has 1 son, the point belongs to the same branch
+        while True:
+            father = self.mtg.Father(next_point)
+
+            # If a point has 2 sons the branch splits into 2 branches which means the current branch ends.
+            if len(self.mtg.Sons(father)) > 1:
+                warning_message("Branch end found!")
+
+                # If a split is found then break
+                break
+            else:
+                points_in_branch.append(self.get_point_by_id(father))
+                next_point = father
+
+        # Print the current branch from end to start
+        debug_message("Printing the whole branch")
+        for point in range(0, len(points_in_branch)):
+            print(points_in_branch[point])
+
+        # return the current branch
+        # TODO create a branch class which consists of a array of points
+        return points_in_branch
+
     def determine_branches(self):
         # TODO fix this shit
         # Loop trough the tree from end points to the root
@@ -128,10 +167,20 @@ class Tree:
         for end_point in self.end_points:
             points_in_branch.append(end_point)
             father = self.mtg.Father(end_point.vertex_id)
-            print(father)
+            debug_message("Father = {0}".format(father))
             if len(self.mtg.Sons(father)) > 1:
                 # If a split is found then break
                 break
             else:
                 points_in_branch.append(self.get_point_by_id(father))
-        print(points_in_branch[0])
+
+        debug_message("Printing every point from this branch")
+        for point in range(0, len(points_in_branch)):
+            debug_message(points_in_branch[point])
+
+            # TODO THIS IS REMOVED CODE THAT MIGHT BE USEFUL \(0_0)/
+
+    # def get_point_by_id(self, vid):
+    #     # TODO fix this shit
+    #     point_object = self.mtg.__getitem__(vid)
+    #     return Point(point_object.get('_vid'), point_object.get('position'), point_object.get('radius'))
