@@ -36,7 +36,7 @@ class Tree:
         """
 
         # A tree consists of branches and leaders
-        self.branches = branches if branches is not None else self.determine_branches(self.end_points[6].vertex_id)  # TODO implement
+        self.branches = branches if branches is not None else self.determine_branch(self.end_points[6].vertex_id)  # TODO implement
 
         # self.branches = self.determine_branches()  # TODO implement
 
