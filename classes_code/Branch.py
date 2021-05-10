@@ -16,11 +16,11 @@ class Branch:
     def next(self, point: Point):
         pass
 
-    def add_section(self):
-        """
-        Adds a new section to an existing branch
-        """
-        self.sections.append(self.get_last_section().next())
+    # def add_section(self):
+    #     """
+    #     Adds a new section to an existing branch
+    #     """
+    #     self.sections.append(self.get_last_section().next())
 
     def __str__(self):
         # TODO return string with information on branch
@@ -29,6 +29,65 @@ class Branch:
                "Parent: %s \n" \
                "Sections: \n \t %s" % (self.id, self.age, self.parent, [section.__str__() for section in self.sections])
         pass
+
+    # start_point is always a +N point of the branch
+    def determine_branch(self, mtg, start_point):
+        print(start_point)
+        """
+        Start from root
+        Branch start = root point
+        for each point with 1 child, save point
+        if point > 1 child end root branch
+        save +N branches
+
+        for n+ branch in n+ branches:
+            save each point with 1 child
+            save n+ points
+
+        This needs to be done recursively until the end points are reached
+            for n+ branch in n+ branches:
+                save each point with 1 child
+                save n+ points
+        """
+
+        # Create branch points, first one being the start_point
+        branch_points = [Point.from_mtg(mtg.__getitem__(start_point))]
+        next_point = start_point
+
+        # glorious while True by Luca
+        while True:
+            # get all children of start_point
+            children = [mtg.__getitem__(child) for child in mtg.Sons(next_point)]
+            # if point is the last
+            if len(children) <= 0:
+                break
+            # if point has single child
+            elif len(children) == 1:
+                # create point from child, move up
+                child = children[0]
+                branch_points.append(Point.from_mtg(child))
+                next_point = child.get('vid')
+            # if point has more than 1 child
+            elif len(children) >= 1:
+                has_single_child = False
+                for child in children:
+                    print("for childs: %d, %d" % (next_point, start_point))
+                    print("child of child %s" % (mtg.Sons(child.get('vid'))))
+                    # if child is a new start_point
+                    if child.get('edge_type') == '+':
+                        print(child)
+                        self.children.append(self.determine_branch(mtg, child.get('vid')))
+                    # if child is a continuation (same as for single children)
+                    else:
+                        # create point from child, move up
+                        branch_points.append(Point.from_mtg(child))
+                        next_point = child.get('vid')
+                        has_single_child = True
+                if not has_single_child:
+                    break
+
+        branch = Branch(branch_id="branch_" + str(start_point) * 10, age=1, sections=branch_points, parent=branch_points[0].parent)
+        return branch
 
 
 def get_next(node):

@@ -20,7 +20,7 @@ class Tree:
         # During the skeletonize a mtg file is created from a point cloud, both are saved for later use
         self.point_cloud, self.mtg = create_scene_and_skeletonize(input_point_cloud_name)
 
-        # Determine the root branch
+        # Determine the root branch TODO call Branch#determine_branch()
         self.root_branch = root if root is not None else self.determine_root(self.mtg)
 
         # Determine the branch end points
@@ -41,7 +41,7 @@ class Tree:
         # # self.branches = self.determine_branches()  # TODO implement
         #
         # self.leaders = []  # TODO implement
-        self.determine_branch(2)
+        # self.determine_branch(2)
 
         # Export the generated skeleton as a mtg file and save it under the input file name
         serial.writeMTGfile(OUTPUT_MTG_DIR + input_point_cloud_name.split(".")[0] + '.mtg',
@@ -70,7 +70,9 @@ class Tree:
     def determine_root(mtg):
         """
         This function determines the root of a tree
-        TODO This function only works if there are no other branches on the root than the 4 leaders.
+        TODO This function only works if there are no other branches on the root than the 4 leaders.4
+
+        TODO Omwerken mbv Branch class
         If there is a small branch on the root this code wont work, in future we need to improve this method.
         :param mtg:
         """
@@ -170,73 +172,3 @@ class Tree:
     #     # TODO fix this shit
     #     point_object = self.mtg.__getitem__(vid)
     #     return Point(point_object.get('_vid'), point_object.get('position'), point_object.get('radius'))
-
-    # start_point is always a +N point of the branch
-    def determine_branch(self, start_point):
-        print(start_point)
-        """
-        Start from root
-        Branch start = root point
-        for each point with 1 child, save point
-        if point > 1 child end root branch
-        save +N branches
-
-        for n+ branch in n+ branches:
-            save each point with 1 child
-            save n+ points
-
-        This needs to be done recursively until the end points are reached
-            for n+ branch in n+ branches:
-                save each point with 1 child
-                save n+ points
-        """
-
-        # Create branch points, first one being the start_point
-        branch_points = [Point.from_mtg(self.mtg.__getitem__(start_point))]
-        next_point = start_point
-
-        # glorious while True by Luca
-        while True:
-            # get all children of start_point
-            children = [self.mtg.__getitem__(child) for child in self.mtg.Sons(next_point)]
-            print(children)
-            # if point is the last
-            if len(children) <= 0:
-                break
-            # if point has 1 child
-            elif len(children) == 1:
-                # create point from child, move up
-                child = children[0]
-                branch_points.append(Point.from_mtg(child))
-                next_point = child.get('vid')
-            # if point has more than 1 child
-            elif len(children) >= 1:
-                for child in children:
-                    if child.get('edge_type') == '+':
-                        print("HEY")
-                        self.determine_branch(child.get('vid'))
-                    else:
-                        # create point from child, move up
-                        branch_points.append(Point.from_mtg(child))
-                        next_point = child.get('vid')
-            if start_point == next_point:
-                break
-
-
-        branch = Branch(branch_id="branch_" + str(start_point) * 10, age=1, sections=branch_points[0], parent=branch_points[0].parent)
-        #
-        # if len(self.mtg.Sons(start_point)) > 0:
-        #     next_point = start_point
-        #     while True:
-        #         if self.mtg.Sons(next_point) > 1:
-        #             for son in self.mtg.Sons(next_point):
-        #                 property = self.mtg.get_vertex_property(son)
-        #                 # if son is new branch
-        #                 if property.get("edge_type") == "+":
-        #                     # branch.append(self.get_point_by_id(son))
-        #                     self.determine_branch(son)
-        #                 else:
-        #                     branch.append(son)
-        #                     next_point = son
-        #         elif self.mtg.Sons(next_point) == 1:
-        #             point = Point.from_mtg()
