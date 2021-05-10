@@ -3,6 +3,7 @@ import openalea.plantscan3d.serial as serial
 from openalea.plantgl.all import *
 from openalea.plantscan3d.xumethod import xu_method
 from classes_code.Point import Point
+from classes_code.Skeletonization import create_scene_and_skeletonize
 from graphs.visual import *
 from utilities.configuration_file import *
 
@@ -14,12 +15,12 @@ class Tree:
     The tree class is a collection for these items.
     """
 
-    def __init__(self, input_point_cloud_name):
+    def __init__(self, input_point_cloud_name, root=None, branches=None):
         # During the skeletonize a mtg file is created from a point cloud, both are saved for later use
-        self.point_cloud, self.mtg = self.create_scene_and_skeletonize(input_point_cloud_name)
+        self.point_cloud, self.mtg = create_scene_and_skeletonize(input_point_cloud_name)
 
         # Determine the root branch
-        self.root_branch = self.determine_root(self.mtg)
+        self.root_branch = root if root is not None else self.determine_root(self.mtg)
 
         # Determine the branch end points
         self.end_points = self.get_branch_ends()
@@ -34,7 +35,7 @@ class Tree:
         """
 
         # A tree consists of branches and leaders
-        self.branches = self.determine_branches()  # TODO implement
+        self.branches = branches if branches is not None else self.determine_branches()  # TODO implement
         self.leaders = []  # TODO implement
 
 
@@ -44,43 +45,6 @@ class Tree:
 
         # Export a graph as a .html file
         plot(self.mtg, OUTPUT_GRAPHS_DIR + input_point_cloud_name.split(".")[0] + '.html')
-
-    @staticmethod
-    def create_scene_and_skeletonize(input_point_cloud_name):
-        """
-        This function creates a scene > points and then converts it to a mtg file.
-        :param input_point_cloud_name: name of the point cloud stored in the input point clouds dir
-        :return: point_cloud, mtg
-        """
-        scene = Scene(INPUT_POINT_CLOUDS_DIR + input_point_cloud_name)
-        point_cloud = scene[0].geometry.pointList
-        point_cloud.swapCoordinates(1, 2)
-        mtg = Tree.skeleton(point_cloud)
-
-        return point_cloud, mtg
-
-    @staticmethod
-    def skeleton(point_cloud):
-        """
-        The skeleton function creates a skeleton(using xu_method) from a pear tree point_cloud.
-        This skeleton is stored in a .mtg file.
-        This mtg file could be exported or worked with internally.
-
-        :param point_cloud: scene[0].geometry.pointList
-        :return: mtg file
-        """
-        mini, maxi = point_cloud.getZMinAndMaxIndex()
-        root = Vector3(point_cloud[mini])
-
-        mtg = mm.initialize_mtg(root)
-        z_dist = point_cloud[maxi].z - point_cloud[mini].z
-        bin_length = z_dist / XU_SKELETON_BIN_RATIO
-
-        vtx = list(mtg.vertices(mtg.max_scale()))
-        start_from = vtx[0]
-        mtg = xu_method(mtg, start_from, point_cloud, bin_length, XU_SKELETON_K)
-
-        return mtg
 
     @staticmethod
     def determine_vertexes(mtg):
@@ -144,7 +108,6 @@ class Tree:
 
     def get_point_by_id(self, vertex_id):
         """
-        TODO ASK STEVEN IF THIS APPROACH IS OKAY WITH HIM - [LUCA]
         :param vertex_id: A vertex_id from the mtg.
         :return: a Point object created from the vertex data.
         """
@@ -172,11 +135,3 @@ class Tree:
             else:
                 points_in_branch.append(self.get_point_by_id(father))
         print(points_in_branch[0])
-
-
-            # TODO THIS IS REMOVED CODE THAT MIGHT BE USEFUL \(0_0)/
-
-    # def get_point_by_id(self, vid):
-    #     # TODO fix this shit
-    #     point_object = self.mtg.__getitem__(vid)
-    #     return Point(point_object.get('_vid'), point_object.get('position'), point_object.get('radius'))

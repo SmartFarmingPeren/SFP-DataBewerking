@@ -1,0 +1,68 @@
+{
+	"root": "branch_341",
+	"branches": [
+		{
+			"branch_id": "branch_342",
+			"age": 2,
+			"sections": [
+				{
+					"section_id": "section_01125",
+					"position": [
+						0.0,
+						0.1,
+						1.1
+					],
+					"direction": [
+						0.3,
+						0.7,
+						0.0
+					],
+					"parent": "section_01361"
+				}
+			],
+			"children": [
+				"branch_343"
+			],
+			"parent": "branch_341"
+		},
+		{
+			"branch_id": "branch_341",
+			"age": 2,
+			"sections": [
+				{
+					"section_id": "section_01325",
+					"position": [
+						0.0,
+						0.1,
+						1.1
+					],
+					"direction": [
+						0.3,
+						0.7,
+						0.0
+					],
+					"parent": "section_01161"
+				},
+				{
+					"section_id": "section_01525",
+					"position": [
+						0.0,
+						0.1,
+						1.1
+					],
+					"direction": [
+						0.3,
+						0.7,
+						0.0
+					],
+					"parent": "section_01162"
+				}
+			],
+			"children": [
+				"branch_347"
+			],
+			"parent": "branch_344"
+		}
+	],
+	"point_cloud":"Simpele_boom.ply"
+}

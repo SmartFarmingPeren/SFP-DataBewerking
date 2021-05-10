@@ -4,10 +4,11 @@ from classes_code.Point import Point
 
 
 class Branch:
-    def __init__(self, points: [], age: int, parent: 'Branch' = None):
+    def __init__(self, branch_id, age: int, sections: [], parent: 'Branch' = None):
         # First section is at the start of the branch, last section is at the end
         # vertex IDs of the connected points
-        self.points = points
+        self.id = branch_id
+        self.sections = sections
         self.children = []
         self.parent = parent
         self.age = age
@@ -18,7 +19,7 @@ class Branch:
         :rtype: Returns the newly generated branch
         """
         new_branch = Branch(age=1, parent=self)
-        new_branch.points.append(point)
+        new_branch.sections.append(point)
         self.children.append(new_branch)
         return new_branch
 
@@ -28,6 +29,14 @@ class Branch:
         """
         self.sections.append(self.get_last_section().next())
 
+    def __str__(self):
+        # TODO return string with information on branch
+        return "%s: \n" \
+               "Age: %d \n" \
+               "Parent: %s \n" \
+               "Sections: \n \t %s" % (self.id, self.age, self.parent, [section.__str__() for section in self.sections])
+        pass
+
 
 def get_next(node):
     yield node
@@ -36,7 +45,8 @@ def get_next(node):
 
 
 class Section:
-    def __init__(self, pos, direction, parent, thickness=1):
+    def __init__(self, section_id, pos, direction, parent=None, thickness=1):
+        self.id = section_id
         self.pos: np.array = pos
         self.direction: np.array = direction
         self.thickness: int = thickness
@@ -75,4 +85,4 @@ class Section:
             self.parent.add_thickness()
 
     def __str__(self):
-        return "Section; position: [%.2f, %.2f, %.2f]" % (self.pos[0], self.pos[1], self.pos[2])
+        return "%s position: [%.2f, %.2f, %.2f]" % (self.id, self.pos[0], self.pos[1], self.pos[2])
