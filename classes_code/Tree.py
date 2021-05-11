@@ -25,6 +25,7 @@ class Tree:
 
         # Determine the branch end points
         self.end_points = self.get_branch_ends()
+
         """
         Point(Vertex id = 136, [x = 24.314960479736328, y = 30.856678676605224, z = 49.268998527526854], parent = 130,  radius = 0)
         Point(Vertex id = 145, [x = 74.78162956237793, y = 39.00424265861511, z = 75.002188205719], parent = 140,  radius = 0)
@@ -78,6 +79,8 @@ class Tree:
         """
         lowest_vertex, highest_vertex = Tree.determine_vertexes(mtg)
         root_branch = []
+        end_of_root = 0
+        just_a_branch = 0
         for point in range(lowest_vertex, highest_vertex + 1):
             # Check if mtg has radius otherwise just say radius is 1
             try:
@@ -95,7 +98,28 @@ class Tree:
                 root_branch.append(Point(point, Vector3(mtg.property('position')[point]), parent, radius))
             else:
                 root_branch.append(Point(point, Vector3(mtg.property('position')[point]), parent, radius))
+                # Check if the branch itself has more branches on it, if not it's just an extra branch on the root
+                current_point = mtg.Sons(point)
+                print(current_point)
+
+                for cp in mtg.Sons(point):
+                    current_point = cp
+                    while True:
+                        print(mtg.Sons(current_point))
+                        if mtg.Sons(current_point) == 1:
+                            current_point = mtg.Sons(current_point)[0]
+                        elif mtg.Sons(current_point) == 0:
+                            just_a_branch = 1
+                            break
+                        else:
+                            end_of_root = 1
+                            break
+                        print(current_point)
+                    if just_a_branch == 1:
+                        break
+            if end_of_root == 1:
                 break
+        print(root_branch)
         return root_branch
 
     def get_branch_ends(self):
