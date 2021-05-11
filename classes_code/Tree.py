@@ -95,8 +95,24 @@ class Tree:
                 root_branch.append(Point(point, Vector3(mtg.property('position')[point]), parent, radius))
             else:
                 root_branch.append(Point(point, Vector3(mtg.property('position')[point]), parent, radius))
+                # Check if the branch itself has more branches on it, if not it's just an extra branch on the root
+                for cp in mtg.Sons(point):
+                    current_point = cp
+                    while True:
+                        if mtg.Sons(current_point) == 1:
+                            current_point = mtg.Sons(current_point)[0]
+                        elif mtg.Sons(current_point) == 0:
+                            just_a_branch = 1
+                            break
+                        else:
+                            end_of_root = 1
+                            break
+                        print(current_point)
+                    if just_a_branch == 1:
+                        break
+            if end_of_root == 1:
                 break
-        return root_branch
+            return root_branch
 
     def get_branch_ends(self):
         """
