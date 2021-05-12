@@ -78,6 +78,8 @@ class Tree:
         """
         lowest_vertex, highest_vertex = Tree.determine_vertexes(mtg)
         root_branch = []
+        end_of_root = 0
+        just_a_branch = 0
         for point in range(lowest_vertex, highest_vertex + 1):
             # Check if mtg has radius otherwise just say radius is 1
             try:
@@ -105,14 +107,16 @@ class Tree:
                             just_a_branch = 1
                             break
                         else:
-                            end_of_root = 1
+                            end_of_root = end_of_root + 1
                             break
-                        print(current_point)
                     if just_a_branch == 1:
                         break
-            if end_of_root == 1:
+            if end_of_root == 2:
                 break
-            return root_branch
+            else:
+                end_of_root = 0
+                just_a_branch = 0
+        return root_branch
 
     def get_branch_ends(self):
         """
