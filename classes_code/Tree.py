@@ -92,6 +92,22 @@ class Tree:
         branch = Branch(branch_id="branch_" + str(lowest_vertex), age=1, points=root_branch)
         return branch
 
+    @staticmethod
+    def determine_vertexes(mtg):
+        """
+        This function determines the lowest and highest vertex point.
+        :param mtg:
+        :return:
+        """
+        highest_vertex = 0
+        lowest_vertex = 99999999999
+        for point in mtg.property('position'):
+            if point > highest_vertex:
+                highest_vertex = point
+            if point < lowest_vertex:
+                lowest_vertex = point
+        return lowest_vertex, highest_vertex
+
     def get_branch_ends(self):
         """
         This function gets the end vertexes of the tree.
