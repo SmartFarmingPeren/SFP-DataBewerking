@@ -21,7 +21,8 @@ class Branch:
         return "%s: \n" \
                "Age: %d \n" \
                "Parent: %s \n" \
-               "Sections: \n \t %s" % (self.id, self.age, self.parent, [section.__str__() for section in self.points])
+               "Children" "%s \n"\
+               "Points: \n \t %s" % (self.id, self.age, self.parent, self.children, [section.__str__() for section in self.points])
         pass
 
     # start_point is always a +N point of the branch
@@ -65,11 +66,11 @@ class Branch:
             elif len(children) >= 1:
                 has_single_child = False
                 for child in children:
-                    print("for childs: %d, %d" % (next_point, start_point))
-                    print("child of child %s" % (mtg.Sons(child.get('vid'))))
+                    # print("for childs: %d, %d" % (next_point, start_point))
+                    # print("child of child %s" % (mtg.Sons(child.get('vid'))))
                     # if child is a new start_point
                     if child.get('edge_type') == '+':
-                        print(child)
+                        # print(child)
                         self.children.append(self.determine_branch(mtg, child.get('vid')))
                     # if child is a continuation (same as for single children)
                     else:
@@ -80,8 +81,9 @@ class Branch:
                 if not has_single_child:
                     break
 
-        branch = Branch(branch_id="branch_" + str(start_point), age=1, points=branch_points,
+        branch = Branch(branch_id="branch_" + str(start_point), age=self.age + 1, points=branch_points,
                         parent=branch_points[0].parent)
+        print("\n {0} \n".format(branch))
         return branch
 
 

@@ -27,29 +27,7 @@ class Tree:
         # Determine the branch end points
         self.end_points = self.get_branch_ends()
 
-        # Determine the root branch TODO call Branch#determine_branch()
-        self.root_branch: Branch = root if root is not None else self.determine_root(self.mtg)
-
-        # Determine the branch end points
-        self.end_points = self.get_branch_ends()
-        """
-        Point(Vertex id = 136, [x = 24.314960479736328, y = 30.856678676605224, z = 49.268998527526854], parent = 130,  radius = 0)
-        Point(Vertex id = 145, [x = 74.78162956237793, y = 39.00424265861511, z = 75.002188205719], parent = 140,  radius = 0)
-        Point(Vertex id = 147, [x = 30.688523716396755, y = 46.71216286553277, z = 74.20707617865668], parent = 142,  radius = 0)
-        Point(Vertex id = 149, [x = 79.41132493452592, y = 56.58939743041992, z = 63.9347749189897], parent = 144,  radius = 0)
-        Point(Vertex id = 151, [x = 30.80686378479004, y = 21.700605912642047, z = 69.77657526189631], parent = 146,  radius = 0)
-        Point(Vertex id = 153, [x = 27.471083450317384, y = 22.999549102783202, z = 73.24696884155273], parent = 150,  radius = 0)
-        Point(Vertex id = 161, [x = 88.14643046061198, y = 11.989286104838053, z = 47.03911819458008], parent = 160,  radius = 0)
-        """
-
-        self.branches = []
-        # # A tree consists of branches and leaders
-        # self.branches = branches if branches is not None else self.determine_branch(self.end_points[6].vertex_id)  # TODO implement
-        #
-        # # self.branches = self.determine_branches()  # TODO implement
-        #
-        # self.leaders = []  # TODO implement
-        # self.determine_branch(2)
+        branches = self.root_branch.determine_branch(self.mtg, 2)
 
         # Export the generated skeleton as a mtg file and save it under the input file name
         serial.writeMTGfile(OUTPUT_MTG_DIR + input_point_cloud_name.split(".")[0] + '.mtg',
@@ -120,7 +98,7 @@ class Tree:
         :return:
         """
         highest_vertex = 0
-        lowest_vertex = 99999999999
+        lowest_vertex = float('inf')
         for point in mtg.property('position'):
             if point > highest_vertex:
                 highest_vertex = point
