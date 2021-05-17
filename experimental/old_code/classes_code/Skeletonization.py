@@ -9,7 +9,6 @@ from utilities.configuration_file import INPUT_POINT_CLOUDS_DIR, XU_SKELETON_BIN
 
 
 def get_skeleton(point_cloud):
-    # Source : https://github.com/fredboudon/plantscan3d/blob/master/example/processpoints.py
     """
     The skeleton function creates a skeleton(using xu_method) from a pear tree point_cloud.
     This skeleton is stored in a .mtg file.
@@ -45,7 +44,8 @@ def create_scene_and_skeletonize(input_point_cloud_name):
     return point_cloud, mtg
 
 
-def writeMTGfile(fn, g, properties=[('XX', 'REAL'), ('YY', 'REAL'), ('ZZ', 'REAL'), ('radius', 'REAL')]):
+def writeMTGfile(fn, g, properties=[('XX','REAL'), ('YY','REAL'), ('ZZ','REAL'), ('radius','REAL')]):
+
     if properties == []:
         properties = [(p, 'REAL') for p in g.property_names() if p not in ['edge_type', 'index', 'label']]
     nb_tab = max_order(g)

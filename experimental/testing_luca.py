@@ -180,7 +180,6 @@ def main():
     """
     input_point_cloud_name = "Simpele_boom.ply"
     output_mtg_name = "xander_test.mtg"
-
     info_message("Creating skeleton")
     mtg = create_scene_and_skeletonize(input_point_cloud_name)
 

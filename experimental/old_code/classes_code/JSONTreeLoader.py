@@ -1,8 +1,8 @@
-import json
 import os.path
 
 from classes_code.Branch import Branch, Section
 from classes_code.Tree import Tree
+import json
 
 directory = os.getcwd() + "\\outputs\\trees\\"
 
@@ -33,7 +33,7 @@ def read(path: str = directory + "tree_format.json"):
         branch.parent = find_by_id(branch.parent, branches)
 
     # get and concatenate all sections from every branch
-    sections = [section for branch_sections in [branch.points for branch in branches] for section in branch_sections]
+    sections = [section for branch_sections in [branch.sections for branch in branches] for section in branch_sections]
 
     for section in sections:
         section.parent = find_by_id(section.parent, sections)
