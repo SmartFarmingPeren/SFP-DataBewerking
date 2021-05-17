@@ -85,27 +85,19 @@ class Tree:
             # If a point has more than 1 son only append the last point then break out of the loop.
             if len(mtg.Sons(point)) == 1:
                 root_branch.append(Point(point, Vector3(mtg.property('position')[point]), parent, radius))
-                print(str(point) + "\n")
             else:
                 root_branch.append(Point(point, Vector3(mtg.property('position')[point]), parent, radius))
                 # Check if the branch itself has more branches on it, if not it's just an extra branch on the root
-                print(str(point) + "\n")
                 for cp in mtg.Sons(point):
-                    print(cp)
                     current_point = cp
                     while True:
-                        print(current_point)
-                        print(mtg.Sons(current_point))
                         if len(mtg.Sons(current_point)) == 1:
                             current_point = mtg.Sons(current_point)[0]
-                            print("1 branch")
                         elif len(mtg.Sons(current_point)) == 0:
                             just_a_branch = 1
-                            print("just a branch")
                             break
                         else:
                             end_of_root = end_of_root + 1
-                            print("seen a split")
                             break
                     if just_a_branch == 1:
                         break
