@@ -43,6 +43,8 @@ class Tree:
         """
         lowest_vertex, highest_vertex = Tree.determine_vertexes(mtg)
         root_branch = []
+        end_of_root = 0
+        just_a_branch = 0
         for point in range(lowest_vertex, highest_vertex + 1):
             # Check if mtg has radius otherwise just say radius is 1
             try:
@@ -64,22 +66,6 @@ class Tree:
 
         branch = Branch(branch_id="branch_" + str(lowest_vertex), age=1, points=root_branch)
         return branch
-
-    @staticmethod
-    def determine_vertexes(mtg):
-        """
-        This function determines the lowest and highest vertex point.
-        :param mtg:
-        :return:
-        """
-        highest_vertex = 0
-        lowest_vertex = float('inf')
-        for point in mtg.property('position'):
-            if point > highest_vertex:
-                highest_vertex = point
-            if point < lowest_vertex:
-                lowest_vertex = point
-        return lowest_vertex, highest_vertex
 
     def get_branch_ends(self):
         """
