@@ -13,25 +13,27 @@ def write(tree):
     data = {'root': '32',
             'branches': [],
             'point_cloud': tree.point_cloud_name}
-    for branch in tree.branches:
+    for branch in tree.get_branches():
         b_data = {'branch_id': branch.id,
                   'age': branch.age,
                   'points': [],
                   'children': [],
-                  'parent': branch.parent}
+                  'parent': branch.parent.id if branch.parent is not None else "null"}
         for point in branch.points:
-            p_data = {'point_id': point.vid,
+            p_data = {'point_id': point.vertex_id,
                       'position': [point.position.x, point.position.y, point.position.z],
                       'direction': [point.direction.x, point.direction.y, point.direction.z],
                       'radius': point.radius,
-                      'parent': point.parent.vid}
+                      'parent': point.parent if point.parent is not None else "null"}
             b_data['points'].append(p_data)
 
         for child in branch.children:
             b_data['children'].append(child.id)
 
         data['branches'].append(b_data)
-    print(json.dumps(data))
+    file = open(directory + "tree0.json", 'w')
+    file.write(json.dumps(data))
+    file.close()
     return data
 
 

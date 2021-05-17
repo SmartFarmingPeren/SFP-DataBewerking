@@ -1,7 +1,7 @@
 import openalea.plantscan3d.serial as serial
 from openalea.plantgl.all import *
 
-from classes_code.Branch import Branch
+from classes_code.Branch import Branch,get_next
 from classes_code.Point import Point
 from classes_code.Skeletonization import create_scene_and_skeletonize
 from graphs.visual import *
@@ -27,7 +27,7 @@ class Tree:
         # Determine the branch end points
         self.end_points = self.get_branch_ends()
 
-        branches = self.root_branch.determine_branch(self.mtg, 2)
+        self.root_branch.determine_branch(self.mtg, 2)
 
         # Export the generated skeleton as a mtg file and save it under the input file name
         serial.writeMTGfile(OUTPUT_MTG_DIR + input_point_cloud_name.split(".")[0] + '.mtg',
@@ -119,3 +119,6 @@ class Tree:
                 # debug_message("End point found at {0}".format(vertex_id))
                 end_points.append(Point.from_mtg(self.mtg.__getitem__(vertex_id)))
         return end_points
+
+    def get_branches(self):
+        return [branch for branch in get_next(self.root_branch)]
