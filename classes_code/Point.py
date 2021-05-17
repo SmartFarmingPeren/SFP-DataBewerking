@@ -32,4 +32,9 @@ class Point:
             radius = 0
         else:
             radius = vertex.get('radius')
-        return Point(vertex.get('vid'), vertex.get('position'), vertex.get('parent'), radius)
+
+        return Point(vertex_id=vertex.get('vid'),
+                     position=vertex.get('position'),
+                     direction=None,
+                     parent=vertex.get('parent'),
+                     radius=radius)
