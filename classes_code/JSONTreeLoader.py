@@ -8,9 +8,9 @@ from classes_code.Tree import Tree
 directory = os.getcwd() + "\\outputs\\trees\\"
 
 
-# Write Tree object to JSON; returns the JOSN dictionary
+# Write Tree object to JSON; returns the JSON dictionary
 def write(tree):
-    data = {'root': get_json_root_data(tree),
+    data = {'root': write_branch(tree.get_root()),
             'branches': [],
             'point_cloud': tree.point_cloud_name}
 
@@ -43,28 +43,6 @@ def write_branch(branch):
         b_data['children'].append(child.id)
 
     return b_data
-
-
-def get_json_root_data(tree):
-    root = tree.get_root()
-    r_data = {
-        'root_id': root.id,
-        'age': root.age,
-        'points': [],
-        'children': []}
-    for root_point in root.points:
-        rp_data = {
-            'point_id': root_point.vertex_id,
-            'position': [root_point.position.x, root_point.position.y, root_point.position.z],
-            'direction': [root_point.direction.x, root_point.direction.y, root_point.direction.z],
-            'radius': root_point.radius,
-            'parent': root_point.parent if root_point.parent is not None else "null"
-        }
-        r_data['points'].append(rp_data)
-    for child in root.children:
-        r_data['children'].append(child.id)
-    return r_data
-
 
 def read(path: str = directory + "tree_format.json"):
     file = open(path)
