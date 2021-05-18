@@ -15,21 +15,7 @@ def write(tree):
             'point_cloud': tree.point_cloud_name}
 
     for branch in tree.get_branches():
-        b_data = {'branch_id': branch.id,
-                  'age': branch.age,
-                  'points': [],
-                  'children': [],
-                  'parent': branch.parent.id if branch.parent is not None else "null"}
-        for point in branch.points:
-            p_data = {'point_id': point.vertex_id,
-                      'position': [point.position.x, point.position.y, point.position.z],
-                      'direction': [point.direction.x, point.direction.y, point.direction.z],
-                      'radius': point.radius,
-                      'parent': point.parent if point.parent is not None else "null"}
-            b_data['points'].append(p_data)
-
-        for child in branch.children:
-            b_data['children'].append(child.id)
+        b_data = write_branch(branch)
 
         data['branches'].append(b_data)
 
@@ -37,6 +23,26 @@ def write(tree):
     file.write(json.dumps(data))
     file.close()
     return data
+
+
+def write_branch(branch):
+    b_data = {'branch_id': branch.id,
+              'age': branch.age,
+              'points': [],
+              'children': [],
+              'parent': branch.parent.id if branch.parent is not None else "null"}
+    for point in branch.points:
+        p_data = {'point_id': point.vertex_id,
+                  'position': [point.position.x, point.position.y, point.position.z],
+                  'direction': [point.direction.x, point.direction.y, point.direction.z],
+                  'radius': point.radius,
+                  'parent': point.parent if point.parent is not None else "null"}
+        b_data['points'].append(p_data)
+
+    for child in branch.children:
+        b_data['children'].append(child.id)
+
+    return b_data
 
 
 def get_json_root_data(tree):
