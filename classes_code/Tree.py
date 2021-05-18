@@ -21,7 +21,7 @@ class Tree:
         self.point_cloud, self.mtg = create_scene_and_skeletonize(input_point_cloud_name)
 
         # Determine the root branch
-        # TODO A root branch is fucked at this time. Ask Luca(17-05-2021).
+        # TODO A root branch is fucked at this time. Ask Luca(17-05-2021). Is it still though? (18-05-2021) Brandon
         self.root_branch = root if root is not None else self.determine_root(self.mtg)
 
         # Determine the branch end points
@@ -40,7 +40,6 @@ class Tree:
     def determine_root(mtg):
         """
         This function determines the root of a tree
-        TODO This function only works if there are no other branches on the root than the 4 leaders.
         If there is a small branch on the root this code wont work, in future we need to improve this method.
         :param mtg:
         """

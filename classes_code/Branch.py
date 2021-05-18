@@ -66,7 +66,7 @@ class Branch:
             elif len(children) >= 1:
                 has_single_child = False
                 for child in children:
-                    # print("for childs: %d, %d" % (next_point, start_point))
+                    # print("for children: %d, %d" % (next_point, start_point))
                     # print("child of child %s" % (mtg.Sons(child.get('vid'))))
                     # if child is a new start_point
                     if child.get('edge_type') == '+':
