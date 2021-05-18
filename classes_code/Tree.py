@@ -50,6 +50,8 @@ class Tree:
         """
         lowest_vertex, highest_vertex = Tree.determine_vertexes(mtg)
         root_branch = []
+        branches_on_root = []
+        temp_branch = []
         end_of_root = 0
         just_a_branch = 0
         for point in range(lowest_vertex, highest_vertex + 1):
@@ -74,16 +76,19 @@ class Tree:
                 # Check if the branch itself has more branches on it, if not it's just an extra branch on the root
                 for cp in mtg.Sons(point):
                     current_point = cp
+                    temp_branch.append(Point.from_mtg(mtg.__getitem__(current_point)))
                     while True:
                         if len(mtg.Sons(current_point)) == 1:
                             current_point = mtg.Sons(current_point)[0]
+                            temp_branch.append(Point.from_mtg(mtg.__getitem__(current_point)))
                         elif len(mtg.Sons(current_point)) == 0:
+                            branches_on_root.append(Branch(branch_id="branch_" + str(current_point), age=1, points=temp_branch))
                             just_a_branch = 1
                             break
                         else:
-                            end_of_root = end_of_root + 1
+                            end_of_root += 1
                             break
-                    if just_a_branch == 1:
+                    if just_a_branch:
                         break
             if end_of_root >= 2:
                 break
@@ -92,6 +97,9 @@ class Tree:
                 just_a_branch = 0
 
         branch = Branch(branch_id="branch_" + str(lowest_vertex), age=0, points=root_branch)
+        for child in branches_on_root:
+            child.parent = branch
+        branch.children = branches_on_root
         return branch
 
     @staticmethod
