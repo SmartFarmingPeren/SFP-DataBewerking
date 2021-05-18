@@ -1,7 +1,7 @@
 import os
 
 # [Static skeletonization values]
-XU_SKELETON_BIN_RATIO = 50  # Default value = 50
+XU_SKELETON_BIN_RATIO = 150  # Default value = 50
 XU_SKELETON_K = 20  # Default value = 20
 
 

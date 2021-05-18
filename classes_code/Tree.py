@@ -1,7 +1,9 @@
+import copy
+
 import openalea.plantscan3d.serial as serial
 from openalea.plantgl.all import *
 
-from classes_code.Branch import Branch
+from classes_code.Branch import Branch,get_next
 from classes_code.Point import Point
 from classes_code.Skeletonization import create_scene_and_skeletonize
 from graphs.visual import *
@@ -24,10 +26,13 @@ class Tree:
         # TODO A root branch is fucked at this time. Ask Luca(17-05-2021). Is it still though? (18-05-2021) Brandon
         self.root_branch = root if root is not None else self.determine_root(self.mtg)
 
-        # Determine the branch end points
-        self.end_points = self.get_branch_ends()
-
-        branches = self.root_branch.determine_branch(self.mtg, 2)
+        # # Determine the branch end points
+        # self.end_points = self.get_branch_ends()
+        # self.deepcopy_root_branch = copy.deepcopy(self.root_branch)
+        self.tree_start = Branch(branch_id="branch_{0}".format(self.root_branch.points[-1].vertex_id), age=1, points=[],
+                                 parent=self.root_branch)
+        self.tree_start.determine_branch(self.mtg, self.root_branch.points[-1].vertex_id)
+        # self.root_branch.determine_branch(self.mtg, self.root_branch.points[-1].vertex_id)
 
         # Export the generated skeleton as a mtg file and save it under the input file name
         serial.writeMTGfile(OUTPUT_MTG_DIR + input_point_cloud_name.split(".")[0] + '.mtg',
@@ -86,7 +91,7 @@ class Tree:
                 end_of_root = 0
                 just_a_branch = 0
 
-        branch = Branch(branch_id="branch_" + str(lowest_vertex), age=1, points=root_branch)
+        branch = Branch(branch_id="branch_" + str(lowest_vertex), age=0, points=root_branch)
         return branch
 
     @staticmethod
@@ -118,3 +123,9 @@ class Tree:
                 # debug_message("End point found at {0}".format(vertex_id))
                 end_points.append(Point.from_mtg(self.mtg.__getitem__(vertex_id)))
         return end_points
+
+    def get_branches(self):
+        return [branch for branch in get_next(self.tree_start)]
+
+    def get_root(self):
+        return self.root_branch

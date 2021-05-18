@@ -1,3 +1,5 @@
+import copy
+
 import numpy as np
 
 from classes_code.Point import Point
@@ -27,7 +29,6 @@ class Branch:
 
     # start_point is always a +N point of the branch
     def determine_branch(self, mtg, start_point):
-        print(start_point)
         """
         Start from root
         Branch start = root point
@@ -46,13 +47,14 @@ class Branch:
         """
 
         # Create branch points, first one being the start_point
-        branch_points = [Point.from_mtg(mtg.__getitem__(start_point))]
-        next_point = start_point
+        self.points = [Point.from_mtg(mtg.__getitem__(start_point))]
+        # self.points = []
+        current_point = start_point
 
         # glorious while True by Luca
         while True:
             # get all children of start_point
-            children = [mtg.__getitem__(child) for child in mtg.Sons(next_point)]
+            children = [mtg.__getitem__(child) for child in mtg.Sons(current_point)]
             # if point is the last
             if len(children) <= 0:
                 break
@@ -60,32 +62,30 @@ class Branch:
             elif len(children) == 1:
                 # create point from child, move up
                 child = children[0]
-                branch_points.append(Point.from_mtg(child))
-                next_point = child.get('vid')
+                self.points.append(Point.from_mtg(child))
+                current_point = child.get('vid')
+                continue
             # if point has more than 1 child
             elif len(children) >= 1:
-                has_single_child = False
+                old_point = current_point
                 for child in children:
-                    # print("for children: %d, %d" % (next_point, start_point))
-                    # print("child of child %s" % (mtg.Sons(child.get('vid'))))
                     # if child is a new start_point
                     if child.get('edge_type') == '+':
                         # print(child)
-                        self.children.append(self.determine_branch(mtg, child.get('vid')))
+                        branch = Branch(branch_id="branch_{0}".format(child.get('vid')) , # TODO KIOJGGSDFKGSADFGSDGJ
+                                        age=self.age + 1,
+                                        points=[],
+                                        parent=self)
+                        branch.determine_branch(mtg, child.get('vid'))
+                        self.children.append(branch)
                     # if child is a continuation (same as for single children)
                     else:
                         # create point from child, move up
-                        branch_points.append(Point.from_mtg(child))
-                        next_point = child.get('vid')
-                        has_single_child = True
-                if not has_single_child:
+                        self.points.append(Point.from_mtg(child))
+                        current_point = child.get('vid')
+                        continue
+                if old_point == current_point:
                     break
-
-        branch = Branch(branch_id="branch_" + str(start_point), age=self.age + 1, points=branch_points,
-                        parent=branch_points[0].parent)
-        print("\n {0} \n".format(branch))
-        return branch
-
 
 def get_next(node):
     yield node
