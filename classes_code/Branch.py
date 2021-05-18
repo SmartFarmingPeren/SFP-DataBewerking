@@ -1,3 +1,5 @@
+import copy
+
 import numpy as np
 
 from classes_code.Point import Point
@@ -46,6 +48,7 @@ class Branch:
 
         # Create branch points, first one being the start_point
         self.points = [Point.from_mtg(mtg.__getitem__(start_point))]
+        # self.points = []
         current_point = start_point
 
         # glorious while True by Luca
@@ -69,7 +72,7 @@ class Branch:
                     # if child is a new start_point
                     if child.get('edge_type') == '+':
                         # print(child)
-                        branch = Branch(branch_id="branch_" + str(current_point),
+                        branch = Branch(branch_id="branch_{0}".format(child.get('vid')) , # TODO KIOJGGSDFKGSADFGSDGJ
                                         age=self.age + 1,
                                         points=[],
                                         parent=self)
