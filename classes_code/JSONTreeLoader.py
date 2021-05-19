@@ -28,6 +28,7 @@ def write(tree):
 def write_branch(branch):
     b_data = {'branch_id': branch.id,
               'age': branch.age,
+              'depth': branch.depth,
               'points': [],
               'children': [],
               'parent': branch.parent.id if branch.parent is not None else "null"}
@@ -43,6 +44,7 @@ def write_branch(branch):
         b_data['children'].append(child.id)
 
     return b_data
+
 
 def read(path: str = directory + "tree_format.json"):
     file = open(path)
@@ -60,8 +62,11 @@ def read(path: str = directory + "tree_format.json"):
                           parent=point['parent'] if point['parent'] != "" else None,
                           radius=point['radius'] if point['radius'] != "" else 0.0)
             points.append(point)
-        branch = Branch(branch['branch_id'], branch['age'], points,
-                        branch['parent'] if branch['parent'] != "" else None)
+        branch = Branch(branch_id=branch['branch_id'],
+                        depth=branch['depth'],
+                        points=points,
+                        parent=branch['parent'] if branch['parent'] != "" else None,
+                        age=branch['age'])
         branches.append(branch)
 
     for branch in branches:

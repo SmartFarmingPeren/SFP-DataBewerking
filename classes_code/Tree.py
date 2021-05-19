@@ -29,10 +29,12 @@ class Tree:
         # # Determine the branch end points
         # self.end_points = self.get_branch_ends()
         # self.deepcopy_root_branch = copy.deepcopy(self.root_branch)
-        self.tree_start = Branch(branch_id="branch_{0}".format(self.root_branch.points[-1].vertex_id), age=1, points=[],
+        self.tree_start = Branch(branch_id="branch_{0}".format(self.root_branch.points[-1].vertex_id), depth=1, points=[],
                                  parent=self.root_branch)
         self.tree_start.determine_branch(self.mtg, self.root_branch.points[-1].vertex_id)
         # self.root_branch.determine_branch(self.mtg, self.root_branch.points[-1].vertex_id)
+
+        self.determine_age()
 
         # Export the generated skeleton as a mtg file and save it under the input file name
         serial.writeMTGfile(OUTPUT_MTG_DIR + input_point_cloud_name.split(".")[0] + '.mtg',
@@ -82,7 +84,7 @@ class Tree:
                             current_point = mtg.Sons(current_point)[0]
                             temp_branch.append(Point.from_mtg(mtg.__getitem__(current_point)))
                         elif len(mtg.Sons(current_point)) == 0:
-                            branches_on_root.append(Branch(branch_id="branch_" + str(current_point), age=1, points=temp_branch))
+                            branches_on_root.append(Branch(branch_id="branch_" + str(current_point), depth=1, points=temp_branch))
                             just_a_branch = 1
                             break
                         else:
@@ -96,7 +98,7 @@ class Tree:
                 end_of_root = 0
                 just_a_branch = 0
 
-        branch = Branch(branch_id="branch_" + str(lowest_vertex), age=0, points=root_branch)
+        branch = Branch(branch_id="branch_" + str(lowest_vertex), depth=0, points=root_branch)
         for child in branches_on_root:
             child.parent = branch
         branch.children = branches_on_root
@@ -131,6 +133,19 @@ class Tree:
                 # debug_message("End point found at {0}".format(vertex_id))
                 end_points.append(Point.from_mtg(self.mtg.__getitem__(vertex_id)))
         return end_points
+
+    def determine_age(self):
+        sorted_branches = sorted(self.get_branches(), key=lambda branch: branch.depth, reverse=True)
+        yearone_branch = filter(self.filter_children, sorted_branches)
+        for branch in sorted_branches:
+            # if branch.parent is not None and branch.age == -1:
+            #     branch.age
+            if len(branch.children) == 0:
+                pass
+
+    @staticmethod
+    def filter_children(branch):
+        return len(branch.child) == 0
 
     def get_branches(self):
         return [branch for branch in get_next(self.tree_start)]

@@ -6,13 +6,14 @@ from classes_code.Point import Point
 
 
 class Branch:
-    def __init__(self, branch_id, age: int, points: [], parent: 'Branch' = None):
+    def __init__(self, branch_id, depth: int, points: [], parent: 'Branch' = None, age: int=-1):
         # First section is at the start of the branch, last section is at the end
         # vertex IDs of the connected points
         self.id = branch_id
         self.points = points
         self.children = []
         self.parent = parent
+        self.depth = depth
         self.age = age
         # TODO add branch direction(17-05-2021)
 
@@ -73,7 +74,7 @@ class Branch:
                     if child.get('edge_type') == '+':
                         # print(child)
                         branch = Branch(branch_id="branch_{0}".format(child.get('vid')) , # TODO KIOJGGSDFKGSADFGSDGJ
-                                        age=self.age + 1,
+                                        depth=self.depth + 1,
                                         points=[],
                                         parent=self)
                         branch.determine_branch(mtg, child.get('vid'))
