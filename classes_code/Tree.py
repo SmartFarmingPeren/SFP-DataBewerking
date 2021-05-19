@@ -3,11 +3,12 @@ import copy
 import openalea.plantscan3d.serial as serial
 from openalea.plantgl.all import *
 
-from classes_code.Branch import Branch,get_next
+from classes_code.Branch import Branch, get_next
 from classes_code.Point import Point
 from classes_code.Skeletonization import create_scene_and_skeletonize
 from graphs.visual import *
 from utilities.configuration_file import *
+from utilities.debug_log_functions import debug_message
 
 
 class Tree:
@@ -29,7 +30,8 @@ class Tree:
         # # Determine the branch end points
         # self.end_points = self.get_branch_ends()
         # self.deepcopy_root_branch = copy.deepcopy(self.root_branch)
-        self.tree_start = Branch(branch_id="branch_{0}".format(self.root_branch.points[-1].vertex_id), depth=1, points=[],
+        self.tree_start = Branch(branch_id="branch_{0}".format(self.root_branch.points[-1].vertex_id), depth=1,
+                                 points=[],
                                  parent=self.root_branch)
         self.tree_start.determine_branch(self.mtg, self.root_branch.points[-1].vertex_id)
         # self.root_branch.determine_branch(self.mtg, self.root_branch.points[-1].vertex_id)
@@ -84,7 +86,8 @@ class Tree:
                             current_point = mtg.Sons(current_point)[0]
                             temp_branch.append(Point.from_mtg(mtg.__getitem__(current_point)))
                         elif len(mtg.Sons(current_point)) == 0:
-                            branches_on_root.append(Branch(branch_id="branch_" + str(current_point), depth=1, points=temp_branch))
+                            branches_on_root.append(
+                                Branch(branch_id="branch_" + str(current_point), depth=1, points=temp_branch))
                             just_a_branch = 1
                             break
                         else:
@@ -135,17 +138,56 @@ class Tree:
         return end_points
 
     def determine_age(self):
+        """
+        DO NOT TOUCH IT WORKS
+        LEAVE THIS
+        """
         sorted_branches = sorted(self.get_branches(), key=lambda branch: branch.depth, reverse=True)
-        yearone_branch = filter(self.filter_children, sorted_branches)
+        year_one_branch = filter(self.filter_children, sorted_branches)
+        branches_ends_and_shit = []
         for branch in sorted_branches:
-            # if branch.parent is not None and branch.age == -1:
-            #     branch.age
-            if len(branch.children) == 0:
-                pass
+            print("[sorted] dept = {0}, id = {1}, parent {2}".format(branch.depth, branch.id, branch.parent))
+
+        for branch in year_one_branch:
+            branches_ends_and_shit.append(branch)
+            print("[year one] dept = {0}, id = {1}, parent {2}".format(branch.depth, branch.id, branch.parent))
+
+        for branch in branches_ends_and_shit:
+            root_found = False
+            age = 1
+            while not root_found:  # THIS IS CURSED IM SO SORRY
+                if branch.parent is not None and branch.age == -1:
+                    branch.age = age
+                    print(branch.age)
+                    if branch.parent is None:
+                        root_found = True
+                    else:
+                        if branch.parent is not None:
+                            branch = branch.parent
+                            age += 1
+                        else:
+                            root_found = True
+                else:
+                    if branch.parent is not None:
+                        branch = branch.parent
+                    else:
+                        root_found = True
+
+        # for branch in yearone_branch:
+        #     # if branch.parent is not None and branch.age == -1:
+        #     #     branch.age
+        #     if len(branch.children) == 0:
+        #         pass
+
+    def get_branch_by_id(self, branches, parent):
+        for branch in branches:
+            if branch.id == parent:
+                return branch
+        return -1
 
     @staticmethod
     def filter_children(branch):
-        return len(branch.child) == 0
+        return len(branch.children) == 0
 
     def get_branches(self):
         return [branch for branch in get_next(self.tree_start)]

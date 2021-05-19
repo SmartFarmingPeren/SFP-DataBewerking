@@ -6,7 +6,7 @@ from classes_code.Tree import Tree
 
 
 def main():
-    input_point_cloud_name = "Simpele_boom.ply"
+    input_point_cloud_name = "gen_9_15_04_expanded.ply"
     tree = Tree(input_point_cloud_name)
     write(tree)
 
