@@ -24,7 +24,6 @@ class Tree:
         self.point_cloud, self.mtg = create_scene_and_skeletonize(input_point_cloud_name)
 
         # Determine the root branch
-        # TODO A root branch is fucked at this time. Ask Luca(17-05-2021). Is it still though? (18-05-2021) Brandon
         self.root_branch = root if root is not None else self.determine_root(self.mtg)
 
         # # Determine the branch end points
