@@ -11,7 +11,7 @@ class Point:
     def __init__(self, vertex_id: int, position, direction, parent, radius: float):
         self.vertex_id = vertex_id
         self.position = Vector3(position) if position is not None else Vector3(0.0, 0.0, 0.0)
-        self.direction = direction if direction is not None else 0
+        self.direction = Vector3(direction) if direction is not None else Vector3(0.0, 0.0, 0.0)
         self.radius = radius
         self.parent = parent
 
@@ -76,3 +76,4 @@ class Point:
         length = sqrt(direction[0] * direction[0] + direction[1] * direction[1] + direction[2] * direction[2])
 
         return direction / length
+
