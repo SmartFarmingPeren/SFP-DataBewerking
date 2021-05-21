@@ -10,16 +10,23 @@ class Point:
     def __init__(self, vertex_id: int, position, direction, parent, radius: float):
         self.vertex_id = vertex_id
         self.position = Vector3(position) if position is not None else Vector3(0.0, 0.0, 0.0)
-        self.direction = Vector3(direction) if direction is not None else Vector3(0.0, 0.0, 0.0)
+        self.parent_direction = Vector3(direction) if direction is not None else Vector3(0.0, 0.0, 0.0)
+        self.child_direction = None
         self.radius = radius
         self.parent = parent
+        self.child = None
 
     def __str__(self):
-        return "Point(Id: %d, Pos: %s, Dir: %s, Parent: %s, Radius: %f)" % (self.vertex_id,
+        return "Point(Id: %d, Pos: %s, Par_Dir: %s, Chi_Dir: %s Parent: %s, Child : %s, Radius: %f)" % (self.vertex_id,
                                                                         self.position,
-                                                                        self.direction,
+                                                                        self.parent_direction,
+                                                                        self.child_direction,
                                                                         self.parent,
+                                                                        self.child,
                                                                         self.radius)
+
+    def calculate_direction(self):
+
 
     @staticmethod
     def from_mtg(vertex):
