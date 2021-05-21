@@ -1,4 +1,3 @@
-import numpy as np
 from openalea.plantgl.math import Vector3
 from math import sqrt
 
