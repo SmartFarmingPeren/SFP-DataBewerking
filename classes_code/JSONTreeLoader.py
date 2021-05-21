@@ -35,7 +35,7 @@ def write_branch(branch):
     for point in branch.points:
         p_data = {'point_id': point.vertex_id,
                   'position': [point.position.x, point.position.y, point.position.z],
-                  'direction': [point.direction.x, point.direction.y, point.direction.z],
+                  'direction': point.direction,
                   'radius': point.radius,
                   'parent': point.parent if point.parent is not None else "null"}
         b_data['points'].append(p_data)

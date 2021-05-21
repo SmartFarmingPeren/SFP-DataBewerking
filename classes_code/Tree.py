@@ -36,7 +36,9 @@ class Tree:
         self.tree_start.determine_branch(self.mtg, self.root_branch.points[-1].vertex_id)
         # self.root_branch.determine_branch(self.mtg, self.root_branch.points[-1].vertex_id)
 
-        self.determine_age()
+        self.determine_leaders()
+
+        # self.determine_age()
 
         # Export the generated skeleton as a mtg file and save it under the input file name
         serial.writeMTGfile(OUTPUT_MTG_DIR + input_point_cloud_name.split(".")[0] + '.mtg',
@@ -73,18 +75,18 @@ class Tree:
             # If a point has more than 1 son only append the last point then break out of the loop.
             if len(mtg.Sons(point)) == 1:
                 # TODO direction TBD
-                root_branch.append(Point.from_mtg(mtg.__getitem__(point)))
+                root_branch.append(Point.from_mtg(mtg, point))
             else:
                 # TODO direction TBD
-                root_branch.append(Point.from_mtg(mtg.__getitem__(point)))
+                root_branch.append(Point.from_mtg(mtg, point))
                 # Check if the branch itself has more branches on it, if not it's just an extra branch on the root
                 for cp in mtg.Sons(point):
                     current_point = cp
-                    temp_branch.append(Point.from_mtg(mtg.__getitem__(current_point)))
+                    temp_branch.append(Point.from_mtg(mtg, current_point))
                     while True:
                         if len(mtg.Sons(current_point)) == 1:
                             current_point = mtg.Sons(current_point)[0]
-                            temp_branch.append(Point.from_mtg(mtg.__getitem__(current_point)))
+                            temp_branch.append(Point.from_mtg(mtg, current_point))
                         elif len(mtg.Sons(current_point)) == 0:
                             branches_on_root.append(
                                 Branch(branch_id="branch_" + str(current_point), depth=1, points=temp_branch))
@@ -134,7 +136,7 @@ class Tree:
         for vertex_id in range(lowest_vertex, highest_vertex + 1):
             if len(self.mtg.Sons(vertex_id)) == 0:
                 # debug_message("End point found at {0}".format(vertex_id))
-                end_points.append(Point.from_mtg(self.mtg.__getitem__(vertex_id)))
+                end_points.append(Point.from_mtg(self.mtg, vertex_id))
         return end_points
 
     def determine_age(self):
@@ -173,18 +175,6 @@ class Tree:
                     else:
                         root_found = True
 
-        # for branch in yearone_branch:
-        #     # if branch.parent is not None and branch.age == -1:
-        #     #     branch.age
-        #     if len(branch.children) == 0:
-        #         pass
-
-    def get_branch_by_id(self, branches, parent):
-        for branch in branches:
-            if branch.id == parent:
-                return branch
-        return -1
-
     @staticmethod
     def filter_children(branch):
         return len(branch.children) == 0
@@ -194,3 +184,23 @@ class Tree:
 
     def get_root(self):
         return self.root_branch
+
+    def determine_leaders(self, leader_count=0):
+        """
+        leider def:
+            1. Heeft altijd 1 of meerder kinderen
+            2. Zit vast aan de stam(of dichtbij in iedergeval)
+            3. Langst doorlopende tak(not sure of dit werkt vraag boer) de totale afstand die de punten afleggen
+        """
+        # begin punt
+        start_point = self.root_branch.points[-1]
+
+        branches = sorted(self.get_branches(), key=lambda branch: branch.depth, reverse=True)
+
+        # check of een branch vast zit aan de root
+        for branch in branches:
+            print(branch.depth)
+            print("\n {0} \n".format(branch.points[0]))
+
+
+

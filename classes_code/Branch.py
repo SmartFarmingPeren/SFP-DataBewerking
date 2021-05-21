@@ -6,7 +6,7 @@ from classes_code.Point import Point
 
 
 class Branch:
-    def __init__(self, branch_id, depth: int, points: [], parent: 'Branch' = None, age: int=-1):
+    def __init__(self, branch_id, depth: int, points: [], parent: 'Branch' = None, age: int = -1, is_leader=False):
         # First section is at the start of the branch, last section is at the end
         # vertex IDs of the connected points
         self.id = branch_id
@@ -15,6 +15,7 @@ class Branch:
         self.parent = parent
         self.depth = depth
         self.age = age
+        self.is_leader = is_leader
         # TODO add branch direction(17-05-2021)
 
     def next(self, point: Point):
@@ -24,8 +25,9 @@ class Branch:
         return "%s: \n" \
                "Age: %d \n" \
                "Parent: %s \n" \
-               "Children" "%s \n"\
-               "Points: \n \t %s" % (self.id, self.age, self.parent, self.children, [section.__str__() for section in self.points])
+               "Children" "%s \n" \
+               "Points: \n \t %s" % (
+               self.id, self.age, self.parent, self.children, [section.__str__() for section in self.points])
         pass
 
     # start_point is always a +N point of the branch
@@ -48,7 +50,7 @@ class Branch:
         """
 
         # Create branch points, first one being the start_point
-        self.points = [Point.from_mtg(mtg.__getitem__(start_point))]
+        self.points = [Point.from_mtg(mtg, start_point)]
         # self.points = []
         current_point = start_point
 
@@ -63,7 +65,7 @@ class Branch:
             elif len(children) == 1:
                 # create point from child, move up
                 child = children[0]
-                self.points.append(Point.from_mtg(child))
+                self.points.append(Point.from_mtg(mtg, child.get('vid')))
                 current_point = child.get('vid')
                 continue
             # if point has more than 1 child
@@ -73,7 +75,7 @@ class Branch:
                     # if child is a new start_point
                     if child.get('edge_type') == '+':
                         # print(child)
-                        branch = Branch(branch_id="branch_{0}".format(child.get('vid')) , # TODO KIOJGGSDFKGSADFGSDGJ
+                        branch = Branch(branch_id="branch_{0}".format(child.get('vid')),
                                         depth=self.depth + 1,
                                         points=[],
                                         parent=self)
@@ -82,11 +84,13 @@ class Branch:
                     # if child is a continuation (same as for single children)
                     else:
                         # create point from child, move up
-                        self.points.append(Point.from_mtg(child))
+                        self.points.append(Point.from_mtg(mtg, child.get('vid')))
                         current_point = child.get('vid')
                         continue
                 if old_point == current_point:
                     break
+
+
 
 def get_next(node):
     yield node

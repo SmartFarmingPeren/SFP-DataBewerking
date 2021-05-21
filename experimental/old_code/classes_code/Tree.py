@@ -125,7 +125,7 @@ class Tree:
         for vertex_id in range(lowest_vertex, highest_vertex + 1):
             if len(self.mtg.Sons(vertex_id)) == 0:
                 # debug_message("End point found at {0}".format(vertex_id))
-                end_points.append(Point.from_mtg(self.mtg.__getitem__(vertex_id)))
+                end_points.append(Point.from_mtg(self.mtg, vertex_id))
         return end_points
 
     def determine_branch_OLD(self, branch_end_point):
@@ -136,7 +136,7 @@ class Tree:
         :return:
         """
         # Init a point array, this represents a branch
-        points_in_branch = [Point.from_mtg(self.mtg.__getitem__(branch_end_point))]
+        points_in_branch = [Point.from_mtg(self.mtg, branch_end_point)]
 
         # Add the end point to the branch
         next_point = branch_end_point
@@ -152,7 +152,7 @@ class Tree:
                 # If a split is found then break
                 break
             else:
-                points_in_branch.append(Point.from_mtg(self.mtg.__getitem__(father)))
+                points_in_branch.append(Point.from_mtg(self.mtg, father))
                 next_point = father
 
         # Print the current branch from end to start
@@ -176,7 +176,7 @@ class Tree:
                 # If a split is found then break
                 break
             else:
-                points_in_branch.append(Point.from_mtg(self.mtg.__getitem__(father)))
+                points_in_branch.append(Point.from_mtg(self.mtg, father))
 
         debug_message("Printing every point from this branch")
         for point in range(0, len(points_in_branch)):
