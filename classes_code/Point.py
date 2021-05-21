@@ -64,32 +64,16 @@ class Point:
         x/L, y/L, z/L
 
         which points in the same direction as x,y,z but with length one.
-
-        Finally, to compare two directions we can calculate the inner product of those two directions:
-
-        x1/L1 * x2/L2 + y1/L1 * y2/L2 + z1/L1 * z2/L2.
-
-        If that's one, they point in the same direction.
-        If it's 0, they're orthogonal. If it's -1, they point in opposite directions.
         """
         vertex_x = vertex[0]
         vertex_y = vertex[1]
         vertex_z = vertex[2]
-        Length_vertex = sqrt(vertex_x * vertex_x + vertex_y * vertex_y + vertex_z * vertex_z)
 
         parent_x = parent[0]
         parent_y = parent[1]
         parent_z = parent[2]
-        Length_parent = sqrt(parent_x * parent_x + parent_y * parent_y + parent_z * parent_z)
 
-        vertex_x_length = vertex_x / Length_vertex
-        vertex_y_length = vertex_y / Length_vertex
-        vertex_z_length = vertex_z / Length_vertex
+        direction = Vector3(vertex_x - parent_x, vertex_y - parent_y, vertex_z - parent_z)
+        length = sqrt(direction[0] * direction[0] + direction[1] * direction[1] + direction[2] * direction[2])
 
-        parent_x_length = parent_x / Length_parent
-        parent_y_length = parent_y / Length_parent
-        parent_z_length = parent_z / Length_parent
-
-        return (vertex_x / vertex_x_length * parent_x / parent_x_length +
-                vertex_y / vertex_y_length * parent_y / parent_y_length +
-                vertex_z / vertex_z_length * parent_z / parent_z_length)
+        return direction / length
