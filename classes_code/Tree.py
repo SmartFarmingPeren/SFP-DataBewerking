@@ -82,14 +82,17 @@ class Tree:
                 # Check if the branch itself has more branches on it, if not it's just an extra branch on the root
                 for cp in mtg.Sons(point):
                     current_point = cp
-                    temp_branch.append(Point.from_mtg(mtg, current_point))
+                    temp_branch.append(current_point)
                     while True:
                         if len(mtg.Sons(current_point)) == 1:
                             current_point = mtg.Sons(current_point)[0]
-                            temp_branch.append(Point.from_mtg(mtg, current_point))
+                            temp_branch.append(current_point)
                         elif len(mtg.Sons(current_point)) == 0:
+                            temp_branch_on_root = []
+                            for point in temp_branch:
+                                temp_branch_on_root.append(Point.from_mtg(mtg, point))
                             branches_on_root.append(
-                                Branch(branch_id="branch_" + str(current_point), depth=1, points=temp_branch))
+                                Branch(branch_id="branch_" + str(temp_branch[0]), depth=1, points=temp_branch_on_root))
                             just_a_branch = 1
                             break
                         else:
