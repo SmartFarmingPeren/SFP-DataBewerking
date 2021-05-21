@@ -43,9 +43,8 @@ class Point:
         point = Point(vertex_id=vertex_obj.get('vid'),
                       position=vertex_obj.get('position'),
                       direction=direction,
-                      parent=parent,
+                      parent=parent.get('vid'),
                       radius=radius)
-        print(point)
         return point
 
     @staticmethod
