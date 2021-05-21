@@ -86,15 +86,7 @@ class Point:
 
         which points in the same direction as x,y,z but with length one.
         """
-        vertex_x = vertex[0]
-        vertex_y = vertex[1]
-        vertex_z = vertex[2]
-
-        parent_x = parent[0]
-        parent_y = parent[1]
-        parent_z = parent[2]
-
-        direction = Vector3(vertex_x - parent_x, vertex_y - parent_y, vertex_z - parent_z)
+        direction = Vector3(vertex - parent)
         direction.normalize()
 
         return direction
