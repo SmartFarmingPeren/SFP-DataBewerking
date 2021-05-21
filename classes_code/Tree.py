@@ -36,9 +36,9 @@ class Tree:
         self.tree_start.determine_branch(self.mtg, self.root_branch.points[-1].vertex_id)
         # self.root_branch.determine_branch(self.mtg, self.root_branch.points[-1].vertex_id)
 
-        self.determine_leaders()
+        # self.determine_leaders()
 
-        # self.determine_age()
+        self.determine_age()
 
         # Export the generated skeleton as a mtg file and save it under the input file name
         serial.writeMTGfile(OUTPUT_MTG_DIR + input_point_cloud_name.split(".")[0] + '.mtg',
@@ -147,12 +147,8 @@ class Tree:
         sorted_branches = sorted(self.get_branches(), key=lambda branch: branch.depth, reverse=True)
         year_one_branch = filter(self.filter_children, sorted_branches)
         branches_ends_and_shit = []
-        for branch in sorted_branches:
-            print("[sorted] dept = {0}, id = {1}, parent {2}".format(branch.depth, branch.id, branch.parent))
-
         for branch in year_one_branch:
             branches_ends_and_shit.append(branch)
-            print("[year one] dept = {0}, id = {1}, parent {2}".format(branch.depth, branch.id, branch.parent))
 
         for branch in branches_ends_and_shit:
             root_found = False
@@ -160,7 +156,6 @@ class Tree:
             while not root_found:  # THIS IS CURSED IM SO SORRY
                 if branch.parent is not None and branch.age == -1:
                     branch.age = age
-                    print(branch.age)
                     if branch.parent is None:
                         root_found = True
                     else:
@@ -197,10 +192,6 @@ class Tree:
 
         branches = sorted(self.get_branches(), key=lambda branch: branch.depth, reverse=True)
 
-        # check of een branch vast zit aan de root
-        for branch in branches:
-            print(branch.depth)
-            print("\n {0} \n".format(branch.points[0]))
 
 
 
