@@ -77,8 +77,13 @@ Pip packages.
 
 ## General code idea
 
-Main code folder: classes_code. Output folder: outputs with sub-folders for every type of file. Input folder: inputs
-with sub-folders for every type of file. Configuration: utilities/configuration_file.
+Main code folder: classes_code.
+
+Output folder: outputs with sub-folders for every type of file. 
+
+Input folder: inputs with sub-folders for every type of file. 
+
+Configuration: utilities/configuration_file.
 
 ## Cat picture
 

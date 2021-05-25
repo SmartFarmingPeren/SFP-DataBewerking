@@ -1,13 +1,12 @@
-from math import sqrt
-
 from openalea.plantgl.math import Vector3
 
 points = []
+
+
 class Point:
     """
     The point class is used to store the vertex information from a mtg vertex.
     """
-
 
     def __init__(self, vertex_id: int, position, direction, parent, radius: float):
         self.vertex_id = vertex_id
@@ -87,22 +86,21 @@ class Point:
 
         which points in the same direction as x,y,z but with length one.
         """
-# <<<<<<< HEAD
-#         vertex_x = vertex[0]
-#         vertex_y = vertex[1]
-#         vertex_z = vertex[2]
-#
-#         parent_x = parent[0]
-#         parent_y = parent[1]
-#         parent_z = parent[2]
-#
-#         direction = Vector3(vertex_x - parent_x, vertex_y - parent_y, vertex_z - parent_z)
-#         length = sqrt(direction[0] * direction[0] + direction[1] * direction[1] + direction[2] * direction[2])
-#
-#         return direction / length
-# =======
+        # <<<<<<< HEAD
+        #         vertex_x = vertex[0]
+        #         vertex_y = vertex[1]
+        #         vertex_z = vertex[2]
+        #
+        #         parent_x = parent[0]
+        #         parent_y = parent[1]
+        #         parent_z = parent[2]
+        #
+        #         direction = Vector3(vertex_x - parent_x, vertex_y - parent_y, vertex_z - parent_z)
+        #         length = sqrt(direction[0] * direction[0] + direction[1] * direction[1] + direction[2] * direction[2])
+        #
+        #         return direction / length
+        # =======
         direction = Vector3(vertex - parent)
         direction.normalize()
 
         return direction
-

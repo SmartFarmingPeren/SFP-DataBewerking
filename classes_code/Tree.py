@@ -20,19 +20,13 @@ class Tree:
         self.point_cloud, self.mtg = create_scene_and_skeletonize(input_point_cloud_name)
 
         # Determine the root branch
-        # TODO A root branch is fucked at this time. Ask Luca(17-05-2021). Is it still though? (18-05-2021) Brandon
         self.root_branch = root if root is not None else self.determine_root(self.mtg)
 
         # # Determine the branch end points
-        # self.end_points = self.get_branch_ends()
-        # self.deepcopy_root_branch = copy.deepcopy(self.root_branch)
         self.tree_start = Branch(branch_id="branch_{0}".format(self.root_branch.points[-1].vertex_id), depth=1,
                                  points=[],
                                  parent=self.root_branch)
         self.tree_start.determine_branch(self.mtg, self.root_branch.points[-1].vertex_id)
-        # self.root_branch.determine_branch(self.mtg, self.root_branch.points[-1].vertex_id)
-
-        # self.determine_leaders()
 
         self.determine_age()
 
@@ -112,8 +106,8 @@ class Tree:
     def determine_vertexes(mtg):
         """
         This function determines the lowest and highest vertex point.
-        :param mtg:
-        :return:
+        :param mtg: a mtg file
+        :return: lowest_vertex, highest_vertex
         """
         highest_vertex = 0
         lowest_vertex = float('inf')
@@ -139,16 +133,20 @@ class Tree:
         return end_points
 
     def determine_age(self):
+        """
+        This function determines the ages for each branch on the tree.
+        TODO: the age needs to be determined until a leader is found instead of until the root is found.
+        """
         sorted_branches = sorted(self.get_branches(), key=lambda branch: branch.depth, reverse=True)
         year_one_branch = filter(self.filter_children, sorted_branches)
-        branches_ends_and_shit = []
+        end_branches = []
         for branch in year_one_branch:
-            branches_ends_and_shit.append(branch)
+            end_branches.append(branch)
 
-        for branch in branches_ends_and_shit:
+        for branch in end_branches:
             root_found = False
             age = 1
-            while not root_found:  # THIS IS CURSED IM SO SORRY
+            while not root_found:
                 if branch.parent is not None and branch.age == -1:
                     branch.age = age
                     if branch.parent is None:
@@ -167,18 +165,32 @@ class Tree:
 
     @staticmethod
     def filter_children(branch):
+        """
+        Filter the children for a branch
+        :param branch: a branch
+        :return:
+        """
         return len(branch.children) == 0
 
     def get_branches(self):
+        """
+        gets the branches.
+        :return: branches
+        """
         return [branch for branch in get_next(self.tree_start)]
 
     def get_root(self):
+        """
+        Get the root branch
+        :return: root branch
+        """
         return self.root_branch
 
     def determine_leaders(self, leader_count=0):
         """
+        TODO: determine leaders is not yet implemented
         leider def:
-            1. Heeft altijd 1 of meerder kinderen
+            1. Heeft altijd 1 of meerdere kinderen
             2. Zit vast aan de stam(of dichtbij in iedergeval)
             3. Langst doorlopende tak(not sure of dit werkt vraag boer) de totale afstand die de punten afleggen
         """

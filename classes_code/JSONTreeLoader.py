@@ -10,6 +10,11 @@ directory = os.getcwd() + "\\outputs\\trees\\"
 
 # Write Tree object to JSON; returns the JSON dictionary
 def write(tree):
+    """
+    Writes a tree object to a JSON format.
+    :param tree: A tree object.
+    :return: json data.
+    """
     data = {'root': write_branch(tree.get_root()),
             'branches': [],
             'point_cloud': tree.point_cloud_name}
@@ -26,6 +31,11 @@ def write(tree):
 
 
 def write_branch(branch):
+    """
+    Writes a branch as a json format.
+    :param branch: A branch object.
+    :return: json data.
+    """
     b_data = {'branch_id': branch.id,
               'age': branch.age,
               'depth': branch.depth,
@@ -47,6 +57,11 @@ def write_branch(branch):
 
 
 def read(path: str = directory + "tree_format.json"):
+    """
+    Reads a json tree object and imports it as a tree object.
+    :param path: path to json
+    :return: tree object
+    """
     file = open(path)
     content = file.read()
     file.close()
@@ -82,6 +97,12 @@ def read(path: str = directory + "tree_format.json"):
 
 
 def find_by_id(object_id: str, args):
+    """
+    finds a point/branch object by the given id.
+    :param object_id: object id.
+    :param args: objects
+    :return: object.
+    """
     for arg in args:
         if arg.id == object_id:
             return arg

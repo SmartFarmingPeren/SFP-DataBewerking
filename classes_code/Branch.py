@@ -2,6 +2,10 @@ from classes_code.Point import Point
 
 
 class Branch:
+    """
+    The branch class is used to contain all points connected to a branch.
+    """
+
     def __init__(self, branch_id, depth: int, points: [], parent: 'Branch' = None, age: int = -1, is_leader=False):
         # First section is at the start of the branch, last section is at the end
         # vertex IDs of the connected points
@@ -14,9 +18,18 @@ class Branch:
         self.is_leader = is_leader
 
     def next(self, point: Point):
+        """
+        TODO: not implemented yet.
+        Gets the next point connected to a point.
+        :param point: a point object.
+        """
         pass
 
     def __str__(self):
+        """
+        This function makes it possible to do a print(branch).
+        :return: a string.
+        """
         return "%s: \n" \
                "Age: %d \n" \
                "Parent: %s \n" \
@@ -87,6 +100,10 @@ class Branch:
 
 
 def get_next(node):
+    """
+    Gets the next points.
+    :param node: Point.
+    """
     yield node
     for child in node.children:
         yield from get_next(child)
