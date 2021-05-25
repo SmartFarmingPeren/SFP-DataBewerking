@@ -2,11 +2,12 @@ from math import sqrt
 
 from openalea.plantgl.math import Vector3
 
-
+points = []
 class Point:
     """
     The point class is used to store the vertex information from a mtg vertex.
     """
+
 
     def __init__(self, vertex_id: int, position, direction, parent, radius: float):
         self.vertex_id = vertex_id
@@ -14,6 +15,21 @@ class Point:
         self.direction = Vector3(direction) if direction is not None else Vector3(0.0, 0.0, 0.0)
         self.radius = radius
         self.parent = parent
+        self.children = []
+        # Lazy but works
+        check = True
+        # Checks to see if current already exists
+        for point in points:
+            if point.vertex_id == self.vertex_id:
+                check = False
+        # If point does not exist
+        if check:
+            # Parent can be None if it is the first point
+            if self.parent != None:
+                # Add point_id to parents child list
+                Point.get_from_id(self.parent).children.append(self.vertex_id)
+            # Add current point to all point list
+            points.append(self)
 
     def __str__(self):
         return "Point(Id: %d, Pos: %s, Dir: %s, Parent: %s, Radius: %f)" % (self.vertex_id,
@@ -21,6 +37,13 @@ class Point:
                                                                             self.direction,
                                                                             self.parent,
                                                                             self.radius)
+
+    @staticmethod
+    def get_from_id(id):
+        for point in points:
+            if point.vertex_id == id:
+                return point
+        return None
 
     @staticmethod
     def from_mtg(mtg, vertex_id):
@@ -64,15 +87,22 @@ class Point:
 
         which points in the same direction as x,y,z but with length one.
         """
-        vertex_x = vertex[0]
-        vertex_y = vertex[1]
-        vertex_z = vertex[2]
+# <<<<<<< HEAD
+#         vertex_x = vertex[0]
+#         vertex_y = vertex[1]
+#         vertex_z = vertex[2]
+#
+#         parent_x = parent[0]
+#         parent_y = parent[1]
+#         parent_z = parent[2]
+#
+#         direction = Vector3(vertex_x - parent_x, vertex_y - parent_y, vertex_z - parent_z)
+#         length = sqrt(direction[0] * direction[0] + direction[1] * direction[1] + direction[2] * direction[2])
+#
+#         return direction / length
+# =======
+        direction = Vector3(vertex - parent)
+        direction.normalize()
 
-        parent_x = parent[0]
-        parent_y = parent[1]
-        parent_z = parent[2]
+        return direction
 
-        direction = Vector3(vertex_x - parent_x, vertex_y - parent_y, vertex_z - parent_z)
-        length = sqrt(direction[0] * direction[0] + direction[1] * direction[1] + direction[2] * direction[2])
-
-        return direction / length
