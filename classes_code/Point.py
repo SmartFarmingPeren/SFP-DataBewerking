@@ -1,5 +1,6 @@
-from openalea.plantgl.math import Vector3
 from math import sqrt
+
+from openalea.plantgl.math import Vector3
 
 
 class Point:
@@ -75,4 +76,3 @@ class Point:
         length = sqrt(direction[0] * direction[0] + direction[1] * direction[1] + direction[2] * direction[2])
 
         return direction / length
-

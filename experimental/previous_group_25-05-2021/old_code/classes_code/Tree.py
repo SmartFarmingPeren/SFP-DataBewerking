@@ -1,12 +1,11 @@
 import openalea.plantscan3d.serial as serial
 from openalea.plantgl.all import *
 
-from classes_code.Branch import Branch
 from classes_code.Point import Point
 from classes_code.Skeletonization import create_scene_and_skeletonize
 from graphs.visual import *
 from utilities.configuration_file import *
-from utilities.debug_log_functions import debug_message, warning_message, error_message
+from utilities.debug_log_functions import debug_message, warning_message
 
 
 class Tree:

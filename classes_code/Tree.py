@@ -1,14 +1,10 @@
-import copy
-
 import openalea.plantscan3d.serial as serial
-from openalea.plantgl.all import *
 
 from classes_code.Branch import Branch, get_next
 from classes_code.Point import Point
 from classes_code.Skeletonization import create_scene_and_skeletonize
 from graphs.visual import *
 from utilities.configuration_file import *
-from utilities.debug_log_functions import debug_message
 
 
 class Tree:
@@ -140,10 +136,6 @@ class Tree:
         return end_points
 
     def determine_age(self):
-        """
-        DO NOT TOUCH IT WORKS
-        LEAVE THIS
-        """
         sorted_branches = sorted(self.get_branches(), key=lambda branch: branch.depth, reverse=True)
         year_one_branch = filter(self.filter_children, sorted_branches)
         branches_ends_and_shit = []
@@ -191,7 +183,3 @@ class Tree:
         start_point = self.root_branch.points[-1]
 
         branches = sorted(self.get_branches(), key=lambda branch: branch.depth, reverse=True)
-
-
-
-

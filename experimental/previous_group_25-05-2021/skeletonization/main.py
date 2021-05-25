@@ -1,5 +1,4 @@
 import openalea.plantscan3d.mtgmanip as mm
-from openalea.mtg.aml import MTG
 from openalea.mtg.io import write_mtg
 from openalea.plantgl.all import *
 from openalea.plantscan3d.serial import max_order
@@ -45,8 +44,7 @@ def create_scene_and_skeletonize(input_point_cloud_name):
     return mtg
 
 
-def writeMTGfile(fn, g, properties=[('XX','REAL'), ('YY','REAL'), ('ZZ','REAL'), ('radius','REAL')]):
-
+def writeMTGfile(fn, g, properties=[('XX', 'REAL'), ('YY', 'REAL'), ('ZZ', 'REAL'), ('radius', 'REAL')]):
     if properties == []:
         properties = [(p, 'REAL') for p in g.property_names() if p not in ['edge_type', 'index', 'label']]
     nb_tab = max_order(g)
@@ -54,6 +52,7 @@ def writeMTGfile(fn, g, properties=[('XX','REAL'), ('YY','REAL'), ('ZZ','REAL'),
     f = open(fn, 'w+')
     f.write(str)
     f.close()
+
 
 def main():
     """
@@ -71,6 +70,7 @@ def main():
     # f = open(filename, 'w+')
     # f.write(mtg_lines)
     # f.close()
+
 
 if __name__ == '__main__':
     main()

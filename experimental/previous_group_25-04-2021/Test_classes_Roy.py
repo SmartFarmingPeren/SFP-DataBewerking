@@ -1,23 +1,16 @@
 import pickle
-import openalea
-from openalea.mtg.algo import ancestors, sons
-from openalea.mtg.aml import Sons, EdgeType
-from graphs.visual import *
-from openalea.mtg import PlantFrame, MTG, display_mtg
-from openalea.mtg.io import write_mtg, read_mtg_file
-from openalea.plantgl import *
-#from openalea.mtg import *
+
+import openalea.plantscan3d.mtgmanip as mm
+import openalea.plantscan3d.serial as serial
+from openalea.mtg import PlantFrame, MTG
+# from openalea.mtg import *
 from openalea.mtg.aml import *
 from openalea.plantgl.math._pglmath import Vector3
 from openalea.plantgl.scenegraph._pglsg import Scene
-from openalea.plantscan3d import *
-import openalea.plantscan3d.mtgmanip as mm
 from openalea.plantscan3d.xumethod import xu_method
-import openalea.plantscan3d.serial as serial
-from copy import deepcopy
-import matplotlib
-import matplotlib.pyplot as plt
-import numpy as np
+
+from graphs.visual import *
+
 
 class Tree:
     def __init__(self, ply):
@@ -36,9 +29,9 @@ class Tree:
         Activate(self.g1)
         self.branch_ends = []
         self.get_all_branch_ends(self.g1)
-        print("branch_ends zijn: ",self.branch_ends)
+        print("branch_ends zijn: ", self.branch_ends)
         self.items = self.mtg.__getitem__(self.branch_ends[0])
-        #("dit zijn mijn branch end items ", self.items)
+        # ("dit zijn mijn branch end items ", self.items)
         self.oneYears = []
         self.twoYears = []
         self.make_one_years(self.g1, self.branch_ends)
@@ -47,12 +40,13 @@ class Tree:
         self.print_one_year()
         self.print_two_year()
         plot(self.g1)
+
     def get_all_branch_ends(self, mtg):
-        #Geef van de mtg alle takken zonder sons terug
+        # Geef van de mtg alle takken zonder sons terug
         for i in self.vids_U:
             if mtg.Sons(i, RestrictedTo='NoRestriction', EdgeType='*') == [] and i != 1 and i != 0:
-                print ("takeinde = ", i)
-                #print ("items van child zijn ", mtg.__getitem__(i))
+                print("takeinde = ", i)
+                # print ("items van child zijn ", mtg.__getitem__(i))
                 item = mtg.__getitem__(i)
                 print("line = ", item.get('_line'))
                 self.branch_ends.append(item.get('vid'))
@@ -62,12 +56,12 @@ class Tree:
             print("i = ", i)
             self.v_array = [i]
             counter = 0
-            while(mtg.Father(self.v_array[counter], RestrictedTo='NoRestriction', EdgeType='+') == None):
-                print("self v_array = ",self.v_array)
+            while (mtg.Father(self.v_array[counter], RestrictedTo='NoRestriction', EdgeType='+') == None):
+                print("self v_array = ", self.v_array)
                 v_child = mtg.Father(self.v_array[counter], RestrictedTo='SameAxis', EdgeType='<')
-                #print("items van child zijn ", mtg.__getitem__(self.v_array[counter]))
-                #print("V_child = ", v_child)
-                #print("sons = ",mtg.Sons(self.v_array[counter], RestrictedTo='NoRestriction', EdgeType='+'))
+                # print("items van child zijn ", mtg.__getitem__(self.v_array[counter]))
+                # print("V_child = ", v_child)
+                # print("sons = ",mtg.Sons(self.v_array[counter], RestrictedTo='NoRestriction', EdgeType='+'))
                 if (v_child == []):
                     print("ERROR")
                 elif (v_child == None):
@@ -80,21 +74,21 @@ class Tree:
                     break
                 else:
                     self.v_array.append(v_child)
-                counter+=1
+                counter += 1
             else:
                 self.oneYears.append(OneYearBranch(self.v_array, self.mtg))
 
     def print_one_year(self):
         for i in self.oneYears:
-            #print("i = ", i)
+            # print("i = ", i)
             i.printBranch()
 
     def print_two_year(self):
         for i in self.twoYears:
-            #print("i = ", i)
+            # print("i = ", i)
             i.printBranch()
 
-    def make_two_years(self,mtg):
+    def make_two_years(self, mtg):
         for i in self.oneYears:
             aftakking = i.get_aftakking_vertex()
             self.one_year_fork.append(aftakking)
@@ -104,8 +98,8 @@ class Tree:
             while (mtg.Father(self.tak_array[counter], RestrictedTo='NoRestriction', EdgeType='+') == None):
                 print("self tak_array = ", self.tak_array)
                 v_child = mtg.Father(self.tak_array[counter], RestrictedTo='SameAxis', EdgeType='<')
-                #print("items van child zijn ", mtg.__getitem__(self.tak_array[counter]))
-                #print("V_child = ", v_child)
+                # print("items van child zijn ", mtg.__getitem__(self.tak_array[counter]))
+                # print("V_child = ", v_child)
                 # print("sons = ",mtg.Sons(self.tak_array[counter], RestrictedTo='NoRestriction', EdgeType='+'))
                 if (v_child == []):
                     print("ERROR")
@@ -114,7 +108,8 @@ class Tree:
                     Tak = TwoYearBranch(self.tak_array, self.mtg, i)
                     self.twoYears.append(TwoYearBranch(self.tak_array, self.mtg, i))
                     break
-                elif mtg.Sons(self.tak_array[counter], RestrictedTo='NoRestriction', EdgeType='+') != [] and counter>1:
+                elif mtg.Sons(self.tak_array[counter], RestrictedTo='NoRestriction',
+                              EdgeType='+') != [] and counter > 1:
                     print("Tak heeft hier een splitsing ")
                     Tak = TwoYearBranch(self.tak_array, self.mtg, i)
                     self.twoYears.append(TwoYearBranch(self.tak_array, self.mtg, i))
@@ -123,14 +118,14 @@ class Tree:
                     self.tak_array.append(v_child)
                 counter += 1
             else:
-                #if (self.two_year_does_not_exist(self.tak_array)):
-                if (1==1):
+                # if (self.two_year_does_not_exist(self.tak_array)):
+                if (1 == 1):
                     Tak = TwoYearBranch(self.tak_array, self.mtg, i)
                     self.twoYears.append(TwoYearBranch(self.tak_array, self.mtg, i))
                 else:
                     i.add_parent(Tak)
 
-    #def add_parent_to_branch(self):
+    # def add_parent_to_branch(self):
     def two_year_does_not_exist(self, tak_array):
         for i in self.twoYears:
             if any(elem in i.v_array for elem in tak_array):
@@ -139,6 +134,7 @@ class Tree:
             else:
                 print("Does not exist")
                 return True
+
 
 def KnipTak(mtg, v1, v2, knipType):
     pathv1_v2 = mtg.path(v1, v2)
@@ -158,17 +154,19 @@ def KnipTak(mtg, v1, v2, knipType):
     if afstandTussenV1_V2(VanafV, NaarV) > knipAfstand:
         knipLocatie = knipTussenVertex()
     return 0
-    #Validate
+    # Validate
     return knipLocatie
+
 
 def afstandTussenV1_V2(mtg, v1, v2):
     path_v1_v2 = mtg.Path(v1, v2)
     for i in path_v1_v2:
         print("Loop door vertex".format(i))
-    #Locatie v1
-    #Locatie v2
-    #bereken afstand
+    # Locatie v1
+    # Locatie v2
+    # bereken afstand
     return (v1)
+
 
 def getVertexPosition(mtg, v1):
     items = mtg.__getitem__(v1)
@@ -185,19 +183,21 @@ def getVertexPosition(mtg, v1):
     print("numpy array = ", v_coordinate)
     return v_coordinate
 
+
 def afstandTussenAanliggendeV1_V2(mtg, v1, v2):
     v1_coord = getVertexPosition(mtg, v1)
     v2_coord = getVertexPosition(mtg, v2)
-    afstand = numpy.linalg.norm(v1_coord-v2_coord)
+    afstand = numpy.linalg.norm(v1_coord - v2_coord)
     print("afstand v1 tot v2 ", afstand)
-    #return afstands
+    # return afstands
+
 
 class OneYearBranch:
-    def __init__(self,v_array, mtg):
+    def __init__(self, v_array, mtg):
         self.v_array = v_array
         self.mtg = mtg
         self.age = 1
-        #self.parent
+        # self.parent
         print("making one year branch", self.v_array)
 
     def printBranch(self):
@@ -206,11 +206,12 @@ class OneYearBranch:
     def add_parent(self, branch):
         self.parent = branch
 
-    def make_two_years(self,mtg):
+    def make_two_years(self, mtg):
         print("make two year ")
 
     def get_aftakking_vertex(self):
         return self.v_array[-1]
+
 
 class TwoYearBranch:
     def __init__(self, v_array, mtg, child):
@@ -233,22 +234,25 @@ class TwoYearBranch:
     def add_child(self, child):
         self.children.append(child)
 
-def skeleton(mtg, points, binratio = 50, k = 30):
-    mini,maxi = points.getZMinAndMaxIndex()
+
+def skeleton(mtg, points, binratio=50, k=30):
+    mini, maxi = points.getZMinAndMaxIndex()
     root = Vector3(points[mini])
     mtg = mm.initialize_mtg(root)
-    zdist = points[maxi].z-points[mini].z
+    zdist = points[maxi].z - points[mini].z
     binlength = zdist / binratio
     vtx = list(mtg.vertices(mtg.max_scale()))
     startfrom = vtx[0]
     xu_method(mtg, startfrom, points, binlength)
     return mtg
 
+
 def writefile(fn, obj):
-    f = open(fn,'wb')
+    f = open(fn, 'wb')
     pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
     f.close()
     test = PlantFrame()
+
 
 def _add_vertex_properties(self, vid, properties):
     """
@@ -260,6 +264,7 @@ def _add_vertex_properties(self, vid, properties):
         if name not in self._properties:
             self.add_property(name)
         self._properties[name][vid] = properties[name]
+
 
 def filterpoints(mtg):
     for x in mtg:
@@ -275,21 +280,18 @@ def filterpoints(mtg):
             counter = 1
             print(padje)
 
+
 def setup():
     root = Vector3(0, 0, 0)
     mtg = mm.initialize_mtg(root)
     return mtg
 
+
 def main():
-    #myTree = Tree('C:/Minor1/gen_5_15_04_expanded.ply')
+    # myTree = Tree('C:/Minor1/gen_5_15_04_expanded.ply')
     myTree = Tree('C:/Minor1/Simpele_boom.ply')
     print("end of program")
 
 
-
-
 if __name__ == '__main__':
     main()
-
-
-

@@ -44,8 +44,7 @@ def create_scene_and_skeletonize(input_point_cloud_name):
     return point_cloud, mtg
 
 
-def writeMTGfile(fn, g, properties=[('XX','REAL'), ('YY','REAL'), ('ZZ','REAL'), ('radius','REAL')]):
-
+def writeMTGfile(fn, g, properties=[('XX', 'REAL'), ('YY', 'REAL'), ('ZZ', 'REAL'), ('radius', 'REAL')]):
     if properties == []:
         properties = [(p, 'REAL') for p in g.property_names() if p not in ['edge_type', 'index', 'label']]
     nb_tab = max_order(g)

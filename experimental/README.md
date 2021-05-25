@@ -5,9 +5,9 @@
 The experimental folder holds experimental code. This code should be ignored. If you want to write experimental code
 just make a python file called `testing_[your name].py`.
 
-## Running the code
+## Value
 
-`python main.py`
+This code might be valuable in the future, that is why this code is preserved in the experimental folder.
 
 ## Cat picture
 

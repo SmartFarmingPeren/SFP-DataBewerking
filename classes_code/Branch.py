@@ -1,7 +1,3 @@
-import copy
-
-import numpy as np
-
 from classes_code.Point import Point
 
 
@@ -16,7 +12,6 @@ class Branch:
         self.depth = depth
         self.age = age
         self.is_leader = is_leader
-        # TODO add branch direction(17-05-2021)
 
     def next(self, point: Point):
         pass
@@ -27,7 +22,7 @@ class Branch:
                "Parent: %s \n" \
                "Children" "%s \n" \
                "Points: \n \t %s" % (
-               self.id, self.age, self.parent, self.children, [section.__str__() for section in self.points])
+                   self.id, self.age, self.parent, self.children, [section.__str__() for section in self.points])
         pass
 
     # start_point is always a +N point of the branch
@@ -89,7 +84,6 @@ class Branch:
                         continue
                 if old_point == current_point:
                     break
-
 
 
 def get_next(node):

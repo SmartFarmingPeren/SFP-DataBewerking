@@ -1,6 +1,3 @@
-import numpy as np
-from openalea.plantgl.math import Vector3
-
 from classes_code.JSONTreeLoader import write
 from classes_code.Tree import Tree
 

@@ -23,18 +23,21 @@ The openalea requirements are installed at a later time.
 4. openalea.plantscan3d[https://github.com/openalea/plantscan3d]
 
 Pip packages.
+
 1. `pip install pyvis`
 2. `pip install termcolor`
 
 ## Installation
+
 ### Hard installation
+
 1. Download and install pycharm and anaconda
 2. Open a new project
 3. Select Conda as the new interpreter
 4. Select python version 3.7(higher might work, we didn't try tho)
 5. Create the project
 6. go to: File>
-    settings>
+   settings>
    project:{name}>
    Python interpreter>
    +>
@@ -48,25 +51,34 @@ Pip packages.
    OK>
    refresh>
    OK>
-7. Click on the following packages and install(would recommend installing 1 package,
-   then wait for it to install, repeat this until every package is installed):
+7. Click on the following packages and install(would recommend installing 1 package, then wait for it to install, repeat
+   this until every package is installed):
     1. openalea.plantscan3d
     2. openalea.mtg
     3. openalea.plantgl
 8. click apply then click OK.
 9. After everything is installed a git-clone can be done inside the project in order to clone the most recent software.
-10. Any questions or help needed with the installing process please contact me: Luca van Elsas(email: 582178@student.inholland.nl)
+10. Any questions or help needed with the installing process please contact me: Luca van Elsas(email:
+    582178@student.inholland.nl)
 
 ### Easy installation
+
 1. Download and install pycharm and anaconda.
 2. Open a new project.
 3. Select Conda as the new interpreter.
 4. Select python version 3.7(higher might work, we didn't try tho).
 5. Create the project.
-6. Download the following environment from sharepoint(link: https://inholland.sharepoint.com/:u:/r/teams/MinorTIenLR20202021/Gedeelde%20documenten/2021-2021/projectgroepen%20minor%20software%20engineering/groep%202%20data%20bewerking/week%2017%20tm%2020/Conda/PearTreeDataProcessing.zip?csf=1&web=1&e=rwOoNa).
+6. Download the following environment from sharepoint(
+   link: https://inholland.sharepoint.com/:u:/r/teams/MinorTIenLR20202021/Gedeelde%20documenten/2021-2021/projectgroepen%20minor%20software%20engineering/groep%202%20data%20bewerking/week%2017%20tm%2020/Conda/PearTreeDataProcessing.zip?csf=1&web=1&e=rwOoNa)
+   .
 7. Go to the folder where the conda interpreter is located.
 8. copy the files from the download into the environment folder.
 9. Clone the git and you should be all set.
+
+## General code idea
+
+Main code folder: classes_code. Output folder: outputs with sub-folders for every type of file. Input folder: inputs
+with sub-folders for every type of file. Configuration: utilities/configuration_file.
 
 ## Cat picture
 

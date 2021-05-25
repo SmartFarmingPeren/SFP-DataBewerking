@@ -1,32 +1,18 @@
 import pickle
 
-import openalea
-from openalea.mtg.algo import ancestors, sons
-from openalea.mtg.aml import Sons
-
-from openalea.mtg import PlantFrame, MTG
-
-from openalea.mtg.io import write_mtg, read_mtg_file
-from openalea.plantgl import *
-from openalea.mtg import *
-#from openalea.mtg.plantframe.plot_statistic import *
-#import PyQt5
-#from PyQt4.QtCore import *
+# from openalea.mtg.plantframe.plot_statistic import *
+# import PyQt5
+# from PyQt4.QtCore import *
 import numpy
-#from PyQt4.QtGui import *
-from openalea.mtg.aml import MTG
-from openalea.mtg.plantframe import *
-from openalea.mtg.plantframe import *
-import re
-from openalea.mtg.aml import *
+import openalea.plantscan3d.mtgmanip as mm
+import openalea.plantscan3d.serial as serial
 from openalea.mtg import *
+# from PyQt4.QtGui import *
+from openalea.mtg.aml import *
 from openalea.plantgl.math._pglmath import Vector3
 from openalea.plantgl.scenegraph._pglsg import Scene
-from openalea.plantscan3d import *
-import openalea.plantscan3d.mtgmanip as mm
 from openalea.plantscan3d.xumethod import xu_method
-import openalea.plantscan3d.serial as serial
-from openalea.plantgl.all import Viewer
+
 
 def skeleton(mtg, points, binratio=50, k=30):
     mini, maxi = points.getZMinAndMaxIndex()
@@ -52,7 +38,8 @@ def setup():
     mtg = mm.initialize_mtg(root)
     return mtg
 
-#AlgHeight() aantal v between v1 en v2
+
+# AlgHeight() aantal v between v1 en v2
 def KnipTak(mtg, v1, v2, knipType):
     pathv1_v2 = mtg.path(v1, v2)
     print("mtg.path = ", pathv1_v2)
@@ -71,17 +58,19 @@ def KnipTak(mtg, v1, v2, knipType):
     if afstandTussenV1_V2(VanafV, NaarV) > knipAfstand:
         knipLocatie = knipTussenVertex()
     return 0
-    #Validate
+    # Validate
     return knipLocatie
+
 
 def afstandTussenV1_V2(mtg, v1, v2):
     path_v1_v2 = mtg.Path(v1, v2)
     for i in path_v1_v2:
         print("Loop door vertex".format(i))
-    #Locatie v1
-    #Locatie v2
-    #bereken afstand
+    # Locatie v1
+    # Locatie v2
+    # bereken afstand
     return (v1)
+
 
 def getVertexPosition(mtg, v1):
     items = mtg.__getitem__(v1)
@@ -98,18 +87,20 @@ def getVertexPosition(mtg, v1):
     print("numpy array = ", v_coordinate)
     return v_coordinate
 
+
 def afstandTussenAanliggendeV1_V2(mtg, v1, v2):
     v1_coord = getVertexPosition(mtg, v1)
     v2_coord = getVertexPosition(mtg, v2)
-    afstand = numpy.linalg.norm(v1_coord-v2_coord)
+    afstand = numpy.linalg.norm(v1_coord - v2_coord)
     print("afstand v1 tot v2 ", afstand)
-    #return afstands
+    # return afstands
+
 
 def knipTussenVertex(mtg, v1, v2, afstandv1_v2):
-    #Krijg locatie v1, krijg locatie v2.
-    #afstandTussen (v1, v2)
-    #Beweeg afstand van v1 naar v2 en krijg locatie
-    return (x,y,z)
+    # Krijg locatie v1, krijg locatie v2.
+    # afstandTussen (v1, v2)
+    # Beweeg afstand van v1 naar v2 en krijg locatie
+    return (x, y, z)
 
 
 def main():
@@ -131,24 +122,24 @@ def main():
     Activate(g1)
     print("path = ", g1.Path(vids_U[2], vids_U[5]))
     afstandTussenAanliggendeV1_V2(mtg, vids_U[2], vids_U[5])
-    #afstandTussenV1_V2(mtg, vids_U[2], vids_U[5])
-    #Scale(1)
-    #d = DressingData()
+    # afstandTussenV1_V2(mtg, vids_U[2], vids_U[5])
+    # Scale(1)
+    # d = DressingData()
     print("Max scale = ", g1.max_scale())
-    #pf = PlantFrame(g1, 1, Scale=2, DressingData=d, TopDiameter=1)  # doctest: +SKIP
+    # pf = PlantFrame(g1, 1, Scale=2, DressingData=d, TopDiameter=1)  # doctest: +SKIP
     print("START PLOTTING")
-    #g = MTG('agraf.mtg')
-    #dressing_data = dressing_data_from_file('agraf.drf')
-    #topdia = lambda x:  g.property('TopDia').get(x)
-    #pf = PlantFrame(g1,    DressingData=dressing_data)
-    #axes = pf._compute_axes()
-    #diameters = pf.algo_diameter()
-    #scene = build_scene(pf.g1, pf.origin, axes, pf.points, diameters, 10000)
-    #g1.plot_property("position")
-    #Viewer.display(scene)
-    #_plot(g1)
-    #pf.plot_property('length')
-    #pf.plot(gc=True, display=False)
+    # g = MTG('agraf.mtg')
+    # dressing_data = dressing_data_from_file('agraf.drf')
+    # topdia = lambda x:  g.property('TopDia').get(x)
+    # pf = PlantFrame(g1,    DressingData=dressing_data)
+    # axes = pf._compute_axes()
+    # diameters = pf.algo_diameter()
+    # scene = build_scene(pf.g1, pf.origin, axes, pf.points, diameters, 10000)
+    # g1.plot_property("position")
+    # Viewer.display(scene)
+    # _plot(g1)
+    # pf.plot_property('length')
+    # pf.plot(gc=True, display=False)
     print("dit zijn mijn items ", items)
     '''
     for _ in range(3):
@@ -170,6 +161,7 @@ def main():
             v = v_succesor[0]
         print("Dit is de succesor ", v_succesor)
     '''
+
 
 if __name__ == '__main__':
     print("Ben ik begonnen")

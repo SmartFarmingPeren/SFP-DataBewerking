@@ -86,7 +86,8 @@ class Branch:
                 if not has_single_child:
                     break
 
-        branch = Branch(branch_id="branch_" + str(start_point) * 10, age=1, sections=branch_points, parent=branch_points[0].parent)
+        branch = Branch(branch_id="branch_" + str(start_point) * 10, age=1, sections=branch_points,
+                        parent=branch_points[0].parent)
         return branch
 
 
