@@ -1,5 +1,6 @@
 from openalea.plantgl.math import Vector3
 
+#List of all points in tree
 points = []
 
 
@@ -15,9 +16,8 @@ class Point:
         self.radius = radius
         self.parent = parent
         self.children = []
-        # Lazy but works
         check = True
-        # Checks to see if current already exists
+        # Checks to see if current point already exists
         for point in points:
             if point.vertex_id == self.vertex_id:
                 check = False
@@ -39,6 +39,11 @@ class Point:
 
     @staticmethod
     def get_from_id(id):
+        """
+        Gets point object from id
+        :param id: id of point
+        :return: a Point object from points array
+        """
         for point in points:
             if point.vertex_id == id:
                 return point
