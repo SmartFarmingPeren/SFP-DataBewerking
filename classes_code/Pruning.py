@@ -24,8 +24,23 @@ def get_branch_length(branch: Branch):
         prev_p = p
     return length
 
+
 # returns the closest point to distance from origin point of the branch
 def get_branchpoint_by_distance(branch, distance):
+    length = 0.0
+    p: Point
+    prev_p = None
     for p in branch.points:
-        pass
+        if prev_p is not None:
+            # p_dist distance between 2 points
+            p_dist = p.distance_to(prev_p)
+            print("len_prev: %f, length_curr: %f" % (length, length + p_dist))
+            if length + p_dist >= distance:
+                if abs(length - distance) < abs(length + p_dist - distance):
+                    return prev_p
+                else:
+                    return p
+            length += p_dist
+        prev_p = p
+    return prev_p
 
