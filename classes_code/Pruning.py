@@ -8,9 +8,6 @@ from classes_code.Branch import Branch
 
 # return positions as ply?
 
-# krijg de lengte van een tak
-
-# krijg een punt op de tak vanaf lengte
 from classes_code.Point import Point, points
 
 
@@ -25,7 +22,7 @@ def get_branch_length(branch: Branch):
     return length
 
 
-# returns the closest point to distance from origin point of the branch
+# returns the closest point to distance from the first point of the branch
 def get_branchpoint_by_distance(branch, distance):
     length = 0.0
     p: Point
@@ -43,4 +40,7 @@ def get_branchpoint_by_distance(branch, distance):
             length += p_dist
         prev_p = p
     return prev_p
+
+def show_pruning_locations(ply, pruning_points):
+    pass
 
