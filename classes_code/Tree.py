@@ -2,7 +2,7 @@ import openalea.plantscan3d.serial as serial
 
 from classes_code.Branch import Branch, get_next
 from classes_code.Point import Point
-from classes_code.Pruning import get_branch_length, get_branchpoint_by_distance
+from classes_code.Pruning import get_branch_length
 from classes_code.Skeletonization import create_scene_and_skeletonize
 from classes_code.de_betere_pruning import get_pruning_type
 from graphs.visual import *
@@ -33,8 +33,7 @@ class Tree:
         self.determine_age()
 
         get_branch_length(self.get_branches()[5])
-        print(get_branchpoint_by_distance(self.get_branches()[5], get_branch_length(self.get_branches()[5]) - 2))
-        # get_pruning_type(self.get_branches()[2])
+        get_pruning_type(self.get_branches()[2])
 
         # Export the generated skeleton as a mtg file and save it under the input file name
         serial.writeMTGfile(OUTPUT_MTG_DIR + input_point_cloud_name.split(".")[0] + '.mtg',
