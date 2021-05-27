@@ -7,6 +7,7 @@ from classes_code.Skeletonization import create_scene_and_skeletonize
 from graphs.visual import *
 from utilities.configuration_file import *
 
+leader_threshold = 5
 
 class Tree:
     """
@@ -23,18 +24,22 @@ class Tree:
         # Determine the root branch
         self.root_branch = root if root is not None else self.determine_root(self.mtg)
 
-        # # Determine the branch end points
-        self.tree_start = Branch(branch_id="branch_{0}".format(self.root_branch.points[-1].vertex_id), depth=1,
-                                 points=[],
-                                 parent=self.root_branch)
-        self.tree_start.determine_branch(self.mtg, self.root_branch.points[-1].vertex_id)
+        self.tree_start = []
+        for point in self.mtg.Sons(self.root_branch.points[-1].vertex_id):
+            # # Determine the branch end points
+            branch = Branch(branch_id="branch_{0}".format(point), depth=1,
+                                     points=[],
+                                     parent=self.root_branch)
+            branch.determine_branch(self.mtg, point)
+            self.tree_start.append(branch)
 
-        self.determine_age()
+        self.determine_leaders()
 
         get_branch_length(self.get_branches()[5])
 
         print(get_branchpoint_by_distance(self.get_branches()[5], get_branch_length(self.get_branches()[5]) - 2))
         # get_pruning_type(self.get_branches()[2])
+        self.determine_age()
 
         for branch in self.get_branches():
             prune_branch(branch)
@@ -189,7 +194,12 @@ class Tree:
         gets the branches.
         :return: branches
         """
-        return [branch for branch in get_next(self.tree_start)]
+        all_branches = []
+        for branches in self.tree_start:
+            for branch in get_next(branches):
+                all_branches.append(branch)
+
+        return all_branches
 
     def get_root(self):
         """
@@ -207,6 +217,19 @@ class Tree:
             3. Langst doorlopende tak(not sure of dit werkt vraag boer) de totale afstand die de punten afleggen
         """
         # begin punt
-        start_point = self.root_branch.points[-1]
+        #start_point = self.root_branch.points[-1]
 
         branches = sorted(self.get_branches(), key=lambda branch: branch.depth, reverse=True)
+
+        for branch in branches:
+            if branch.parent == self.root_branch:
+                if(len(branch.points) > leader_threshold):
+                    branch.is_leader = True
+                else:
+                    self.root_branch.points.extend(branch.points)
+                    for child in branch.children:
+                        if len(child.points) > leader_threshold:
+                            child.is_leader = True
+                        child.parent = self.root_branch
+                        self.tree_start.append(child)
+                    self.tree_start.remove(branch)
