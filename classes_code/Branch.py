@@ -16,6 +16,7 @@ class Branch:
         self.depth = depth
         self.age = age
         self.is_leader = is_leader
+        self.is_pruned = False
 
     def next(self, point: Point):
         """
