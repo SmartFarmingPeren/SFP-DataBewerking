@@ -216,20 +216,20 @@ class Tree:
             2. Zit vast aan de stam(of dichtbij in iedergeval)
             3. Langst doorlopende tak(not sure of dit werkt vraag boer) de totale afstand die de punten afleggen
         """
-        # begin punt
-        #start_point = self.root_branch.points[-1]
 
         branches = sorted(self.get_branches(), key=lambda branch: branch.depth, reverse=True)
 
         for branch in branches:
             if branch.parent == self.root_branch:
-                if(len(branch.points) > leader_threshold):
+                if(len(branch.points) > leader_threshold) and len(branch.children) > 1:
                     branch.is_leader = True
+                    branch.age = 10
                 else:
                     self.root_branch.points.extend(branch.points)
                     for child in branch.children:
-                        if len(child.points) > leader_threshold:
+                        if len(child.points) > leader_threshold and len(branch.children) > 1:
                             child.is_leader = True
+                            branch.age = 10
                         child.parent = self.root_branch
                         self.tree_start.append(child)
                     self.tree_start.remove(branch)
