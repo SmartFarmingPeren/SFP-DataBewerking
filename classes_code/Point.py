@@ -1,4 +1,3 @@
-import numpy as np
 from openalea.plantgl.math import Vector3
 
 #List of all points in tree
@@ -10,10 +9,10 @@ class Point:
     The point class is used to store the vertex information from a mtg vertex.
     """
 
-    def __init__(self, vertex_id: int=0, position=Vector3(0.0, 0.0, 0.0), direction=Vector3(0.0, 0.0, 0.0), parent=None, radius: float=0.0):
+    def __init__(self, vertex_id: int, position, direction, parent, radius: float):
         self.vertex_id = vertex_id
-        self.position =  position
-        self.direction = direction
+        self.position = Vector3(position) if position is not None else Vector3(0.0, 0.0, 0.0)
+        self.direction = Vector3(direction) if direction is not None else Vector3(0.0, 0.0, 0.0)
         self.radius = radius
         self.parent = parent
         self.children = []
@@ -37,10 +36,6 @@ class Point:
                                                                             self.direction,
                                                                             self.parent,
                                                                             self.radius)
-
-    def distance_to(self, other_point: 'Point'):
-        length = np.linalg.norm(self.position - other_point.position)
-        return length
 
     @staticmethod
     def get_from_id(id):
@@ -71,7 +66,7 @@ class Point:
         if parent.get('vid') is not None:
             direction = Point.calculate_point_direction(vertex_obj.get('position'), parent.get('position'))
         else:
-            direction = Vector3(0.0, 0.0, 0.0)
+            direction = None
         point = Point(vertex_id=vertex_obj.get('vid'),
                       position=vertex_obj.get('position'),
                       direction=direction,
@@ -81,26 +76,21 @@ class Point:
 
     @staticmethod
     def calculate_point_direction(vertex, parent):
-        direction = Vector3(vertex - parent)
-        direction.normalize()
+        """
+        Source: https://stackoverflow.com/questions/40077594/find-direction-of-given-x-y-z-cordinates
 
-        return direction
+        The direction of a vector is usually defined by ignoring its length,
+        or alternatively by setting its length to one.
+        So we need to first define the length, which is
 
-        # """
-        # Source: https://stackoverflow.com/questions/40077594/find-direction-of-given-x-y-z-cordinates
-        #
-        # The direction of a vector is usually defined by ignoring its length,
-        # or alternatively by setting its length to one.
-        # So we need to first define the length, which is
-        #
-        # L = √(x*x + y*y + z*z).
-        #
-        # We can define the vector
-        #
-        # x/L, y/L, z/L
-        #
-        # which points in the same direction as x,y,z but with length one.
-        # """
+        L = √(x*x + y*y + z*z).
+
+        We can define the vector
+
+        x/L, y/L, z/L
+
+        which points in the same direction as x,y,z but with length one.
+        """
         # <<<<<<< HEAD
         #         vertex_x = vertex[0]
         #         vertex_y = vertex[1]
@@ -115,3 +105,7 @@ class Point:
         #
         #         return direction / length
         # =======
+        direction = Vector3(vertex - parent)
+        direction.normalize()
+
+        return direction
