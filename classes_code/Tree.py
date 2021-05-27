@@ -33,8 +33,13 @@ class Tree:
         self.determine_age()
 
         get_branch_length(self.get_branches()[5])
+
         print(get_branchpoint_by_distance(self.get_branches()[5], get_branch_length(self.get_branches()[5]) - 2))
         # get_pruning_type(self.get_branches()[2])
+
+        for branch in self.get_branches():
+            get_pruning_type(branch)
+
 
         # Export the generated skeleton as a mtg file and save it under the input file name
         serial.writeMTGfile(OUTPUT_MTG_DIR + input_point_cloud_name.split(".")[0] + '.mtg',

@@ -6,9 +6,9 @@ def main():
     """
     This is the main code used to create a tree object and divide the object into different branches.
     """
-    input_point_cloud_name = "Simpele_boom.ply"
+    input_point_cloud_name = "gen_9_15_04_expanded.ply"
     tree = Tree(input_point_cloud_name)
-    write(tree)
+    # write(tree)
 
 
 if __name__ == '__main__':
