@@ -1,3 +1,5 @@
+from openalea.plantgl.math import Vector3
+
 from classes_code.Point import Point
 
 
@@ -16,6 +18,7 @@ class Branch:
         self.depth = depth
         self.age = age
         self.is_leader = is_leader
+        self.is_pruned = False # This is a shit name but i could not think of something better - Luca (27-05-2021)
 
     def next(self, point: Point):
         """
