@@ -36,6 +36,7 @@ def write_branch(branch):
     :param branch: A branch object.
     :return: json data.
     """
+
     b_data = {'branch_id': branch.id,
               'age': branch.age,
               'depth': branch.depth,
