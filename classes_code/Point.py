@@ -1,3 +1,4 @@
+import numpy as np
 from openalea.plantgl.math import Vector3
 
 #List of all points in tree
@@ -73,6 +74,10 @@ class Point:
                       parent=parent.get('vid'),
                       radius=radius)
         return point
+
+    def distance_to(self, other_point: 'Point'):
+        length = np.linalg.norm(self.position - other_point.position)
+        return length
 
     @staticmethod
     def calculate_point_direction(vertex, parent):
