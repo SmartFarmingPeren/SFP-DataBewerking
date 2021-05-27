@@ -24,3 +24,8 @@ def get_branch_length(branch: Branch):
         prev_p = p
     return length
 
+# returns the closest point to distance from origin point of the branch
+def get_branchpoint_by_distance(branch, distance):
+    for p in branch.points:
+        pass
+
