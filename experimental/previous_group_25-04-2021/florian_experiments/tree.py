@@ -1,7 +1,8 @@
+import openalea.plantscan3d.mtgmanip as mm
 from openalea.plantgl.math._pglmath import Vector3
 from openalea.plantgl.scenegraph._pglsg import Scene
-import openalea.plantscan3d.mtgmanip as mm
 from openalea.plantscan3d.xumethod import xu_method
+
 import branch as br
 
 
@@ -34,7 +35,7 @@ class Boom:
                 i = i + 1
                 self.branche.append(br.branch())
                 self.branche[i].begin = x
-                print(self.branche[i-1].end, "en", self.branche[i].begin)
+                print(self.branche[i - 1].end, "en", self.branche[i].begin)
             opslag = len(self.tree.Sons(x, EdgeType='+'))
             if opslag != 0:  # aftakking gevonden
                 self.branche[i].makenext = 1
@@ -62,14 +63,13 @@ class Boom:
         xu_method(mtg, startfrom, points, binlength)
         return mtg
 
-
     def branchParent(self, branch):
         self.branches.parent = self.tree.Father(branch)
         return print("parent is ", self.branch.parent)
 
     # def branchAge(self):
 
-    def SnoeiPlek(self): # deze zooi moet nog wat aanpassingen krijgen. locatie klopt nog niet altijd.
+    def SnoeiPlek(self):  # deze zooi moet nog wat aanpassingen krijgen. locatie klopt nog niet altijd.
         # TODO: vanaf de leider zoeken, 1 jaar op 3 jaar.
         for x in self.tree.vertices():
             test = self.tree.Sons(x, EdgeType='+')  # blijkbaar werkt dit? aantal zonen geboren uit x

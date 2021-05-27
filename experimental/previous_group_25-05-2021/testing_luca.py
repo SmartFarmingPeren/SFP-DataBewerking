@@ -1,12 +1,10 @@
 import openalea.plantscan3d.mtgmanip as mm
-from openalea.mtg.aml import MTG
+import openalea.plantscan3d.serial as serial
 from openalea.plantgl.all import *
 from openalea.plantscan3d.xumethod import xu_method
 
-from utilities.debug_log_functions import *
-import openalea.plantscan3d.serial as serial
 from graphs.visual import *
-
+from utilities.debug_log_functions import *
 
 # class Branch:
 #     def __init__(self, vtx_start, vtx_end, age):
@@ -20,6 +18,7 @@ from graphs.visual import *
 #         self.v_id = id
 
 ROOTBRANCHAGE = 4
+
 
 def skeleton(points, binratio=50, k=20):
     """
@@ -66,9 +65,10 @@ def trunk(mtg):
     d = mtg.get_vertex_property(startpoint)
     for x in mtg:
         if len(mtg.Sons(x)) > 1:
-            mytrunk = Branch(startpoint, mtg.Father(x+1), ROOTBRANCHAGE)
+            mytrunk = Branch(startpoint, mtg.Father(x + 1), ROOTBRANCHAGE)
             break
     return mytrunk
+
 
 def branches(mtg):
     mylist = []
@@ -83,8 +83,8 @@ def branches(mtg):
             if (len(padje) > 3):
                 startpoint = padje[0]
                 for i in padje:
-                    #(any(x.start == startpoint for x in mylist) == False):                                             #voor elke splitsing
-                    #if mtg.Father(i, '+') != None:                                                                      #voor elke aftakking
+                    # (any(x.start == startpoint for x in mylist) == False):                                             #voor elke splitsing
+                    # if mtg.Father(i, '+') != None:                                                                      #voor elke aftakking
                     if len(mtg.Sons(i)) > 1:
                         mylist.append(Branch(startpoint, mtg.Father(i), count))
                         index = padje.index(mtg.index(i))
@@ -93,11 +93,8 @@ def branches(mtg):
     return mylist
 
 
-
-
-
-
-def pgltree2mtg(mtg, startfrom, parents, positions, radii=None, filter_short_branch=False, angle_between_trunk_and_lateral=60, nodelabel='N'):
+def pgltree2mtg(mtg, startfrom, parents, positions, radii=None, filter_short_branch=False,
+                angle_between_trunk_and_lateral=60, nodelabel='N'):
     from math import degrees, acos
 
     rootpos = Vector3(mtg.property('position')[startfrom])
@@ -137,7 +134,8 @@ def pgltree2mtg(mtg, startfrom, parents, positions, radii=None, filter_short_bra
             if len(mchildren) > 0:
                 mchildren.sort(key=lambda x: -clength[x])
                 first_edge_type = '<'
-                langle = degrees(acos(dot(direction(pos - npositions[parent]), direction(positions[mchildren[0]] - pos))))
+                langle = degrees(
+                    acos(dot(direction(pos - npositions[parent]), direction(positions[mchildren[0]] - pos))))
                 if langle > angle_between_trunk_and_lateral:
                     first_edge_type = '+'
                 edges_types = [first_edge_type] + ['+' for i in range(len(mchildren) - 1)]
@@ -166,12 +164,10 @@ class Branch:
         pass
 
 
-
 class Point:
     def __init__(self, vector, vid):
         self.vector3 = Vector3(vector)
         self.vid = vid
-
 
 
 def main():
@@ -190,7 +186,6 @@ def main():
     info_message("Plotting mtg as a graph")
     debug_message(std)
     plot(std)
-
 
     # tree = Tree()
     #
@@ -244,6 +239,7 @@ def main():
     # debug_message("start {0}".format(mytrunk.start))
     # debug_message("end {0}".format(mytrunk.end))
     # debug_message("age {0}".format(mytrunk.a))
+
 
 if __name__ == '__main__':
     main()

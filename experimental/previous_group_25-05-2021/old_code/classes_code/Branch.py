@@ -51,7 +51,7 @@ class Branch:
         """
 
         # Create branch points, first one being the start_point
-        branch_points = [Point.from_mtg(mtg.__getitem__(start_point))]
+        branch_points = [Point.from_mtg(mtg, start_point)]
         next_point = start_point
 
         # glorious while True by Luca
@@ -65,7 +65,7 @@ class Branch:
             elif len(children) == 1:
                 # create point from child, move up
                 child = children[0]
-                branch_points.append(Point.from_mtg(child))
+                branch_points.append(Point.from_mtg(mtg, child.get('vid')))
                 next_point = child.get('vid')
             # if point has more than 1 child
             elif len(children) >= 1:
@@ -80,13 +80,14 @@ class Branch:
                     # if child is a continuation (same as for single children)
                     else:
                         # create point from child, move up
-                        branch_points.append(Point.from_mtg(child))
+                        branch_points.append(Point.from_mtg(mtg, child.get('vid')))
                         next_point = child.get('vid')
                         has_single_child = True
                 if not has_single_child:
                     break
 
-        branch = Branch(branch_id="branch_" + str(start_point) * 10, age=1, sections=branch_points, parent=branch_points[0].parent)
+        branch = Branch(branch_id="branch_" + str(start_point) * 10, age=1, sections=branch_points,
+                        parent=branch_points[0].parent)
         return branch
 
 

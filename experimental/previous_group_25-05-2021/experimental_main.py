@@ -1,14 +1,14 @@
-import openalea.plantscan3d.mtgmanip as mm
-from openalea.mtg import MTG
-from openalea.plantgl.all import *
-from openalea.plantscan3d.xumethod import xu_method
-from openalea.mtg.aml import *
-import openalea.plantscan3d.serial as serial
-from graphs.visual import *
-import numpy
 import re
 
+import numpy
+import openalea.plantscan3d.mtgmanip as mm
+import openalea.plantscan3d.serial as serial
+from openalea.mtg import MTG
+from openalea.mtg.aml import *
+from openalea.plantgl.all import *
+from openalea.plantscan3d.xumethod import xu_method
 
+from graphs.visual import *
 from utilities.configuration_file import *
 
 
@@ -19,14 +19,12 @@ class Tree:
 
     def __init__(self, input_point_cloud_name):
         self.points = None
-        #self.mtg = MTG()
+        # self.mtg = MTG()
         self.xu_skeleton_bin_ratio = 10
         self.xu_skeleton_k = 20
 
         self.input_point_cloud_name = input_point_cloud_name
         self.create_scene_and_skeletonize()
-
-
 
         # HERE
         self.lowest_vertex = None
@@ -42,7 +40,7 @@ class Tree:
         self.g1 = MTG("test5.mtg")
         Activate(self.g1)
         self.vids_U = self.mtg.vertices()
-        self.branch_ends = []   #array with ends of branches
+        self.branch_ends = []  # array with ends of branches
         self.get_all_branch_ends(self.g1)
         print("branch_ends zijn: ", self.branch_ends)
         self.one_year_fork = []
@@ -96,7 +94,6 @@ class Tree:
             if point < self.lowest_vertex:
                 self.lowest_vertex = point
 
-
     def determine_root(self):
         for point in range(self.lowest_vertex, self.highest_vertex):
 
@@ -118,11 +115,11 @@ class Tree:
             print()
 
     def get_all_branch_ends(self, mtg):
-        #Geef van de mtg alle takken zonder sons terug
+        # Geef van de mtg alle takken zonder sons terug
         for i in self.vids_U:
             if mtg.Sons(i, RestrictedTo='NoRestriction', EdgeType='*') == [] and i != 1 and i != 0:
-                print ("takeinde = ", i)
-                #print ("items van child zijn ", mtg.__getitem__(i))
+                print("takeinde = ", i)
+                # print ("items van child zijn ", mtg.__getitem__(i))
                 item = mtg.__getitem__(i)
                 print("line = ", item.get('_line'))
                 self.branch_ends.append(item.get('vid'))
@@ -132,12 +129,12 @@ class Tree:
             print("i = ", i)
             self.v_array = [i]
             counter = 0
-            while(mtg.Father(self.v_array[counter], RestrictedTo='NoRestriction', EdgeType='+') == None):
-                print("self v_array = ",self.v_array)
+            while (mtg.Father(self.v_array[counter], RestrictedTo='NoRestriction', EdgeType='+') == None):
+                print("self v_array = ", self.v_array)
                 v_child = mtg.Father(self.v_array[counter], RestrictedTo='SameAxis', EdgeType='<')
-                #print("items van child zijn ", mtg.__getitem__(self.v_array[counter]))
-                #print("V_child = ", v_child)
-                #print("sons = ",mtg.Sons(self.v_array[counter], RestrictedTo='NoRestriction', EdgeType='+'))
+                # print("items van child zijn ", mtg.__getitem__(self.v_array[counter]))
+                # print("V_child = ", v_child)
+                # print("sons = ",mtg.Sons(self.v_array[counter], RestrictedTo='NoRestriction', EdgeType='+'))
                 if (v_child == []):
                     print("ERROR")
                 elif (v_child == None):
@@ -150,11 +147,11 @@ class Tree:
                     break
                 else:
                     self.v_array.append(v_child)
-                counter+=1
+                counter += 1
             else:
                 self.oneYears.append(Branch(self.v_array, self.mtg, 1))
 
-    def make_two_years(self,mtg):
+    def make_two_years(self, mtg):
         for i in self.oneYears:
             aftakking = i.get_aftakking_vertex()
             self.one_year_fork.append(aftakking)
@@ -164,35 +161,36 @@ class Tree:
             while (mtg.Father(self.tak_array[counter], RestrictedTo='NoRestriction', EdgeType='+') == None):
                 print("self tak_array = ", self.tak_array)
                 v_child = mtg.Father(self.tak_array[counter], RestrictedTo='SameAxis', EdgeType='<')
-                #print("items van child zijn ", mtg.__getitem__(self.tak_array[counter]))
-                #print("V_child = ", v_child)
+                # print("items van child zijn ", mtg.__getitem__(self.tak_array[counter]))
+                # print("V_child = ", v_child)
                 # print("sons = ",mtg.Sons(self.tak_array[counter], RestrictedTo='NoRestriction', EdgeType='+'))
                 if (v_child == []):
                     print("ERROR")
                 elif (v_child == None):
                     print("Einde tak ")
                     Tak = Branch(self.tak_array, self.mtg, 2, i)
-                    self.twoYears.append(Branch(self.tak_array, self.mtg,2, i))
+                    self.twoYears.append(Branch(self.tak_array, self.mtg, 2, i))
                     break
-                elif mtg.Sons(self.tak_array[counter], RestrictedTo='NoRestriction', EdgeType='+') != [] and counter>1:
+                elif mtg.Sons(self.tak_array[counter], RestrictedTo='NoRestriction',
+                              EdgeType='+') != [] and counter > 1:
                     print("Tak heeft hier een splitsing ")
                     Tak = Branch(self.tak_array, self.mtg, 2, i)
-                    self.twoYears.append(Branch(self.tak_array, self.mtg,2 , i))
+                    self.twoYears.append(Branch(self.tak_array, self.mtg, 2, i))
                     break
                 else:
                     self.tak_array.append(v_child)
                 counter += 1
             else:
-                #this part is suppose to check if a vertex is already in a branch. To prevent duplicates
-                #This does not work yet
-                #if (self.two_year_does_not_exist(self.tak_array)):
-                if (1==1):
-                    Tak = Branch(self.tak_array, self.mtg,2, i)
-                    self.twoYears.append(Branch(self.tak_array, self.mtg,2, i))
+                # this part is suppose to check if a vertex is already in a branch. To prevent duplicates
+                # This does not work yet
+                # if (self.two_year_does_not_exist(self.tak_array)):
+                if (1 == 1):
+                    Tak = Branch(self.tak_array, self.mtg, 2, i)
+                    self.twoYears.append(Branch(self.tak_array, self.mtg, 2, i))
                 else:
                     i.add_parent(Tak)
 
-    #def add_parent_to_branch(self):
+    # def add_parent_to_branch(self):
     def two_year_does_not_exist(self, tak_array):
         for i in self.twoYears:
             if any(elem in i.v_array for elem in tak_array):
@@ -204,13 +202,14 @@ class Tree:
 
     def print_one_year(self):
         for i in self.oneYears:
-            #print("i = ", i)
+            # print("i = ", i)
             i.printBranch()
 
     def print_two_year(self):
         for i in self.twoYears:
-            #print("i = ", i)
+            # print("i = ", i)
             i.printBranch()
+
 
 class Leader:
     def __init__(self):
@@ -226,7 +225,7 @@ class Branch:
         self.children = []
         self.children.append(child)
         # self.parent
-        #print("making branch", self.v_array)
+        # print("making branch", self.v_array)
 
     def printBranch(self):
         print(self.age, " year: ", self.v_array)
@@ -250,7 +249,7 @@ class Branch:
         return (v1)
 
     def getVertexPosition(mtg, v1):
-        #Please don't use this, just use vector3.x, vector3.y, vector3.z
+        # Please don't use this, just use vector3.x, vector3.y, vector3.z
         items = mtg.__getitem__(v1)
         print("keys: ", items.keys())
         print("position = ", items.get('position'))
@@ -272,6 +271,7 @@ class Branch:
         print("afstand v1 tot v2 ", afstand)
         # return afstands
 
+
 class Point:
     def __init__(self, vid, vector3, radius):
         self.vid = vid
@@ -292,8 +292,6 @@ def main():
 
     print("Creating tree object")
     object_tree = Tree(input_point_cloud_name)
-
-
 
     # mtg = object_tree.mtg
     # info_message("Converting and saving MTG to .mtg file")

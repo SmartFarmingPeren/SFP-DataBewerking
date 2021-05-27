@@ -1,8 +1,6 @@
 import openalea.plantscan3d.mtgmanip as mm
-from openalea.mtg.io import write_mtg
 from openalea.plantgl.math import Vector3
 from openalea.plantgl.scenegraph import Scene
-from openalea.plantscan3d.serial import max_order
 from openalea.plantscan3d.xumethod import xu_method
 
 from utilities.configuration_file import INPUT_POINT_CLOUDS_DIR, XU_SKELETON_BIN_RATIO, XU_SKELETON_K
@@ -43,13 +41,3 @@ def create_scene_and_skeletonize(input_point_cloud_name):
     point_cloud.swapCoordinates(1, 2)
     mtg = get_skeleton(point_cloud)
     return point_cloud, mtg
-
-
-def writeMTGfile(fn, g, properties=[('XX', 'REAL'), ('YY', 'REAL'), ('ZZ', 'REAL'), ('radius', 'REAL')]):
-    if properties == []:
-        properties = [(p, 'REAL') for p in g.property_names() if p not in ['edge_type', 'index', 'label']]
-    nb_tab = max_order(g)
-    str = write_mtg(g, properties, nb_tab=nb_tab)
-    f = open(fn, 'w+')
-    f.write(str)
-    f.close()

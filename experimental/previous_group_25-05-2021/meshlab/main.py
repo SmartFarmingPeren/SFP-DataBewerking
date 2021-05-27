@@ -1,5 +1,5 @@
-import os
 import pymeshlab
+
 from utilities.configuration_file import *
 from utilities.test_functions import *
 

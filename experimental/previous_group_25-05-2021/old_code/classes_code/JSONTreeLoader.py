@@ -1,8 +1,8 @@
+import json
 import os.path
 
 from classes_code.Branch import Branch, Section
 from classes_code.Tree import Tree
-import json
 
 directory = os.getcwd() + "\\outputs\\trees\\"
 

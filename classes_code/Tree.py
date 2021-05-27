@@ -1,14 +1,10 @@
-import copy
-
 import openalea.plantscan3d.serial as serial
-from openalea.plantgl.all import *
 
 from classes_code.Branch import Branch, get_next
 from classes_code.Point import Point
 from classes_code.Skeletonization import create_scene_and_skeletonize
 from graphs.visual import *
 from utilities.configuration_file import *
-from utilities.debug_log_functions import debug_message
 
 
 class Tree:
@@ -27,13 +23,10 @@ class Tree:
         self.root_branch = root if root is not None else self.determine_root(self.mtg)
 
         # # Determine the branch end points
-        # self.end_points = self.get_branch_ends()
-        # self.deepcopy_root_branch = copy.deepcopy(self.root_branch)
         self.tree_start = Branch(branch_id="branch_{0}".format(self.root_branch.points[-1].vertex_id), depth=1,
                                  points=[],
                                  parent=self.root_branch)
         self.tree_start.determine_branch(self.mtg, self.root_branch.points[-1].vertex_id)
-        # self.root_branch.determine_branch(self.mtg, self.root_branch.points[-1].vertex_id)
 
         self.determine_age()
 
@@ -72,21 +65,24 @@ class Tree:
             # If a point has more than 1 son only append the last point then break out of the loop.
             if len(mtg.Sons(point)) == 1:
                 # TODO direction TBD
-                root_branch.append(Point.from_mtg(mtg.__getitem__(point)))
+                root_branch.append(Point.from_mtg(mtg, point))
             else:
                 # TODO direction TBD
-                root_branch.append(Point.from_mtg(mtg.__getitem__(point)))
+                root_branch.append(Point.from_mtg(mtg, point))
                 # Check if the branch itself has more branches on it, if not it's just an extra branch on the root
                 for cp in mtg.Sons(point):
                     current_point = cp
-                    temp_branch.append(Point.from_mtg(mtg.__getitem__(current_point)))
+                    temp_branch.append(current_point)
                     while True:
                         if len(mtg.Sons(current_point)) == 1:
                             current_point = mtg.Sons(current_point)[0]
-                            temp_branch.append(Point.from_mtg(mtg.__getitem__(current_point)))
+                            temp_branch.append(current_point)
                         elif len(mtg.Sons(current_point)) == 0:
+                            temp_branch_on_root = []
+                            for point in temp_branch:
+                                temp_branch_on_root.append(Point.from_mtg(mtg, point))
                             branches_on_root.append(
-                                Branch(branch_id="branch_" + str(current_point), depth=1, points=temp_branch))
+                                Branch(branch_id="branch_" + str(temp_branch[0]), depth=1, points=temp_branch_on_root))
                             just_a_branch = 1
                             break
                         else:
@@ -110,8 +106,8 @@ class Tree:
     def determine_vertexes(mtg):
         """
         This function determines the lowest and highest vertex point.
-        :param mtg:
-        :return:
+        :param mtg: a mtg file
+        :return: lowest_vertex, highest_vertex
         """
         highest_vertex = 0
         lowest_vertex = float('inf')
@@ -133,31 +129,26 @@ class Tree:
         for vertex_id in range(lowest_vertex, highest_vertex + 1):
             if len(self.mtg.Sons(vertex_id)) == 0:
                 # debug_message("End point found at {0}".format(vertex_id))
-                end_points.append(Point.from_mtg(self.mtg.__getitem__(vertex_id)))
+                end_points.append(Point.from_mtg(self.mtg, vertex_id))
         return end_points
 
     def determine_age(self):
         """
-        DO NOT TOUCH IT WORKS
-        LEAVE THIS
+        This function determines the ages for each branch on the tree.
+        TODO: the age needs to be determined until a leader is found instead of until the root is found.
         """
         sorted_branches = sorted(self.get_branches(), key=lambda branch: branch.depth, reverse=True)
         year_one_branch = filter(self.filter_children, sorted_branches)
-        branches_ends_and_shit = []
-        for branch in sorted_branches:
-            print("[sorted] dept = {0}, id = {1}, parent {2}".format(branch.depth, branch.id, branch.parent))
-
+        end_branches = []
         for branch in year_one_branch:
-            branches_ends_and_shit.append(branch)
-            print("[year one] dept = {0}, id = {1}, parent {2}".format(branch.depth, branch.id, branch.parent))
+            end_branches.append(branch)
 
-        for branch in branches_ends_and_shit:
+        for branch in end_branches:
             root_found = False
             age = 1
-            while not root_found:  # THIS IS CURSED IM SO SORRY
+            while not root_found:
                 if branch.parent is not None and branch.age == -1:
                     branch.age = age
-                    print(branch.age)
                     if branch.parent is None:
                         root_found = True
                     else:
@@ -172,24 +163,38 @@ class Tree:
                     else:
                         root_found = True
 
-        # for branch in yearone_branch:
-        #     # if branch.parent is not None and branch.age == -1:
-        #     #     branch.age
-        #     if len(branch.children) == 0:
-        #         pass
-
-    def get_branch_by_id(self, branches, parent):
-        for branch in branches:
-            if branch.id == parent:
-                return branch
-        return -1
-
     @staticmethod
     def filter_children(branch):
+        """
+        Filter the children for a branch
+        :param branch: a branch
+        :return:
+        """
         return len(branch.children) == 0
 
     def get_branches(self):
+        """
+        gets the branches.
+        :return: branches
+        """
         return [branch for branch in get_next(self.tree_start)]
 
     def get_root(self):
+        """
+        Get the root branch
+        :return: root branch
+        """
         return self.root_branch
+
+    def determine_leaders(self, leader_count=0):
+        """
+        TODO: determine leaders is not yet implemented
+        leider def:
+            1. Heeft altijd 1 of meerdere kinderen
+            2. Zit vast aan de stam(of dichtbij in iedergeval)
+            3. Langst doorlopende tak(not sure of dit werkt vraag boer) de totale afstand die de punten afleggen
+        """
+        # begin punt
+        start_point = self.root_branch.points[-1]
+
+        branches = sorted(self.get_branches(), key=lambda branch: branch.depth, reverse=True)
