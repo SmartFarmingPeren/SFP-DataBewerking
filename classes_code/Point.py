@@ -71,7 +71,7 @@ class Point:
         if parent.get('vid') is not None:
             direction = Point.calculate_point_direction(vertex_obj.get('position'), parent.get('position'))
         else:
-            direction = Vector3(0.0, 0.0, 0.0)
+            direction = None
         point = Point(vertex_id=vertex_obj.get('vid'),
                       position=vertex_obj.get('position'),
                       direction=direction,
