@@ -8,7 +8,7 @@ def main():
     """
     input_point_cloud_name = "gen_9_15_04_expanded.ply"
     tree = Tree(input_point_cloud_name)
-    # write(tree)
+    write(tree)
 
 
 if __name__ == '__main__':
