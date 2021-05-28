@@ -26,6 +26,7 @@ Pip packages.
 
 1. `pip install pyvis`
 2. `pip install termcolor`
+3. `pip install vedo`
 
 ## Installation
 
