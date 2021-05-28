@@ -7,7 +7,6 @@ from classes_code.Skeletonization import create_scene_and_skeletonize
 from graphs.visual import *
 from utilities.configuration_file import *
 
-leader_threshold = 5
 
 class Tree:
     """
@@ -23,6 +22,7 @@ class Tree:
 
         # Determine the root branch
         self.root_branch = root if root is not None else self.determine_root(self.mtg)
+
 
         self.tree_start = []
         for point in self.mtg.Sons(self.root_branch.points[-1].vertex_id):
@@ -99,7 +99,7 @@ class Tree:
                             for point in temp_branch:
                                 temp_branch_on_root.append(Point.from_mtg(mtg, point))
                             branches_on_root.append(
-                                Branch(branch_id="branch_" + str(temp_branch[0]), depth=1, points=temp_branch_on_root))
+                                Branch(branch_id="branch_" + str(temp_branch[0]), depth=1, points=temp_branch_on_root, age=1))
                             just_a_branch = 1
                             break
                         else:
@@ -117,6 +117,7 @@ class Tree:
         for child in branches_on_root:
             child.parent = branch
         branch.children = branches_on_root
+        branch.is_leader = True
         return branch
 
     @staticmethod
@@ -189,10 +190,10 @@ class Tree:
         """
         return len(branch.children) == 0
 
-    def get_branches(self):
+    def get_tree_branches(self):
         """
         gets the branches.
-        :return: branches
+        :return: all_branches
         """
         all_branches = []
         for branches in self.tree_start:
@@ -200,6 +201,28 @@ class Tree:
                 all_branches.append(branch)
 
         return all_branches
+
+    def get_branches(self):
+        """
+        gets the branches.
+        :return: all_branches
+        """
+        all_branches = []
+        for branches in self.tree_start:
+            for branch in get_next(branches):
+                all_branches.append(branch)
+        for branch in get_next(self.root_branch):
+            all_branches.append(branch)
+
+        return all_branches
+
+    def get_leaders(self):
+        leaders = []
+        for branch in self.get_braches():
+            if(branch.is_leader):
+                leaders.append(branch)
+
+        return leaders
 
     def get_root(self):
         """
@@ -210,26 +233,25 @@ class Tree:
 
     def determine_leaders(self, leader_count=0):
         """
-        TODO: determine leaders is not yet implemented
         leider def:
             1. Heeft altijd 1 of meerdere kinderen
             2. Zit vast aan de stam(of dichtbij in iedergeval)
             3. Langst doorlopende tak(not sure of dit werkt vraag boer) de totale afstand die de punten afleggen
         """
 
-        branches = sorted(self.get_branches(), key=lambda branch: branch.depth, reverse=True)
+        branches = sorted(self.get_tree_branches(), key=lambda branch: branch.depth, reverse=True)
 
         for branch in branches:
             if branch.parent == self.root_branch:
-                if(len(branch.points) > leader_threshold) and len(branch.children) > 1:
+                if(len(branch.points) > LEADER_THRESHOLD) and len(branch.children) >= 1:
                     branch.is_leader = True
-                    branch.age = 10
+                    branch.age = -1
                 else:
                     self.root_branch.points.extend(branch.points)
                     for child in branch.children:
-                        if len(child.points) > leader_threshold and len(branch.children) > 1:
+                        if len(child.points) > LEADER_THRESHOLD and len(branch.children) > 1:
                             child.is_leader = True
-                            branch.age = 10
+                            branch.age = -1
                         child.parent = self.root_branch
                         self.tree_start.append(child)
                     self.tree_start.remove(branch)
