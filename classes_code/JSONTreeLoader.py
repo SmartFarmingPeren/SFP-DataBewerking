@@ -16,8 +16,14 @@ def write(tree):
     :return: json data.
     """
     data = {'root': write_branch(tree.get_root()),
+            'leaders': [],
             'branches': [],
             'point_cloud': tree.point_cloud_name}
+
+    for leader in tree.get_leaders():
+        l_data = write_branch(leader)
+
+        data['leaders'].append(l_data)
 
     for branch in tree.get_branches():
         b_data = write_branch(branch)
