@@ -37,7 +37,8 @@ class Branch:
                "Parent: %s \n" \
                "Children" "%s \n" \
                "Points: \n \t %s" % (
-                   self.id, self.age, self.is_leader, self.parent, self.children, [section.__str__() for section in self.points])
+                   self.id, self.age, self.is_leader, self.parent, self.children,
+                   [section.__str__() for section in self.points])
         pass
 
     # start_point is always a +N point of the branch
@@ -58,7 +59,7 @@ class Branch:
                 save each point with 1 child
                 save n+ points
         """
-        #for point in mtg.Sons(start_point):
+        # for point in mtg.Sons(start_point):
 
         # Create branch points, first one being the start_point
         self.points = [Point.from_mtg(mtg, start_point)]
@@ -100,6 +101,7 @@ class Branch:
                         continue
                 if old_point == current_point:
                     break
+
 
 def get_next(node):
     """

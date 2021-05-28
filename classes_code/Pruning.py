@@ -1,10 +1,9 @@
 import numpy as np
-
-from classes_code.Point import Point, points
 import vedo
 
 from Branch import Branch
-from utilities.debug_log_functions import debug_message, info_message, warning_message
+from classes_code.Point import Point
+from utilities.debug_log_functions import debug_message, warning_message
 
 CUT_DISTANCE = 1.0
 
@@ -69,6 +68,7 @@ def cut_close_to_fork(branch):
     return get_branchpoint_by_distance(branch, 0)
     # info_message("SAME AS 4: Branch cut close to the fork [RULE 3/4]")
 
+
 def cut_distance_from_fork(branch):
     return get_branchpoint_by_distance(branch, CUT_DISTANCE)
     # info_message("Branch cut 5cm from the fork [RULE 1]")
@@ -116,4 +116,3 @@ def show_pruning_locations(ply):
     locations.pointSize(10)
     locations.color([1, 0, 0])
     vedo.show([tree, locations])
-

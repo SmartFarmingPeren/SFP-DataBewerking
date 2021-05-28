@@ -23,16 +23,14 @@ class Tree:
         # Determine the root branch
         self.root_branch = root if root is not None else self.determine_root(self.mtg)
 
-
         self.tree_start = []
         for point in self.mtg.Sons(self.root_branch.points[-1].vertex_id):
             # # Determine the branch end points
             branch = Branch(branch_id="branch_{0}".format(point), depth=1,
-                                     points=[],
-                                     parent=self.root_branch)
+                            points=[],
+                            parent=self.root_branch)
             branch.determine_branch(self.mtg, point)
             self.tree_start.append(branch)
-
 
         get_branch_length(self.get_branches()[5])
 
@@ -46,7 +44,6 @@ class Tree:
             prune_branch(branch)
 
         show_pruning_locations(self.point_cloud)
-
 
         # Export the generated skeleton as a mtg file and save it under the input file name
         serial.writeMTGfile(OUTPUT_MTG_DIR + input_point_cloud_name.split(".")[0] + '.mtg',
@@ -100,7 +97,8 @@ class Tree:
                             for point in temp_branch:
                                 temp_branch_on_root.append(Point.from_mtg(mtg, point))
                             branches_on_root.append(
-                                Branch(branch_id="branch_" + str(temp_branch[0]), depth=1, points=temp_branch_on_root, age=1))
+                                Branch(branch_id="branch_" + str(temp_branch[0]), depth=1, points=temp_branch_on_root,
+                                       age=1))
                             just_a_branch = 1
                             break
                         else:
@@ -240,7 +238,7 @@ class Tree:
                 branches.append(branch)
 
         return branches
-    
+
     def get_root(self):
         """
         Get the root branch
@@ -260,7 +258,7 @@ class Tree:
 
         for branch in branches:
             if branch.parent == self.root_branch:
-                if(len(branch.points) > LEADER_THRESHOLD) and len(branch.children) >= 1:
+                if (len(branch.points) > LEADER_THRESHOLD) and len(branch.children) >= 1:
                     branch.is_leader = True
                     branch.age = -1
                 else:

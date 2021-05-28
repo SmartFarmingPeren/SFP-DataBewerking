@@ -1,7 +1,7 @@
 import numpy as np
 from openalea.plantgl.math import Vector3
 
-#List of all points in tree
+# List of all points in tree
 points = []
 
 
