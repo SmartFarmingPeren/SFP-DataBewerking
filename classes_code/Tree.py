@@ -240,6 +240,7 @@ class Tree:
                 branches.append(branch)
 
         return branches
+    
     def get_root(self):
         """
         Get the root branch
