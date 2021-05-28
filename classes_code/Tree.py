@@ -33,13 +33,14 @@ class Tree:
             branch.determine_branch(self.mtg, point)
             self.tree_start.append(branch)
 
-        self.determine_leaders()
 
         get_branch_length(self.get_branches()[5])
 
         print(get_branchpoint_by_distance(self.get_branches()[5], get_branch_length(self.get_branches()[5]) - 2))
         # get_pruning_type(self.get_branches()[2])
         self.determine_age()
+
+        self.determine_leaders()
 
         for branch in self.get_branches():
             prune_branch(branch)
@@ -192,19 +193,19 @@ class Tree:
 
     def get_tree_branches(self):
         """
-        gets the branches.
-        :return: all_branches
+        gets the branches without root.
+        :return: tree_branches
         """
-        all_branches = []
+        tree_branches = []
         for branches in self.tree_start:
             for branch in get_next(branches):
-                all_branches.append(branch)
+                tree_branches.append(branch)
 
-        return all_branches
+        return tree_branches
 
     def get_branches(self):
         """
-        gets the branches.
+        gets the all the branches including root.
         :return: all_branches
         """
         all_branches = []
@@ -217,13 +218,28 @@ class Tree:
         return all_branches
 
     def get_leaders(self):
+        """
+        gets the leaders from the tree excluding the root
+        :return: leaders
+        """
         leaders = []
-        for branch in self.get_braches():
-            if(branch.is_leader):
+        for branch in self.get_branches():
+            if branch.is_leader and branch.parent is not None:
                 leaders.append(branch)
 
         return leaders
 
+    def get_non_leaders(self):
+        """
+        gets all the non leaders in the tree
+        :return: branches
+        """
+        branches = []
+        for branch in self.get_branches():
+            if not branch.is_leader:
+                branches.append(branch)
+
+        return branches
     def get_root(self):
         """
         Get the root branch
