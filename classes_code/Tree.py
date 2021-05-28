@@ -97,7 +97,7 @@ class Tree:
                             for point in temp_branch:
                                 temp_branch_on_root.append(Point.from_mtg(mtg, point))
                             branches_on_root.append(
-                                Branch(branch_id="branch_" + str(temp_branch[0]), depth=1, points=temp_branch_on_root,
+                                Branch(branch_id="branch_" + str(cp), depth=1, points=temp_branch_on_root,
                                        age=1))
                             just_a_branch = 1
                             break
