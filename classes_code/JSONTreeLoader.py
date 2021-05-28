@@ -25,7 +25,7 @@ def write(tree):
 
         data['leaders'].append(l_data)
 
-    for branch in tree.get_branches():
+    for branch in tree.get_non_leaders():
         b_data = write_branch(branch)
 
         data['branches'].append(b_data)
