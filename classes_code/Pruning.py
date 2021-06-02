@@ -111,8 +111,9 @@ def get_branchpoint_by_distance(branch, distance):
 
 def show_pruning_locations(ply):
     tree = vedo.Points([np.array([p.x, p.y, p.z]) for p in ply])
-    tree.color([0, 1, 0], .1)
+    tree.color([0.4, 0.2, 0], .8)
     locations = vedo.Points([np.array([p.position.x, p.position.y, p.position.z]) for p in pruning_locations])
     locations.pointSize(10)
-    locations.color([1, 0, 0])
-    vedo.show([tree, locations])
+    locations.color([0, 1, .5])
+
+    vedo.show([tree, locations], bg="Gray")
