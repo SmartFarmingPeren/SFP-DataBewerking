@@ -30,7 +30,7 @@ def write(tree):
 
         data['branches'].append(b_data)
 
-    file = open(directory + "tree0.json", 'w')  # TODO add dynamic writing
+    file = open(directory + tree.point_cloud_name.split(".")[0] + ".json", 'w')
     file.write(json.dumps(data))
     file.close()
     return data
