@@ -264,7 +264,7 @@ class Tree:
                 else:
                     self.root_branch.points.extend(branch.points)
                     for child in branch.children:
-                        if len(child.points) > LEADER_THRESHOLD and len(branch.children) > 1:
+                        if len(child.points) > LEADER_THRESHOLD and len(branch.children) >= 1:
                             child.is_leader = True
                             branch.age = -1
                         child.parent = self.root_branch
