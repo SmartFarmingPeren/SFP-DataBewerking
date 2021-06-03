@@ -36,9 +36,10 @@ class Tree:
 
         print(get_branchpoint_by_distance(self.get_branches()[5], get_branch_length(self.get_branches()[5]) - 2))
         # get_pruning_type(self.get_branches()[2])
-        self.determine_age()
 
         self.determine_leaders()
+
+        self.determine_age()
 
         for branch in self.get_branches():
             prune_branch(branch)
@@ -161,24 +162,22 @@ class Tree:
             end_branches.append(branch)
 
         for branch in end_branches:
-            root_found = False
+            Leader_found = False
             age = 1
-            while not root_found:
-                if branch.parent is not None and branch.age == -1:
-                    branch.age = age
-                    if branch.parent is None:
-                        root_found = True
-                    else:
-                        if branch.parent is not None:
-                            branch = branch.parent
-                            age += 1
-                        else:
-                            root_found = True
-                else:
-                    if branch.parent is not None:
+            while not Leader_found:
+                if branch.parent is not None:
+                    if not branch.parent.is_leader and branch.age == -1:
+                        branch.age = age
                         branch = branch.parent
+                        age += 1
                     else:
-                        root_found = True
+                        if not branch.parent.is_leader:
+                            branch = branch.parent
+                        else:
+                            branch.age = age
+                            Leader_found = True
+                else:
+                    Leader_found = True
 
     @staticmethod
     def filter_children(branch):
