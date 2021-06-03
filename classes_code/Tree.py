@@ -153,7 +153,6 @@ class Tree:
     def determine_age(self):
         """
         This function determines the ages for each branch on the tree.
-        TODO: the age needs to be determined until a leader is found instead of until the root is found.
         """
         sorted_branches = sorted(self.get_branches(), key=lambda branch: branch.depth, reverse=True)
         year_one_branch = filter(self.filter_children, sorted_branches)
