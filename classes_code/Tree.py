@@ -80,10 +80,8 @@ class Tree:
                 parent = -1
             # If a point has more than 1 son only append the last point then break out of the loop.
             if len(mtg.Sons(point)) == 1:
-                # TODO direction TBD
                 root_branch.append(Point.from_mtg(mtg, point))
             else:
-                # TODO direction TBD
                 root_branch.append(Point.from_mtg(mtg, point))
                 # Check if the branch itself has more branches on it, if not it's just an extra branch on the root
                 for cp in mtg.Sons(point):

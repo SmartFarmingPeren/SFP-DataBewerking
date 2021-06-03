@@ -18,14 +18,6 @@ class Branch:
         self.is_leader = is_leader
         self.is_pruned = False
 
-    def next(self, point: Point):
-        """
-        TODO: not implemented yet.
-        Gets the next point connected to a point.
-        :param point: a point object.
-        """
-        pass
-
     def __str__(self):
         """
         This function makes it possible to do a print(branch).
