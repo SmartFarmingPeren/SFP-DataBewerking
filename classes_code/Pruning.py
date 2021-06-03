@@ -124,16 +124,28 @@ def cut_point_cloud_points():
     TODO just do it!!!
     """
 
+# TODO, redo using Cython https://cython.readthedocs.io/en/latest/src/tutorial/cython_tutorial.html
 def align_point_cloud_with_mtg(point_cloud, points):
     """"TODO"""
-    for point in point_cloud:
-        closest_point = points[0]
-        distance = 10000000000
-        for mtg_point in points:
-            new_distance = Point.vector_distance_to(point, mtg_point.position)
-            if(new_distance < distance):
-                distance = new_distance
-                closest_point = mtg_point
-        closest_point.point_cloud_points.append(point)
-    for mtg_point in points:
-        print(mtg_point.point_cloud_points)
+    pc: np.array = np.asarray(point_cloud).copy()
+
+    pc = sorted(pc, key=lambda p: p[0], reverse=False)
+
+    i = 0
+    while pc[i][0]:
+        i += 1
+
+
+    print(pc)
+    # for point in point_cloud:
+    #     closest_point = points[0]
+    #     distance = 10000000000
+    #     for mtg_point in pts[0:10]:
+    #         new_distance = Point.vector_distance_to(point, mtg_point.position)
+    #         if(new_distance < distance):
+    #             distance = new_distance
+    #             closest_point = mtg_point
+    #     closest_point.point_cloud_points.append(point)
+    #     # print(closest_point)
+    # for mtg_point in points:
+    #     print(mtg_point.point_cloud_points)
