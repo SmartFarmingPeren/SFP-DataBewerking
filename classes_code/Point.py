@@ -17,6 +17,7 @@ class Point:
         self.radius = radius
         self.parent = parent
         self.children = []
+        self.point_cloud_points = []
         check = True
         # Checks to see if current point already exists
         for point in points:
@@ -78,6 +79,10 @@ class Point:
     def distance_to(self, other_point: 'Point'):
         length = np.linalg.norm(self.position - other_point.position)
         return length
+
+    @staticmethod
+    def vector_distance_to(v1, v2):
+        return np.linalg.norm(v1 - v2)
 
     @staticmethod
     def calculate_point_direction(vertex, parent):

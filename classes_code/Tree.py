@@ -1,8 +1,8 @@
 import openalea.plantscan3d.serial as serial
 
 from classes_code.Branch import Branch, get_next
-from classes_code.Point import Point
-from classes_code.Pruning import get_branch_length, get_branchpoint_by_distance, prune_branch, show_pruning_locations
+from classes_code.Point import Point, points
+from classes_code.Pruning import get_branch_length, get_branchpoint_by_distance, prune_branch, show_pruning_locations, align_point_cloud_with_mtg
 from classes_code.Skeletonization import create_scene_and_skeletonize
 from graphs.visual import *
 from utilities.configuration_file import *
@@ -45,6 +45,8 @@ class Tree:
             prune_branch(branch)
 
         show_pruning_locations(self.point_cloud)
+
+        align_point_cloud_with_mtg(self.point_cloud, points)
 
         # Export the generated skeleton as a mtg file and save it under the input file name
         serial.writeMTGfile(OUTPUT_MTG_DIR + input_point_cloud_name.split(".")[0] + '.mtg',
