@@ -136,8 +136,7 @@ def cut_point_cloud_points(branches: [Branch]):
     f = open("gesnoeidboompie.xyz", "w")
     for point in points:
         for pc_point in point.point_cloud_points:
-            aids = "{0} {1} {2}\n".format(pc_point.x, pc_point.z, pc_point.y,)
-            f.write(aids)
+            f.write("{0} {1} {2}\n".format(pc_point.x, pc_point.z, pc_point.y,))
     f.close()
 
 
