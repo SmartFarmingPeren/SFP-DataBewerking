@@ -119,33 +119,61 @@ def show_pruning_locations(ply):
 
     vedo.show([tree, locations], bg="Gray")\
 
-def cut_point_cloud_points():
-    """"
-    TODO just do it!!!
+def cut_point_cloud_points(branches: [Branch]):
     """
+    1. Vergelijk mtg punten met de snoeilocaties
+    2. voor alle punten remove self and children
+    3. write voor de overgebleven punten een pointcloud.
+    """
+    for location in pruning_locations:
+        print(location)
+        for branch in branches:
+            print(branch.points.index(location))
+            # for point in branch.points:
+            #     print("\n\n\n")
+            #     print(point)
+            #     print(branch.points.index(point))
+            #     print(branch.points[branch.points.index(point)])
+            #     print("\n\n\n")
+                # if point.position == location.position:
+
+
+
 
 # TODO, redo using Cython https://cython.readthedocs.io/en/latest/src/tutorial/cython_tutorial.html
 def align_point_cloud_with_mtg(point_cloud, points):
-    """"TODO"""
-    pc: np.array = np.asarray(point_cloud).copy()
+    for point in point_cloud:
+        closest_point = points[0]
+        distance = 10000000000
+        for mtg_point in points:
+            new_distance = Point.vector_distance_to(point, mtg_point.position)
+            if(new_distance < distance):
+                distance = new_distance
+                closest_point = mtg_point
+        closest_point.point_cloud_points.append(point)
+    for mtg_point in points:
+        print(mtg_point.point_cloud_points)
 
-    pc = sorted(pc, key=lambda p: p[0], reverse=False)
-
-    i = 0
-    while pc[i][0]:
-        i += 1
-
-
-    print(pc)
-    # for point in point_cloud:
-    #     closest_point = points[0]
-    #     distance = 10000000000
-    #     for mtg_point in pts[0:10]:
-    #         new_distance = Point.vector_distance_to(point, mtg_point.position)
-    #         if(new_distance < distance):
-    #             distance = new_distance
-    #             closest_point = mtg_point
-    #     closest_point.point_cloud_points.append(point)
-    #     # print(closest_point)
-    # for mtg_point in points:
-    #     print(mtg_point.point_cloud_points)
+    # """"TODO"""
+    # pc: np.array = np.asarray(point_cloud).copy()
+    #
+    # pc = sorted(pc, key=lambda p: p[0], reverse=False)
+    #
+    # i = 0
+    # while pc[i][0]:
+    #     i += 1
+    #
+    #
+    # print(pc)
+    # # for point in point_cloud:
+    # #     closest_point = points[0]
+    # #     distance = 10000000000
+    # #     for mtg_point in pts[0:10]:
+    # #         new_distance = Point.vector_distance_to(point, mtg_point.position)
+    # #         if(new_distance < distance):
+    # #             distance = new_distance
+    # #             closest_point = mtg_point
+    # #     closest_point.point_cloud_points.append(point)
+    # #     # print(closest_point)
+    # # for mtg_point in points:
+    # #     print(mtg_point.point_cloud_points)

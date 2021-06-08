@@ -186,25 +186,7 @@ def main():
     info_message("Plotting mtg as a graph")
     debug_message(std)
     plot(std)
-
     # tree = Tree()
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
     # print(mtg.property('position')[3])
     # print(mtg.nb_vertices())
     # lowest_position = 9999

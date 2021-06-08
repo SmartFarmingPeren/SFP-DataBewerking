@@ -55,7 +55,10 @@ def write_branch(branch):
                   'position': [point.position.x, point.position.y, point.position.z],
                   'direction': [point.direction[0], point.direction[1], point.direction[2]],
                   'radius': point.radius,
-                  'parent': point.parent if point.parent is not None else "null"}
+                  'parent': point.parent if point.parent is not None else "null",
+                  'point_cloud_points': []}
+        for vector3 in point.point_cloud_points:
+            p_data['point_cloud_points'].append([vector3.x, vector3.y, vector3.z])
         b_data['points'].append(p_data)
 
     for child in branch.children:
