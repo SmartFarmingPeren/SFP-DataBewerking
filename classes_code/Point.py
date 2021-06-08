@@ -28,7 +28,7 @@ class Point:
             # Parent can be None if it is the first point
             if self.parent != None:
                 # Add point_id to parents child list
-                Point.get_from_id(self.parent).children.append(self.vertex_id)
+                Point.get_from_id(self.parent).children.append(self)
             # Add current point to all point list
             points.append(self)
 

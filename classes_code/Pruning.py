@@ -2,10 +2,10 @@ import numpy as np
 import vedo
 
 from Branch import Branch
-from classes_code.Point import Point
+from classes_code.Point import Point, points
 from utilities.debug_log_functions import debug_message, warning_message
 
-CUT_DISTANCE = 1.0
+CUT_DISTANCE = 10
 
 pruning_locations = []
 
@@ -125,19 +125,27 @@ def cut_point_cloud_points(branches: [Branch]):
     2. voor alle punten remove self and children
     3. write voor de overgebleven punten een pointcloud.
     """
+
     for location in pruning_locations:
-        print(location)
         for branch in branches:
-            print(branch.points.index(location))
-            # for point in branch.points:
-            #     print("\n\n\n")
-            #     print(point)
-            #     print(branch.points.index(point))
-            #     print(branch.points[branch.points.index(point)])
-            #     print("\n\n\n")
-                # if point.position == location.position:
+            for point in branch.points:
+                if point.position == location.position:
+                    debug_message("MTG POINT NEEDS TO BE PRUNED")
+                    cut_point(point)
+
+    f = open("gesnoeidboompie.xyz", "w")
+    for point in points:
+        for pc_point in point.point_cloud_points:
+            aids = "{0} {1} {2}\n".format(pc_point.x, pc_point.z, pc_point.y,)
+            f.write(aids)
+    f.close()
 
 
+def cut_point(point : Point):
+    for child in point.children:
+        cut_point(child)
+    points.remove(point)
+    debug_message("removed point {0}".format(point.vertex_id))
 
 
 # TODO, redo using Cython https://cython.readthedocs.io/en/latest/src/tutorial/cython_tutorial.html
