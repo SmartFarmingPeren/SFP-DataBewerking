@@ -151,25 +151,16 @@ def cut_point(point : Point):
 
 # TODO, redo using Cython https://cython.readthedocs.io/en/latest/src/tutorial/cython_tutorial.html
 def align_point_cloud_with_mtg(point_cloud, points):
-    point_cloud.swapCoordinates(2, 1)
     libname = str(pathlib.Path().absolute()) + "\classes_code\DBL.dll"
     c_lib = CDLL(libname)
     countArr = []
-    for i in range(756):
-        countArr.append(0)
 
     arr = []
     for p in points:
-        arr.append([c_float(p.position[0]), c_float(p.position[1]), c_float(p.position[2])])
+        arr.append([p.position[0], p.position[1], p.position[2]])
     sendArray = (c_float * len(arr[0]) * len(arr))(*(tuple(i) for i in arr))
 
     for point in point_cloud:
         pointNum = c_lib.CloserTo(c_float(point[0]), c_float(point[1]), c_float(point[2]), sendArray, c_int(len(points)))
         closest_point = points[pointNum]
         closest_point.point_cloud_points.append(point)
-        countArr[pointNum] += 1
-
-    f = open("mtg.xyz", "w")
-    for point in points:
-        f.write("{0} {1} {2}\n".format(point.position[0], point.position[1], point.position[2]))
-    f.close()
