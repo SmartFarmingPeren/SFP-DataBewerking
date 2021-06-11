@@ -10,7 +10,7 @@ def main():
     This is the main code used to create a tree object and divide the object into different branches.
     """
     start_time = time.time()
-    input_point_cloud_name = "original_tree.ply"
+    input_point_cloud_name = "testdit.ply"
     tree = Tree(input_point_cloud_name)
     write(tree)
     print("Runtime: {0} seconds".format((time.time() - start_time)))

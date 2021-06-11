@@ -1,8 +1,6 @@
 import numpy as np
 import vedo
-import pathlib
 
-from ctypes import *
 from Branch import Branch
 from classes_code.Point import Point, points
 from utilities.debug_log_functions import debug_message, warning_message
@@ -151,14 +149,11 @@ def cut_point(point : Point):
 
 # TODO, redo using Cython https://cython.readthedocs.io/en/latest/src/tutorial/cython_tutorial.html
 def align_point_cloud_with_mtg(point_cloud, points):
-    libname = str(pathlib.Path().absolute()) + "\classes_code\DBL.dll"
-    print(libname)
-    c_lib = CDLL(libname)
     for point in point_cloud:
         closest_point = points[0]
         distance = 10000000000
         for mtg_point in points:
-            new_distance = c_lib.CloserTo(c_float(point[0]), c_float(point[1]), c_float(point[2]), c_float(mtg_point.position[0]), c_float(mtg_point.position[1]), c_float(mtg_point.position[2]))
+            new_distance = Point.vector_distance_to(point, mtg_point.position)
             if(new_distance < distance):
                 distance = new_distance
                 closest_point = mtg_point
