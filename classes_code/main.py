@@ -1,7 +1,7 @@
 import datetime
 import time
 
-from classes_code.JSONTreeLoader import write
+from classes_code.JSONTreeLoader import write, read
 from classes_code.Tree import Tree
 
 
@@ -13,6 +13,7 @@ def main():
     input_point_cloud_name = "Expanded.ply"
     tree = Tree(input_point_cloud_name)
     write(tree)
+    tree_copy = read("gen_9_15_04_expanded_filtered.json")
     print("Runtime: {0} seconds".format((time.time() - start_time)))
 
 
