@@ -111,16 +111,6 @@ def get_branchpoint_by_distance(branch, distance):
     return prev_p
 
 
-def show_pruning_locations(ply):
-    tree = vedo.Points([np.array([p.x, p.y, p.z]) for p in ply])
-    tree.color([0.4, 0.2, 0], .8)
-    tree.pointSize(1)
-    locations = vedo.Points([np.array([p.position.x, p.position.y, p.position.z]) for p in pruning_locations])
-    locations.pointSize(10)
-    locations.color([0, 1, .5])
-
-    vedo.show([tree, locations], bg="Gray")\
-
 def cut_point_cloud_points(branches: [Branch]):
     """
     1. Vergelijk mtg punten met de snoeilocaties
@@ -145,7 +135,8 @@ def cut_point_cloud_points(branches: [Branch]):
 def cut_point(point : Point):
     for child in point.children:
         cut_point(child)
-    points.remove(point)
+    if points(point) != -1:
+        points.remove(point)
     debug_message("removed point {0}".format(point.vertex_id))
 
 
@@ -164,3 +155,32 @@ def align_point_cloud_with_mtg(point_cloud, points):
         pointNum = c_lib.CloserTo(c_float(point[0]), c_float(point[1]), c_float(point[2]), sendArray, c_int(len(points)))
         closest_point = points[pointNum]
         closest_point.point_cloud_points.append(point)
+
+
+def show_pruning_locations(ply):
+    tree = vedo.Points([np.array([p.x, p.y, p.z]) for p in ply])
+    tree.color([0.4, 0.2, 0], .8)
+    tree.pointSize(1)
+    locations = vedo.Points([np.array([p.position.x, p.position.y, p.position.z]) for p in pruning_locations])
+    locations.pointSize(10)
+    locations.color([0, 1, .5])
+
+    vedo.show([tree, locations], bg="Gray")
+
+
+def show_cut_tree(pc):
+    tree = vedo.Points([np.array([p.x, p.y, p.z]) for p in pc])
+    tree.color([0.4, 0.2, 0], .8)
+    tree.pointSize(1)
+    locations = vedo.Points([np.array([p.position.x, p.position.y, p.position.z]) for p in pruning_locations])
+    locations.pointSize(10)
+    locations.color([0, 1, .5])
+    #
+    # vedo.show([tree], bg="Gray")
+
+
+def write_locations_to_xyz(path):
+    f = open(path, "w")
+    for p in pruning_locations:
+        f.write("%f %f %f\n" % (p.position.x, p.position.y, p.position.z))
+    f.close()
