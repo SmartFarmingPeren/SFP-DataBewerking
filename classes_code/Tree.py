@@ -49,9 +49,9 @@ class Tree:
 
         write_locations_to_xyz(OUTPUT_DIR + input_point_cloud_name.split(".")[0] + "_locations.xyz")
 
-        # align_point_cloud_with_mtg(self.point_cloud, points)
-        # cut_point_cloud_points(self.get_branches())
-        # show_cut_tree(self.point_cloud)
+        align_point_cloud_with_mtg(self.point_cloud, points)
+        cut_point_cloud_points(self.get_branches())
+        show_cut_tree(self.point_cloud)
 
         # Export the generated skeleton as a mtg file and save it under the input file name
         serial.writeMTGfile(OUTPUT_MTG_DIR + input_point_cloud_name.split(".")[0] + '.mtg',

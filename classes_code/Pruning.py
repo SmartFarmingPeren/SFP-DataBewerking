@@ -135,7 +135,7 @@ def cut_point_cloud_points(branches: [Branch]):
 def cut_point(point : Point):
     for child in point.children:
         cut_point(child)
-    if points(point) != -1:
+    if Point.get_from_id(point.vertex_id) == point:
         points.remove(point)
     debug_message("removed point {0}".format(point.vertex_id))
 
