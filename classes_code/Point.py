@@ -18,6 +18,7 @@ class Point:
         self.parent = parent
         self.children = []
         self.point_cloud_points = []
+        self.pruning_rule = 0
         check = True
         # Checks to see if current point already exists
         for point in points:

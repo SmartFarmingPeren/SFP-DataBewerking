@@ -3,7 +3,7 @@ import openalea.plantscan3d.serial as serial
 from classes_code.Branch import Branch, get_next
 from classes_code.Point import Point, points
 from classes_code.Pruning import get_branch_length, get_branchpoint_by_distance, prune_branch, show_pruning_locations, \
-    align_point_cloud_with_mtg, cut_point_cloud_points, show_cut_tree, write_locations_to_xyz
+    align_point_cloud_with_mtg, cut_point_cloud_points, show_cut_tree, write_locations_to_xyz, show_pruning_locations_color
 from classes_code.Skeletonization import create_scene_and_skeletonize
 from graphs.visual import *
 from utilities.configuration_file import *
@@ -45,7 +45,7 @@ class Tree:
         for branch in self.get_branches():
             prune_branch(branch)
 
-        show_pruning_locations(self.point_cloud)
+        show_pruning_locations_color(self.point_cloud)
 
         write_locations_to_xyz(OUTPUT_DIR + input_point_cloud_name.split(".")[0] + "_locations.xyz")
 

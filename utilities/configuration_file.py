@@ -1,8 +1,8 @@
 import os
 
 # [Static skeletonization values]
-XU_SKELETON_BIN_RATIO = 80  # Default value = 80
-XU_SKELETON_K = 20  # Default value = 20
+XU_SKELETON_BIN_RATIO = 30  # Default value = 80
+XU_SKELETON_K = 10  # Default value = 20
 
 # [Static Tree values]
 LEADER_THRESHOLD = 5

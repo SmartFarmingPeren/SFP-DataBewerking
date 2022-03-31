@@ -34,6 +34,8 @@ def prune_branch(branch: Branch):
                 debug_message(
                     "RULE 2: Branch age:{0}, Parent is leader:{1}".format(branch.age, branch.parent.is_leader))
                 pruning_locations.append(cut_distance_from_top(branch))
+                #print('asdfasdfasdfa')
+                pruning_locations[len(pruning_locations) - 1].pruning_rule = 2
                 branch.is_pruned = True
         else:
             warning_message("Child already pruned")
@@ -47,10 +49,12 @@ def prune_branch(branch: Branch):
                         first_child_found = True
                         debug_message("RULE 1(RULE3): Branch age:{0}, Child age:{1}".format(branch.age, child.age))
                         pruning_locations.append(cut_distance_from_fork(child))
+                        pruning_locations[len(pruning_locations) - 1].pruning_rule = 1
                         child.is_pruned = True
                     else:
                         debug_message("RULE 3: Branch age:{0}, Child age:{1}".format(branch.age, child.age))
                         pruning_locations.append(cut_close_to_fork(child))
+                        pruning_locations[len(pruning_locations) - 1].pruning_rule = 3
                         child.is_pruned = True
             else:
                 warning_message("Child already pruned")
@@ -61,6 +65,7 @@ def prune_branch(branch: Branch):
                 if child.age == 1:
                     debug_message("RULE 4: Branch age:{0}, Child age:{1}".format(branch.age, child.age))
                     pruning_locations.append(cut_close_to_fork(child))
+                    pruning_locations[len(pruning_locations) - 1].pruning_rule = 4
                     child.is_pruned = True
             else:
                 warning_message("Child already pruned")
@@ -163,10 +168,47 @@ def show_pruning_locations(ply):
     tree.pointSize(1)
     locations = vedo.Points([np.array([p.position.x, p.position.y, p.position.z]) for p in pruning_locations])
     locations.pointSize(10)
+
     locations.color([0, 1, .5])
 
     vedo.show([tree, locations], bg="Gray")
 
+def show_pruning_locations_color(ply):
+    tree = vedo.Points([np.array([p.x, p.y, p.z]) for p in ply])
+    tree.color([0.4, 0.2, 0], .8)
+    tree.pointSize(1)
+    locations = vedo.Points([np.array([p.position.x, p.position.y, p.position.z]) for p in pruning_locations])
+    rule1 = []
+    rule2 = []
+    rule3 = []
+    rule4 = []
+    for p in pruning_locations:
+        if p.pruning_rule is 1:
+            rule1.append(p)
+        if p.pruning_rule is 2:
+            rule2.append(p)
+        if p.pruning_rule is 3:
+            rule3.append(p)
+        if p.pruning_rule is 4:
+            rule4.append(p)
+
+    rule1P = vedo.Points([np.array([p.position.x, p.position.y, p.position.z]) for p in rule1])
+    rule1P.pointSize(10)
+    rule1P.color([1, 0, 0], 1)
+
+    rule2P = vedo.Points([np.array([p.position.x, p.position.y, p.position.z]) for p in rule2])
+    rule2P.pointSize(10)
+    rule2P.color([0, 1, 0], 1)
+
+    rule3P = vedo.Points([np.array([p.position.x, p.position.y, p.position.z]) for p in rule3])
+    rule3P.pointSize(10)
+    rule3P.color([0, 0, 1], 1)
+
+    rule4P = vedo.Points([np.array([p.position.x, p.position.y, p.position.z]) for p in rule4])
+    rule4P.pointSize(10)
+    rule4P.color([1, 1, 0], 1)
+
+    vedo.show([tree, rule1P, rule2P, rule3P, rule4P], bg="Gray")
 
 def show_cut_tree(pc):
     tree = vedo.Points([np.array([p.x, p.y, p.z]) for p in pc])

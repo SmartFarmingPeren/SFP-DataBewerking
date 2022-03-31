@@ -58,7 +58,7 @@ def main():
     """
         The Skeletonization code creates a skeleton from a input point cloud.
         """
-    input_point_cloud_name = "simpele_simpele_boom.ply"
+    input_point_cloud_name = "PCD60.ply"
 
     mtg = create_scene_and_skeletonize(input_point_cloud_name)
     writeMTGfile("hoi.mtg", mtg)
