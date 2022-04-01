@@ -6,6 +6,7 @@ XU_SKELETON_K = 10  # Default value = 20
 
 # [Static Tree values]
 LEADER_THRESHOLD = 5
+TREE_MAX_HEIGHT = 1.2 #meter
 
 # [Directory static values]
 # CWD

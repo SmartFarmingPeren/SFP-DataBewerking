@@ -26,7 +26,6 @@ Pruning rules:
         the branch needs to be cut close to the fork as well.
 '''
 
-
 def prune_branch(branch: Branch):
     if branch.age == 1:
         if not branch.is_pruned:
@@ -182,6 +181,7 @@ def show_pruning_locations_color(ply):
     rule2 = []
     rule3 = []
     rule4 = []
+    rule5 = []
     for p in pruning_locations:
         if p.pruning_rule is 1:
             rule1.append(p)
@@ -191,6 +191,8 @@ def show_pruning_locations_color(ply):
             rule3.append(p)
         if p.pruning_rule is 4:
             rule4.append(p)
+        if p.pruning_rule is 5:
+            rule5.append(p)
 
     rule1P = vedo.Points([np.array([p.position.x, p.position.y, p.position.z]) for p in rule1])
     rule1P.pointSize(10)
@@ -208,7 +210,11 @@ def show_pruning_locations_color(ply):
     rule4P.pointSize(10)
     rule4P.color([1, 1, 0], 1)
 
-    vedo.show([tree, rule1P, rule2P, rule3P, rule4P], bg="Gray")
+    rule5P = vedo.Points([np.array([p.position.x, p.position.y, p.position.z]) for p in rule5])
+    rule5P.pointSize(10)
+    rule5P.color([1, 0, 1], 1)
+
+    vedo.show([tree, rule1P, rule2P, rule3P, rule4P, rule5P], bg="Gray")
 
 def show_cut_tree(pc):
     tree = vedo.Points([np.array([p.x, p.y, p.z]) for p in pc])

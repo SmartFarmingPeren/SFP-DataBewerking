@@ -1,9 +1,11 @@
 import openalea.plantscan3d.serial as serial
 
+import math
 from classes_code.Branch import Branch, get_next
 from classes_code.Point import Point, points
-from classes_code.Pruning import get_branch_length, get_branchpoint_by_distance, prune_branch, show_pruning_locations, \
-    align_point_cloud_with_mtg, cut_point_cloud_points, show_cut_tree, write_locations_to_xyz, show_pruning_locations_color
+from Pruning import *
+#from classes_code.Pruning import get_branch_length, get_branchpoint_by_distance, prune_branch, show_pruning_locations, \
+    #align_point_cloud_with_mtg, cut_point_cloud_points, show_cut_tree, write_locations_to_xyz, show_pruning_locations_color
 from classes_code.Skeletonization import create_scene_and_skeletonize
 from graphs.visual import *
 from utilities.configuration_file import *
@@ -23,7 +25,7 @@ class Tree:
 
         # Determine the root branch
         self.root_branch = root if root is not None else self.determine_root(self.mtg)
-
+        #print(self.root_branch.z)
         self.tree_start = []
         for point in self.mtg.Sons(self.root_branch.points[-1].vertex_id):
             # # Determine the branch end points
@@ -41,9 +43,11 @@ class Tree:
         self.determine_leaders()
 
         self.determine_age()
-
-        for branch in self.get_branches():
-            prune_branch(branch)
+        print('amount of branches = ' + str(len(self.get_branches())))
+        #prune_tree(self)
+        self.prune_tree()
+        #for branch in self.get_branches():
+            #prune_branch(branch)
 
         show_pruning_locations_color(self.point_cloud)
 
@@ -59,6 +63,66 @@ class Tree:
 
         # Export a graph as a .html file
         plot(self.mtg, OUTPUT_GRAPHS_DIR + input_point_cloud_name.split(".")[0] + '.html')
+
+    def prune_tree(self): #tree data is available instead of branches only
+        #low, high = self.determine_vertexes()
+        #lowest_z = 9999
+        #for p in self.root_branch.points:
+            #if p.position.z < lowest_z:
+                #lowest_z = p.position.z
+        #print('root op: ' + str(lowest_z))
+        #print(self.root_branch.points[0].position.z)
+
+        root_z = self.root_branch.points[0].position.z #lowest point of root
+
+        for branch in self.get_branches():
+
+            for p in branch.points:
+                if math.fabs(p.position.z - root_z) > TREE_MAX_HEIGHT and branch.is_pruned is False:
+                    #print(p.position.z)
+                    pruning_locations.append(p)
+                    pruning_locations[len(pruning_locations) - 1].pruning_rule = 5
+                    branch.is_pruned = True
+            if branch.age == 1:
+                if not branch.is_pruned:
+                    if branch.parent.is_leader:
+                        debug_message(
+                            "RULE 2: Branch age:{0}, Parent is leader:{1}".format(branch.age, branch.parent.is_leader))
+                        pruning_locations.append(cut_distance_from_top(branch))
+                        pruning_locations[len(pruning_locations) - 1].pruning_rule = 2
+                        branch.is_pruned = True
+                else:
+                    warning_message("Child already pruned")
+
+            elif branch.age == 2:
+                first_child_found = False
+                for child in branch.children:
+                    if not child.is_pruned:
+                        if child.age == 1:
+                            if not first_child_found:
+                                first_child_found = True
+                                debug_message("RULE 1(RULE3): Branch age:{0}, Child age:{1}".format(branch.age, child.age))
+                                pruning_locations.append(cut_distance_from_fork(child))
+                                pruning_locations[len(pruning_locations) - 1].pruning_rule = 1
+                                child.is_pruned = True
+                            else:
+                                debug_message("RULE 3: Branch age:{0}, Child age:{1}".format(branch.age, child.age))
+                                pruning_locations.append(cut_close_to_fork(child))
+                                pruning_locations[len(pruning_locations) - 1].pruning_rule = 3
+                                child.is_pruned = True
+                    else:
+                        warning_message("Child already pruned")
+
+            elif branch.age >= 3:
+                for child in branch.children:
+                    if not child.is_pruned:
+                        if child.age == 1:
+                            debug_message("RULE 4: Branch age:{0}, Child age:{1}".format(branch.age, child.age))
+                            pruning_locations.append(cut_close_to_fork(child))
+                            pruning_locations[len(pruning_locations) - 1].pruning_rule = 4
+                            child.is_pruned = True
+                    else:
+                        warning_message("Child already pruned")
 
     @staticmethod
     def determine_root(mtg):

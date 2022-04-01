@@ -12,7 +12,8 @@ def main():
     start_time = time.time()
     input_point_cloud_name = "iPad.ply"
     tree = Tree(input_point_cloud_name)
-    write(tree)
+    #print ('root = ' + str(tree.root_branch.z))
+    #write(tree)
     # tree_copy = read("gen_9_15_04_expanded.json")
     print("Runtime: {0} seconds".format((time.time() - start_time)))
 
